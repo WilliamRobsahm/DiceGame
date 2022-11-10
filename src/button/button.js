@@ -17,6 +17,7 @@ class Button {
             if(mouse.click) {
                 console.log("click");
                 this.onClick();
+                mouse.click = false;
             }
 
             // Hover effect
