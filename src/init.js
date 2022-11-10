@@ -8,6 +8,9 @@ window.onload = init();
 let gameScene = "Intro";
 
 let heldItem = null;
+let dialogueOptions = null;
+
+let currentSituation = null;
 
 // Runs on game launch
 function init() {
@@ -51,7 +54,7 @@ function gameLoop() {
             draw();
             break;
         case "Intro Door":
-            draw();
+            
             let doorButton = new Button(canvas.width*0.2,canvas.height*0.2,100,180);
             let boxButton = new Button(canvas.width*0.8 - 220,canvas.height*0.3,220,160);
 
@@ -72,6 +75,7 @@ function gameLoop() {
 
                     dialogueBox.onFinish = () => {
                         gameScene = "Test Encounter";
+                        dialogueOptions = new encounter1();
                     }
                 }
             };
@@ -88,6 +92,7 @@ function gameLoop() {
                 }
             };
 
+            draw();
             doorButton.update();
             doorButton.draw();
             boxButton.update();
@@ -95,7 +100,15 @@ function gameLoop() {
 
             break;
         case "Test Encounter":
+            if(!currentSituation) {
+                currentSituation = dialogueOptions.chooseSituation();
 
+                dialogueBox.startDialogue(currentSituation.dialogue);
+                dialogueBox.onFinish = () => {
+                    
+                }
+            }
+            draw();
             break;
     }
 
