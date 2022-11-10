@@ -13,8 +13,6 @@ let dialogueOptions = null;
 
 let currentSituation = null;
 let showDialogueOptions = false;
-let introBoxOpened = false;
-let introDoorOpened = false;
 
 // Runs on game launch
 function init() {
@@ -65,13 +63,13 @@ function gameLoop() {
 
             draw();
 
-            let doorButton = new Button('door',canvas.width*0.2,canvas.height*0.2,300,300);         
-            let boxButton = new Button('box',canvas.width*0.8 - 220,canvas.height*0.3,300,300);
+            let prisonCellDoor = new Button('door',canvas.width*0.2,canvas.height*0.2,300,300);         
+            let prisonCellCrate = new Button('box',canvas.width*0.8 - 220,canvas.height*0.3,300,300);
             
-            let testButton = new Button("box",canvas.width*0.8,canvas.height*0.3,20,20);
-            buttons = [doorButton, boxButton, testButton];
+            let testButton = new Button("button",canvas.width*0.8,canvas.height*0.3,20,20);
+            buttons = [prisonCellDoor, prisonCellCrate, testButton];
 
-            doorButton.onClick = () => {
+            prisonCellDoor.onClick = () => {
                 if(!heldItem) {
                     dialogueBox.startDialogue([
                         "(You pull the door handle)",
@@ -80,7 +78,7 @@ function gameLoop() {
                 }
 
                 else if(heldItem == "Crowbar") {
-                    introDoorOpened = true;
+                    prisonCellDoor.open = true;
                     dialogueBox.startDialogue([
                         "(You manage to break open the door)",
                         "'Yes!'",
@@ -94,9 +92,9 @@ function gameLoop() {
                 }
             };
 
-            boxButton.onClick = () => {
-
+            prisonCellCrate.onClick = () => {
                 if(!heldItem) {
+                    prisonCellCrate.open = true;
                     dialogueBox.startDialogue([
                         "(You open the box)",
                         "(There is a crowbar inside)",
@@ -106,8 +104,11 @@ function gameLoop() {
                 }
             };
 
-            if(introDoorOpened) {
-                doorButton.open = true;
+            if(prisonCellCrate.open == true) {
+                prisonCellCrate.open = true;
+            }
+            if(prisonCellDoor.open == true) {
+                prisonCellDoor.open = true;
             }
 
             draw();

@@ -8,19 +8,10 @@ class Button {
         this.onClick = () => {};
 
         this.type = type;
-        this.img1 = new Image();
-        this.img2 = new Image();
+        this.img = new Image();
+        this.open = false;
 
         switch(this.type) {
-            case "door":
-                this.open = false;
-                this.img1.src = "assets/img/doorclosed.png";
-                this.img2.src = "assets/img/dooropen.png";
-                break;
-            case "box":
-                this.img1.src = "assets/img/crateclosed.png";
-                this.img2.src = "assets/img/crateopen.png";
-                break;
             case "dialogueOption":
                 this.dialogue = "";
                 break;
@@ -43,18 +34,21 @@ class Button {
         // Placeholder visuals for button
         if(this.type == 'door') {
             if(this.open){
-                ctx.drawImage(this.img2,this.x,this.y,this.w,this.h);
+                this.img.src = "assets/img/dooropen.png";
             } else {
-                ctx.drawImage(this.img1,this.x,this.y,this.w,this.h);
+                this.img.src = "assets/img/doorclosed.png";
             }
+            ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
         }
         if(this.type == 'box') {
             // Show crate opened if
-            if(heldItem == "Crowbar") {
-                ctx.drawImage(this.img2,this.x,this.y,this.w,this.h);
+            console.log(this.open)
+            if(this.open) {
+                this.img.src = "assets/img/crateopen.png";
             } else {
-                ctx.drawImage(this.img1,this.x,this.y,this.w,this.h);
+                this.img.src = "assets/img/crateclosed.png";
             }
+            ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
         }
         if(this.type == 'dialogue') {
             ctxSettings({strokeStyle:"white",fillStyle:"white",font:"24px Sketchy",textAlign:"center"});
@@ -70,13 +64,13 @@ class Button {
             ctx.closePath();
             ctx.fillText(this.dialogue,this.x + this.w/2, this.y + this.h*0.2);
         }
-        if(this.img == 'button') {
+        if(this.type == 'button') {
             if(mouseOn(this)){
-                this.door.src = "assets/img/button.png";
+                this.img.src = "assets/img/button.png";
             } else {
-                this.door.src = "assets/img/buttondown.png";
+                this.img.src = "assets/img/buttondown.png";
             }
-            ctx.drawImage(this.door,this.x,this.y,this.w,this.h);
+            ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
         }
     }
 }
