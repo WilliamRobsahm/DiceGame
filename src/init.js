@@ -135,10 +135,10 @@ function gameLoop() {
                 enemyAttack(player);
             }
 
-            if(player.alive = false){
+            if(player.alive == false){
                 alert("U dide");
             }
-            if(enemy.alive = false){
+            if(enemy.alive == false){
                 alert("They died");
             }
 
