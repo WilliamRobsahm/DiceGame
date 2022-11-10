@@ -1,3 +1,4 @@
+import { dialogueBox } from "./dialogueBox.js";
 
 export let mouse = {
     click:false,
@@ -14,12 +15,30 @@ document.addEventListener('mousemove',function(event) {
 
 // Register player clicks
 document.addEventListener('mousedown', function() {
-    mouse.click = true;
+    if(dialogueBox.dialogue) {
+        dialogueBox.nextDialogue();
+    } else {
+        mouse.click = true;
+    }
 });
 
 document.addEventListener('mouseup', function() {
     mouse.click = false;
 });
+
+document.addEventListener('keydown', function(event) {
+    let key = event.key.toUpperCase();
+    if(key == "ENTER" || key == " ") {
+        if(dialogueBox.dialogue) {
+            if(dialogueBox.doneTalking) {
+                console.log("next");
+                dialogueBox.nextDialogue();
+            } else {
+                dialogueBox.displayLength = dialogueBox.dialogue[dialogueBox.current].length;
+            }
+        }
+    }
+}) 
 
 
 

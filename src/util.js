@@ -1,5 +1,5 @@
 import { ctx } from "./const.js";
-import { mouse, no } from "./mouse.js";
+import { mouse, no } from "./controls.js";
 
 /**
  * Set canvas size to current window size
