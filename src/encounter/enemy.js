@@ -13,6 +13,8 @@ class Enemy{
         if(this.hp <= 0){
             this.alive = false;
         }
-        console.log("hp:"+this.hp);
+    }
+    draw(){
+
     }
 }

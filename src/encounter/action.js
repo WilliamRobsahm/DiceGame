@@ -7,9 +7,13 @@ function lightAttack(target){
     if(roll.finalResult % 2 === 0){
         rollD = new DiceRoll(6, 0);
         target.takeDmg(rollD.finalResult);
-        // skriv i dialog "Du träffar med din lätta attack"
+        dialogueBox.startDialogue([
+            "Hit for "+rollD.finalResult+" damage"
+        ]);
     }else{
-        alert("miss");
+        dialogueBox.startDialogue([
+            "Miss"
+        ]);
     }
     
 }
@@ -22,9 +26,13 @@ function heavyAttack(target){
     if(roll.finalResult >= 5){
         rollD = new DiceRoll(6, 5);
         target.takeDmg(rollD.finalResult);
-        // skriv i dialog "Du träffar med din hårda attack"
+        dialogueBox.startDialogue([
+            "Hit for "+rollD.finalResult+" damage"
+        ]);
     }else{
-        alert("miss");
+        dialogueBox.startDialogue([
+            "Miss"
+        ]);
     }
 }
 
@@ -36,8 +44,12 @@ function enemyAttack(target){
     if(roll.finalResult % 2 != 0){
         rollD = new DiceRoll(6, 0);
         target.takeDmg(rollD.finalResult);
-        // skriv i dialog "Du blir träffad av motståndarens attack"
+        dialogueBox.startDialogue([
+            "You got hit for "+rollD.finalResult+" damage"
+        ]);
     }else{
-        alert("miss");
+        dialogueBox.startDialogue([
+            "They missed"
+        ]);
     }
 }

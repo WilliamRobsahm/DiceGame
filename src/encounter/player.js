@@ -11,6 +11,7 @@ class Player {
     takeDmg(dmg){
         this.hp-dmg;
         if(this.hp <= 0){
+            console.log("test");
             this.alive = false;
         }
     }
