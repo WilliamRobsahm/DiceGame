@@ -40,8 +40,8 @@ function heavyAttack(target){
     player obj | target      -- Vilket motståndare som ska attackeras
 */
 function enemyAttack(target){
-    roll = new DiceRoll(6, 0)
-    if(roll.finalResult % 2 != 0){
+    roll = new DiceRoll(6, 0);
+    if(roll.finalResult % 2 === 0){
         rollD = new DiceRoll(6, 0);
         target.takeDmg(rollD.finalResult);
         dialogueBox.startDialogue([

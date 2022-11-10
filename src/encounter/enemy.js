@@ -5,6 +5,7 @@
 class Enemy{
     constructor(hp, sprite){
         this.hp = hp;
+        this.maxHp = hp;
         this.sprite = sprite;
         this.alive = true;
     }

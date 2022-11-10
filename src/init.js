@@ -2,6 +2,7 @@
 // Variables
 //==================================================
 let player = new Player(10);
+let turn = 1;
 let enemy = null;
 
 
@@ -80,7 +81,7 @@ function gameLoop() {
     clearCanvas();
 
     buttons = [];
-
+    
     switch(gameScene) {
         case "Intro":
             break;
@@ -147,8 +148,8 @@ function gameLoop() {
 
 
             break;
-
         case "Test Encounter":
+            document.body.style.cursor = "default";
             dialogueBox.startDialogue([
                 "Player: 'Hey, you! I need your help to get out!'",
                 "Guard: 'How did you escape your cell? Oh whatever. Look, let me think...'",
@@ -161,18 +162,16 @@ function gameLoop() {
                 gameScene = "encounter";
             }
             break;
-
         case "testEnemy":
-            console.log("hej");
+            document.body.style.cursor = "default";
             enemy = new Enemy(10, "idk");
             gameScene = "combatEncounter";
+            turn = 1;
             break;
         case "combatEncounter":
-
-            let lightButton = new Button('button',(canvas.width*1)-(canvas.width*0.5),canvas.height*0.7,canvas.width*0.5,(canvas.width*0.5)/3);
-            let heavyButton = new Button('button',canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.5)/3);
-            
-            turn = 1;
+            console.log(turn);
+            let lightButton = new Button('dialogue',(canvas.width*1)-(canvas.width*0.5),canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
+            let heavyButton = new Button('dialogue',canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
 
             dialogueBox.onFinish = () => {
                 gameScene = "combatEncounter";
@@ -181,20 +180,20 @@ function gameLoop() {
             lightButton.onClick = () => {
                 if(turn == 1){
                     lightAttack(enemy);
-                    turn == 0;
+                    turn = 0;
                 }
             }
 
             heavyButton.onClick = () => {
                 if(turn == 1){
                     heavyAttack(enemy);
-                    turn == 0;
+                    turn = 0;
                 }
             }
 
             if (turn == 0){
                 enemyAttack(player);
-                turn == 1;
+                turn = 1;
             }
 
             if(player.alive == false){
@@ -214,15 +213,16 @@ function gameLoop() {
                 ]);
             }
 
-
+            ctx.fillText(enemy.hp+"/"+enemy.maxHp, canvas.width*0.05, canvas.height*0.05); 
+            ctx.fillText(player.hp+"/"+player.maxHp, canvas.width*0.92, canvas.height*0.64);
             lightButton.update();
             lightButton.draw();
             heavyButton.update();
             heavyButton.draw();
             
             break;
-
         case "encounter":
+            document.body.style.cursor = "default";
             if(!currentSituation) {
                 currentSituation = enemy.dialogueOptions.randomSituation();
 

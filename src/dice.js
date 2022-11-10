@@ -11,8 +11,6 @@ class DiceRoll {
         this.finalResult = this.result += this.modifier;
 
         this.displayingNumber = null;
-
-        console.log(this.finalResult);
     }
 
     generateResult() {

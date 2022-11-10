@@ -20,8 +20,13 @@ class Button {
         //==================================================
         // Looks if the mouse is on it and you have clicked on it
         //==================================================
-        if(mouseOn(this) && mouse.click) {
-            this.onClick();
+        if(mouseOn(this)){
+            document.body.style.cursor = "pointer";
+            if(mouse.click) {
+                this.onClick();
+            }
+        } else {
+            document.body.style.cursor = "default";
         }
     }
 
