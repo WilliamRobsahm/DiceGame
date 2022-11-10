@@ -1,5 +1,7 @@
 let player = new Player(10);
-let enemy = "";
+
+let enemy = null;
+
 
 window.onload = init();
 
@@ -7,6 +9,12 @@ window.onload = init();
 let gameScene = "Intro";
 
 let heldItem = null;
+let dialogueOptions = null;
+
+let currentSituation = null;
+let showDialogueOptions = false;
+let introBoxOpened = false;
+let introDoorOpened = false;
 
 // Runs on game launch
 function init() {
@@ -45,16 +53,24 @@ function introLoop() {
 
 function gameLoop() {
     clearCanvas();
+
+    let buttons = [];
     switch(gameScene) {
+
         case "Intro":
             draw();
             break;
+
         case "Intro Door":
+
             draw();
+
+            let doorButton = new Button('door',canvas.width*0.2,canvas.height*0.2,300,300);         
+            let boxButton = new Button('box',canvas.width*0.8 - 220,canvas.height*0.3,300,300);
             
-            let doorButton = new Button("door",canvas.width*0.2,canvas.height*0.2,100,180);
-            let boxButton = new Button("box",canvas.width*0.8 - 220,canvas.height*0.3,220,160);
             let testButton = new Button("box",canvas.width*0.8,canvas.height*0.3,20,20);
+            buttons = [doorButton, boxButton, testButton];
+
 
             doorButton.onClick = () => {
                 if(!heldItem) {
@@ -65,6 +81,7 @@ function gameLoop() {
                 }
 
                 else if(heldItem == "Crowbar") {
+                    introDoorOpened = true;
                     dialogueBox.startDialogue([
                         "(You manage to break open the door)",
                         "'Yes!'",
@@ -73,6 +90,7 @@ function gameLoop() {
 
                     dialogueBox.onFinish = () => {
                         gameScene = "Test Encounter";
+                        dialogueOptions = new encounter1();
                     }
                 }
             };
@@ -84,27 +102,36 @@ function gameLoop() {
                         "(You open the box)",
                         "(There is a crowbar inside)",
                     ]);
-    
+                    
                     heldItem = "Crowbar";
                 }
             };
 
+            if(introDoorOpened) {
+                doorButton.open = true;
+            }
+
+            draw();
             testButton.onClick = () => {
                 gameScene = "testEnemy";
             }
 
-            doorButton.update();
-            doorButton.draw();
-
-
-            boxButton.update();
-            boxButton.draw();
-            testButton.update();
-            testButton.draw();
 
             break;
 
         case "Test Encounter":
+            dialogueBox.startDialogue([
+                "Player: 'Hey, you! I need your help to get out!'",
+                "Guard: 'How did you escape your cell? Oh whatever. Look, let me think...'",
+                "Guard: 'You know what?'",
+                "'Let me see if I like your style, and maybe I'll let you through.'"
+            ]);
+            dialogueBox.onFinish = () => {
+                enemy = new Enemy(10,"idk");
+                enemy.dialogueOptions = new encounter1;
+                gameScene = "encounter";
+            }
+            draw();
             break;
 
         case "testEnemy":
@@ -167,6 +194,36 @@ function gameLoop() {
             heavyButton.draw();
             
             break;
+
+        case "encounter":
+            if(!currentSituation) {
+                currentSituation = enemy.dialogueOptions.randomSituation();
+
+                dialogueBox.startDialogue(currentSituation.dialogue);
+                dialogueBox.onFinish = () => {
+                    showDialogueOptions = true;
+                }
+            }
+            
+            if(showDialogueOptions) {
+                let button1 = new Button('dialogue',canvas.width / 2 - 520,canvas.height * 0.5,320,240);
+                let button2 = new Button('dialogue',canvas.width / 2 - 160,canvas.height * 0.5,320,240);
+                let button3 = new Button('dialogue',canvas.width / 2 + 200,canvas.height * 0.5,320,240);
+            
+                buttons = [button1, button2, button3];
+
+                for(let i=0;i<3;i++) {
+                    buttons[i].setDialogue(currentSituation.options[i].text);
+                }
+            }
+
+            draw();
+            break;
+    }
+
+    for(let i=0;i<buttons.length;i++) {
+        buttons[i].update();
+        buttons[i].draw();
     }
 
     window.requestAnimationFrame(gameLoop);
