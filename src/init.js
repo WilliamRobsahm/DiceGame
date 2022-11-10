@@ -58,7 +58,7 @@ function gameLoop() {
             break;
         case "Intro Door":
             draw();
-            let doorButton = new Button(canvas.width*0.2,canvas.height*0.2,100,180);
+            let doorButton = new Button(canvas.width*0.2,canvas.height*0.2,100,180);         
             let boxButton = new Button(canvas.width*0.8 - 220,canvas.height*0.3,220,160);
 
             doorButton.onClick = () => {

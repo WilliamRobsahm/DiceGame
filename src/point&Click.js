@@ -6,8 +6,8 @@ door1.src = "assets/img/dooropen.png";  //door option 1
 export let door2 = new Image();
 door2.src = "assets/img/dooropen.png";  //door option 1
 
-export let posDoor1 = {x: 0, y: 0, w: canvas.width * 0.75, h: canvas.width * 0.75}; // OG size of the img is 358
-export let posDoor2 = {x: 0, y: 0, w: canvas.width * 0.75, h: canvas.width * 0.75}; // OG size of the img is 500
+export let posDoor1 = {x: canvas.width*0.2, y: canvas.height*0.2, w: 100, h: 180}; // OG size of the img is 358
+export let posDoor2 = {x: canvas.width*0.2, y: canvas.height*0.2, w: 100, h: 180}; // OG size of the img is 500
 
 export function point() {
     posDoor1.x = (canvas.width - posDoor1.w) / 3;
