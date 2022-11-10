@@ -71,7 +71,6 @@ function gameLoop() {
             let testButton = new Button("box",canvas.width*0.8,canvas.height*0.3,20,20);
             buttons = [doorButton, boxButton, testButton];
 
-
             doorButton.onClick = () => {
                 if(!heldItem) {
                     dialogueBox.startDialogue([
@@ -142,8 +141,8 @@ function gameLoop() {
         case "combatEncounter":
             draw();
 
-            let lightButton = new Button("box",canvas.width*0.5,canvas.height*0.6,300,100);
-            let heavyButton = new Button("box",canvas.width*0.1,canvas.height*0.6,300,100);
+            let lightButton = new Button('button',(canvas.width*1)-(canvas.width*0.5),canvas.height*0.7,canvas.width*0.5,(canvas.width*0.5)/3);
+            let heavyButton = new Button('button',canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.5)/3);
             
             turn = 1;
 

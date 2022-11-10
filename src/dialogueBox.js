@@ -7,6 +7,7 @@ class DialogueBox {
         this.dialogue;
         this.currentText;
         this.displayLength = 0;
+        this.img = new Image();
 
         this.onFinish = () => {};
     }
@@ -49,15 +50,12 @@ class DialogueBox {
         } else {
             this.doneTalking = true;
         }
-        
-        ctxSettings({strokeStyle:"white"});
-        ctx.beginPath();
-        ctx.rect(this.x,this.y,this.w,this.h);
-        ctx.stroke();
-        ctx.closePath();
 
-        ctxSettings({fillStyle:"white",font:"24px Sketchy",textAlign:"left"});
-        ctx.fillText(this.dialogue[this.current].substr(0,this.displayLength),this.x + 50,this.y + 50,this.x + this.w - 100);
+        this.img.src = "./assets/img/dialougebox.png";
+        ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
+
+        ctxSettings({fillStyle:"#eee",font:"24px Sketchy",textAlign:"left"});
+        ctx.fillText(this.dialogue[this.current].substr(0,this.displayLength),this.x + 112.5,this.y + 75,this.x + this.w - 100);
     }
     
 }

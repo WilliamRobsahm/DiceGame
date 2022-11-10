@@ -70,5 +70,13 @@ class Button {
             ctx.closePath();
             ctx.fillText(this.dialogue,this.x + this.w/2, this.y + this.h*0.2);
         }
+        if(this.img == 'button') {
+            if(mouseOn(this)){
+                this.door.src = "assets/img/button.png";
+            } else {
+                this.door.src = "assets/img/buttondown.png";
+            }
+            ctx.drawImage(this.door,this.x,this.y,this.w,this.h);
+        }
     }
 }
