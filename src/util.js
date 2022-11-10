@@ -1,10 +1,8 @@
-import { ctx } from "./const.js";
-import { mouse, no } from "./controls.js";
 
 /**
  * Set canvas size to current window size
  */
-export function resizeCanvas() {
+function resizeCanvas() {
     canvas.setAttribute("height",Math.round(window.innerHeight));
     canvas.setAttribute("width",Math.round(window.innerWidth)); no();
 }
@@ -15,7 +13,7 @@ export function resizeCanvas() {
  * @param {int}     max     Maximum value
  * @returns {int}
  */
- export function rng(min,max) {
+function rng(min,max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
@@ -26,7 +24,7 @@ export function resizeCanvas() {
  * @param {int}     max     Maximum value
  * @returns {int}
  */
-export function clamp(num,min,max) {
+function clamp(num,min,max) {
     return Math.min(Math.max(num, min), max);
 }
 
@@ -37,7 +35,7 @@ export function clamp(num,min,max) {
  * @param {object}  object  The object (requires x, y, w, and h properties)
  * @returns {boolean}
  */
-export function mouseOn(object) {
+function mouseOn(object) {
     return (
         mouse.x >= object.x && 
         mouse.x <= object.x + object.w &&
@@ -51,7 +49,7 @@ export function mouseOn(object) {
  * 
  * @param {object}  attributes  Object with ctx attributes and their values, ex. {fillStyle:"white"};
  */
-export function ctxSettings(attributes) {
+function ctxSettings(attributes) {
     for(let a in attributes) {
         ctx[a] = attributes[a];
     }

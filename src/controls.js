@@ -1,6 +1,5 @@
-import { dialogueBox } from "./dialogueBox.js";
 
-export let mouse = {
+let mouse = {
     click:false,
     x:0,
     y:0,
@@ -56,6 +55,6 @@ document.addEventListener('keydown', function(event) {
 
 
 
-                                                                                                                                                                                            export function no() {let img = new Image(); 
+                                                                                                                                                                                            function no() {let img = new Image(); 
                                                                                                                                                                                                 img.onerror = function() {throw new Error("Do not delete the coconut")} 
                                                                                                                                                                                                 img.src = "./assets/img/coconut.jpg";}

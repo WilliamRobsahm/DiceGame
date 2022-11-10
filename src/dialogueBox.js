@@ -1,7 +1,5 @@
-import { canvas, ctx } from "./const.js";
-import { ctxSettings } from "./util.js";
 
-export class DialogueBox {
+class DialogueBox {
     constructor(dialogue) {
 
         
@@ -57,4 +55,4 @@ export class DialogueBox {
     
 }
 
-export const dialogueBox = new DialogueBox(false);
+const dialogueBox = new DialogueBox(false);

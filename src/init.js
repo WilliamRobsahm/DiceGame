@@ -1,16 +1,6 @@
 
-import { Button } from "./button/button.js";
-import { ctx } from "./const.js";
-import { mouse } from "./controls.js";
-import { dialogueBox, DialogueBox } from "./dialogueBox.js";
-import { clearCanvas } from "./draw.js";
-import { ctxSettings, resizeCanvas } from "./util.js";
-import { Combat } from "./encounter/combat.js";
-import { Enemy } from "./encounter/enemy.js";
-import { Player } from "./encounter/player.js";
-
-player = new Player(10);
-enemy = new Enemy(10, "idk");
+let player = new Player(10);
+let enemy = new Enemy(10, "idk");
 
 window.onload = init();
 
@@ -33,9 +23,13 @@ function init() {
 function introLoop() {
     if(mouse.click) {
         dialogueBox.startDialogue([
-            "Insert intro dialogue 1",
-            "Insert intro dialogue 2",
-            "Insert intro dialogue 3"
+            "(You wake up on a cold stone floor)",
+            "'Woah!'",
+            "'Where am I?'",
+            "'This is not my bedroom...'",
+            "'THIS IS A PRISON CELL!'",
+            "'I gotta get out of here!'",
+            "'There's a crate on the floor, I wonder who sent me that.'"
         ])
     
         dialogueBox.onFinish = () => {
@@ -65,14 +59,20 @@ function gameLoop() {
                 if(!heldItem) {
                     dialogueBox.startDialogue([
                         "(You pull the door handle)",
-                        "(The door is locked)"
+                        "'The door is locked, I need something to get it open.'"
                     ]);
                 }
 
                 else if(heldItem == "Crowbar") {
                     dialogueBox.startDialogue([
-                        "(You break open the door)",
-                    ])
+                        "(You manage to break open the door)",
+                        "'Yes!'",
+                        "'I knew the crowbar would help me, now I can get out of here.'"
+                    ]);
+
+                    dialogueBox.onFinish = () => {
+                        gameScene = "Test Encounter";
+                    }
                 }
             };
 
@@ -92,6 +92,9 @@ function gameLoop() {
             doorButton.draw();
             boxButton.update();
             boxButton.draw();
+
+            break;
+        case "Test Encounter":
 
             break;
     }

@@ -1,5 +1,3 @@
-import { Button } from "../button/button.js";
-import { enemyAttack, heavyAttack, lightAttack } from "./action.js";
 
 /*  Combat
     player obj | player         -- Spelaren i encountern
@@ -7,7 +5,7 @@ import { enemyAttack, heavyAttack, lightAttack } from "./action.js";
     int        | turn           -- 1 == "Spelaren" 0 == "Motståndaren"
 */
 
-export class Combat{
+class Combat{
     constructor(player,enemy){
         this.player = player;
         this.enemy = enemy;

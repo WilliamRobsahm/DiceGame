@@ -1,11 +1,8 @@
-import { DiceRoll } from "../dice.js";
-import { enemy } from "./enemy.js";
-import { Player } from "./player.js";
 
 /*  lightAttack
     enemy obj | target      -- Vilket motståndare som ska attackeras
 */
-export function lightAttack(target){
+function lightAttack(target){
     roll = new DiceRoll(6, 0);
     if(roll % 2 === 0){
         target.takeDmg(new DiceRoll(6, 0));
@@ -17,7 +14,7 @@ export function lightAttack(target){
 /*  heavyAttack
     enemy obj | target      -- Vilket motståndare som ska attackeras
 */
-export function heavyAttack(target){
+function heavyAttack(target){
     roll = new DiceRoll(6, 0)
     if(roll >= 5){
         target.takeDmg(new DiceRoll(6, 5));
@@ -29,7 +26,7 @@ export function heavyAttack(target){
 /* enemyAttack
     player obj | target      -- Vilket motståndare som ska attackeras
 */
-export function enemyAttack(target){
+function enemyAttack(target){
     roll = new DiceRoll(6, 0)
     if(roll % 2 != 0){
         target.takeDmg(new DiceRoll(6, 0));
