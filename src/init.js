@@ -1,4 +1,3 @@
-
 let player = new Player(10);
 let enemy = "";
 
@@ -52,6 +51,7 @@ function gameLoop() {
             break;
         case "Intro Door":
             draw();
+            
             let doorButton = new Button(canvas.width*0.2,canvas.height*0.2,100,180);
             let boxButton = new Button(canvas.width*0.8 - 220,canvas.height*0.3,220,160);
             let testButton = new Button(canvas.width*0.8,canvas.height*0.3,20,20);
@@ -95,6 +95,8 @@ function gameLoop() {
 
             doorButton.update();
             doorButton.draw();
+
+
             boxButton.update();
             boxButton.draw();
             testButton.update();
@@ -112,6 +114,7 @@ function gameLoop() {
             break;
         case "combatEncounter":
             draw();
+
             let lightButton = new Button(canvas.width*0.5,canvas.height*0.6,300,100);
             let heavyButton = new Button(canvas.width*0.1,canvas.height*0.6,300,100);
             
@@ -141,6 +144,7 @@ function gameLoop() {
             if(enemy.alive = false){
                 alert("They died");
             }
+
 
             lightButton.update();
             lightButton.draw();

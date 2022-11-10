@@ -1,10 +1,12 @@
 
 class Button {
-    constructor(x,y,w,h) {
+    constructor(img,x,y,w,h) {
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
+        this.img = img;
+        this.door = new Image();
         this.onClick = () => {};
     }
 
@@ -26,7 +28,21 @@ class Button {
 
     draw() {
         // Placeholder visuals for button
-        ctxSettings({fillStyle:"white"});
-        ctx.fillRect(this.x,this.y,this.w,this.h);
+        if(this.img == 'door') {
+            if(mouseOn(this)){
+                this.door.src = "assets/img/dooropen.png";
+            } else {
+                this.door.src = "assets/img/doorclosed.png";
+            }
+            ctx.drawImage(this.door,this.x,this.y,this.w,this.h);
+        }
+        if(this.img == 'box') {
+            if(mouseOn(this)){
+                this.door.src = "assets/img/crateopen.png";
+            } else {
+                this.door.src = "assets/img/crateclosed.png";
+            }
+            ctx.drawImage(this.door,this.x,this.y,this.w,this.h);
+        }
     }
 }
