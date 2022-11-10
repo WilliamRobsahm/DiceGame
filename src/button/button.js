@@ -1,8 +1,5 @@
-import { ctx } from "../const.js";
-import { mouse } from "../controls.js";
-import { ctxSettings, mouseOn } from "../util.js";
 
-export class Button {
+class Button {
     constructor(img,x,y,w,h) {
         this.x = x;
         this.y = y;

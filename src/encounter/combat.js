@@ -5,7 +5,7 @@
     int        | turn           -- 1 == "Spelaren" 0 == "Motståndaren"
 */
 
-export class Combat{
+class Combat{
     constructor(player,enemy){
         this.player = player;
         this.enemy = enemy;
