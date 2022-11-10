@@ -33,9 +33,12 @@ class Button {
 
     update() {
         // Click effect
-        if(mouseOn(this) && mouse.click) {
-            this.onClick();
-            mouse.click = false;
+        if(mouseOn(this)){
+            document.body.style.cursor = "pointer";
+            if(mouse.click) {
+                this.onClick();
+                mouse.click = false;
+            }
         }
     }
 
