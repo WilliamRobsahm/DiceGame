@@ -52,9 +52,9 @@ function gameLoop() {
         case "Intro Door":
             draw();
             
-            let doorButton = new Button(canvas.width*0.2,canvas.height*0.2,100,180);
-            let boxButton = new Button(canvas.width*0.8 - 220,canvas.height*0.3,220,160);
-            let testButton = new Button(canvas.width*0.8,canvas.height*0.3,20,20);
+            let doorButton = new Button('door',canvas.width*0.2,canvas.height*0.2,300,300);
+            let boxButton = new Button('box',canvas.width*0.8 - 220,canvas.height*0.3,300,300);
+            let testButton = new Button('button',canvas.width*0.8,canvas.height*0.1,20,20);
 
             doorButton.onClick = () => {
                 if(!heldItem) {
@@ -115,8 +115,8 @@ function gameLoop() {
         case "combatEncounter":
             draw();
 
-            let lightButton = new Button(canvas.width*0.5,canvas.height*0.6,300,100);
-            let heavyButton = new Button(canvas.width*0.1,canvas.height*0.6,300,100);
+            let lightButton = new Button('button',(canvas.width*1)-(canvas.width*0.5),canvas.height*0.7,canvas.width*0.5,(canvas.width*0.5)/3);
+            let heavyButton = new Button('button',canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.5)/3);
             
             turn = 1;
 
