@@ -3,14 +3,14 @@ import { Button } from "./button/button.js";
 import { ctx } from "./const.js";
 import { mouse } from "./controls.js";
 import { dialogueBox, DialogueBox } from "./dialogueBox.js";
-import { clearCanvas } from "./draw.js";
+import { clearCanvas, draw } from "./draw.js";
 import { ctxSettings, resizeCanvas } from "./util.js";
 import { Combat } from "./encounter/combat.js";
 import { Enemy } from "./encounter/enemy.js";
 import { Player } from "./encounter/player.js";
 
-player = new Player(10);
-enemy = new Enemy(10, "idk");
+let player = new Player(10);
+let enemy = new Enemy(10, "idk");
 
 window.onload = init();
 
@@ -93,6 +93,16 @@ function gameLoop() {
             boxButton.update();
             boxButton.draw();
 
+            break;
+        case "ce":
+            draw();
+            let lightButton = new Button(canvas.width*0.8,canvas.height*0.8,400,100);
+            let heavyButton = new Button(canvas.width*0.3,canvas.height*0.8,400,100);
+
+            lightButton.update();
+            lightButton.draw();
+            heavyButton.update();
+            heavyButton.draw();
             break;
     }
 
