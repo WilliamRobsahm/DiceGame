@@ -1,6 +1,5 @@
-import { rng } from "./util.js";
 
-export class DiceRoll {
+class DiceRoll {
     constructor(sides,modifier) {
         this.sides = sides;
         this.modifier = modifier;

@@ -2,7 +2,7 @@
     hp | int        -- players hp for combat
 */
 
-export class Player {
+class Player {
     constructor(hp){
         this.hp = hp;
         this.alive = true;

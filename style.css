@@ -6,6 +6,11 @@
 }
 
 @font-face{
+    font-family:"Sketched";
+    src:url("assets/font/Sketched.ttf") format("truetype");
+}
+
+@font-face{
     font-family:"Sketchy";
     src:url("assets/font/Sketchy.ttf") format("truetype");
 }

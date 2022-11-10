@@ -2,7 +2,7 @@
     int | hp            -- Hp of enemy for combat
     img obj | sprite    -- Sprite för motsåndare
 */
-export class Enemy{
+class Enemy{
     constructor(hp, sprite){
         this.hp = hp;
         this.sprite = sprite;
