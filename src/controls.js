@@ -1,3 +1,4 @@
+import { dialogueBox } from "./dialogueBox.js";
 
 export let mouse = {
     click:false,
@@ -20,6 +21,20 @@ document.addEventListener('mousedown', function() {
 document.addEventListener('mouseup', function() {
     mouse.click = false;
 });
+
+document.addEventListener('keydown', function(event) {
+    let key = event.key.toUpperCase();
+    if(key == "ENTER" || key == " ") {
+        if(dialogueBox.dialogue) {
+            if(dialogueBox.doneTalking) {
+                console.log("next");
+                dialogueBox.nextDialogue();
+            } else {
+                dialogueBox.displayLength = dialogueBox.dialogue[dialogueBox.current].length;
+            }
+        }
+    }
+}) 
 
 
 
