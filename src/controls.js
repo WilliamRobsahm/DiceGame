@@ -15,7 +15,11 @@ document.addEventListener('mousemove',function(event) {
 
 // Register player clicks
 document.addEventListener('mousedown', function() {
-    mouse.click = true;
+    if(dialogueBox.dialogue) {
+        dialogueBox.nextDialogue();
+    } else {
+        mouse.click = true;
+    }
 });
 
 document.addEventListener('mouseup', function() {

@@ -9,6 +9,8 @@ export class DialogueBox {
         this.dialogue;
         this.currentText;
         this.displayLength = 0;
+
+        this.onFinish = () => {};
     }
 
     // Size must be set after canvas size is defined
@@ -29,6 +31,7 @@ export class DialogueBox {
     nextDialogue() {
         this.current += 1;
         if(this.current >= this.dialogue.length) {
+            this.onFinish();
             this.dialogue = null;
         }
         this.displayLength = 0;
@@ -48,7 +51,7 @@ export class DialogueBox {
         ctx.stroke();
         ctx.closePath();
 
-        ctxSettings({fillStyle:"white",font:"24px Sketchy"});
+        ctxSettings({fillStyle:"white",font:"24px Sketchy",textAlign:"left"});
         ctx.fillText(this.dialogue[this.current].substr(0,this.displayLength),this.x + 50,this.y + 50,this.x + this.w - 100);
     }
     
