@@ -12,7 +12,6 @@ window.onload = init();
 // Runs on game launch
 function init() {
     resizeCanvas();
-    one = new Combat(player,enemy);
 
     window.requestAnimationFrame(gameLoop);
 }

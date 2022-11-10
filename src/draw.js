@@ -7,7 +7,5 @@ import { Combat } from "./encounter/combat.js";
  */ 
 export function draw() {
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    one.lightAttack.draw();
-    one.heavyAttack.draw();
 
 }
