@@ -1,5 +1,5 @@
-import { Button } from "../button/button";
-import { enemyAttack, heavyAttack, lightAttack } from "./action";
+import { Button } from "../button/button.js";
+import { enemyAttack, heavyAttack, lightAttack } from "./action.js";
 
 /*  Combat
     player obj | player         -- Spelaren i encountern

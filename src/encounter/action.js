@@ -1,6 +1,6 @@
-import { DiceRoll } from "../dice";
-import { enemy } from "./enemy";
-import { Player } from "./player";
+import { DiceRoll } from "../dice.js";
+import { enemy } from "./enemy.js";
+import { Player } from "./player.js";
 
 /*  lightAttack
     enemy obj | target      -- Vilket motståndare som ska attackeras
