@@ -1,24 +1,39 @@
+//==================================================
+// Variables
+//==================================================
 let player = new Player(10);
-
 let turn = 1;
-
 let enemy = null;
 
 
-window.onload = init();
-
-
 let gameScene = "Intro";
+let buttons = [];
+
 
 let heldItem = null;
 let dialogueOptions = null;
 
+
 let currentSituation = null;
 let showDialogueOptions = false;
-let introBoxOpened = false;
-let introDoorOpened = false;
 
-// Runs on game launch
+
+let prisonCell = {Create: false, Box: false};
+let prisonCellDoor = '';
+let prisonCellBox = '';
+
+
+
+//==================================================
+// Game starts when page have loaded in
+//==================================================
+window.onload = init();
+
+
+
+//==================================================
+// Start menu
+//==================================================
 function init() {
     resizeCanvas();
 
@@ -29,6 +44,11 @@ function init() {
     window.requestAnimationFrame(introLoop);
 }
 
+
+
+//==================================================
+// Start menu
+//==================================================
 function introLoop() {
     if(mouse.click) {
         dialogueBox.startDialogue([
@@ -42,10 +62,9 @@ function introLoop() {
         ])
     
         dialogueBox.onFinish = () => {
-            gameScene = "Intro Door";
+            gameScene = "PrisonCell";
         }
 
-        mouse.click = false;
         window.requestAnimationFrame(gameLoop);
     } else {
         window.requestAnimationFrame(introLoop);
@@ -53,41 +72,51 @@ function introLoop() {
 
 }
 
+
+
+//==================================================
+// GameLoop
+//==================================================
 function gameLoop() {
     clearCanvas();
 
-    let buttons = [];
+    buttons = [];
+    
     switch(gameScene) {
         case "Intro":
-            draw();
             break;
-        case "Intro Door":
-            document.body.style.cursor = "default";
 
-            draw();
-
-            let doorButton = new Button('door',canvas.width*0.2,canvas.height*0.2,300,300);         
-            let boxButton = new Button('box',canvas.width*0.8 - 220,canvas.height*0.3,300,300);
+        case "PrisonCell":
+            //==================================================
+            // Creates prisonCellDoor and prisonCellBox
+            //==================================================
+            let prisonCellDoor = new Button('door',canvas.width*0.2,canvas.height*0.2,300,300);         
+            let prisonCellBox = new Button('box',canvas.width*0.8 - 220,canvas.height*0.3,300,300);
             
-            let testButton = new Button("dialogue",canvas.width*0.9,canvas.height*0.3,20,20);
-            buttons = [doorButton, boxButton, testButton];
+            let testButton = new Button("button",canvas.width*0.8,canvas.height*0.3,20,20); //!!!!!!!!!!!! test button should not be here in final version
 
-            doorButton.onClick = () => {
+            buttons = [prisonCellDoor, prisonCellBox, testButton]; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! test button should not be here in final version
+
+
+
+            //==================================================
+            // prisonCellDoor
+            //==================================================
+            prisonCellDoor.onClick = () => {
                 if(!heldItem) {
                     dialogueBox.startDialogue([
                         "(You pull the door handle)",
                         "'The door is locked, I need something to get it open.'"
                     ]);
                 }
-
                 else if(heldItem == "Crowbar") {
-                    introDoorOpened = true;
+                    changeState('door')
+
                     dialogueBox.startDialogue([
                         "(You manage to break open the door)",
                         "'Yes!'",
                         "'I knew the crowbar would help me, now I can get out of here.'"
                     ]);
-
                     dialogueBox.onFinish = () => {
                         gameScene = "Test Encounter";
                         dialogueOptions = new encounter1();
@@ -95,9 +124,15 @@ function gameLoop() {
                 }
             };
 
-            boxButton.onClick = () => {
 
+
+            //==================================================
+            // prisonCellBox
+            //==================================================
+            prisonCellBox.onClick = () => {
                 if(!heldItem) {
+                    changeState('box')
+
                     dialogueBox.startDialogue([
                         "(You open the box)",
                         "(There is a crowbar inside)",
@@ -107,11 +142,6 @@ function gameLoop() {
                 }
             };
 
-            if(introDoorOpened) {
-                doorButton.open = true;
-            }
-
-            draw();
             testButton.onClick = () => {
                 gameScene = "testEnemy";
             }
@@ -131,7 +161,6 @@ function gameLoop() {
                 enemy.dialogueOptions = new encounter1;
                 gameScene = "encounter";
             }
-            draw();
             break;
         case "testEnemy":
             document.body.style.cursor = "default";
@@ -140,7 +169,6 @@ function gameLoop() {
             turn = 1;
             break;
         case "combatEncounter":
-            draw();
             console.log(turn);
             let lightButton = new Button('dialogue',(canvas.width*1)-(canvas.width*0.5),canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
             let heavyButton = new Button('dialogue',canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
@@ -170,7 +198,7 @@ function gameLoop() {
 
             if(player.alive == false){
                 dialogueBox.onFinish = () => {
-                    gameScene = "Intro Door";
+                    gameScene = "PrisonCell";
                 }
                 dialogueBox.startDialogue([
                     "You Died"
@@ -178,7 +206,7 @@ function gameLoop() {
             }
             if(enemy.alive == false){
                 dialogueBox.onFinish = () => {
-                    gameScene = "Intro Door";
+                    gameScene = "PrisonCell";
                 }
                 dialogueBox.startDialogue([
                     "They Died"
@@ -211,12 +239,10 @@ function gameLoop() {
             
                 buttons = [button1, button2, button3];
 
-                for(let i=0;i<3;i++) {
+                for(let i=0;i<buttons.length;i++) {
                     buttons[i].setDialogue(currentSituation.options[i].text);
                 }
             }
-
-            draw();
             break;
     }
 
@@ -225,10 +251,20 @@ function gameLoop() {
         buttons[i].draw();
     }
 
+    draw();
     window.requestAnimationFrame(gameLoop);
 }
 
-function menuLoop() {
 
-    window.requestAnimationFrame(menuLoop);
-}
+
+//==================================================
+// Opens door and box in prisonCell
+//==================================================
+function changeState(type) {
+    if(type == 'door') {
+        prisonCell.Door = true;
+    }
+    if(type == 'box') {
+        prisonCell.Box = true;
+    }
+};
