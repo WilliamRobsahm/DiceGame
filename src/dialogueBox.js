@@ -21,12 +21,19 @@ class DialogueBox {
     }
 
     startDialogue(dialogue) {
+
+        // cant start a dialogue if another one is already active
+        if(this.dialogue) {
+            return;
+        }
         this.dialogue = dialogue;
         this.current = 0;
         this.displayLength = 0;
         this.doneTalking = false;
+        this.onFinish = () => {};
     }
 
+    // Go to next text in dialogue
     nextDialogue() {
         this.current += 1;
         if(this.current >= this.dialogue.length) {
