@@ -8,7 +8,12 @@ class dialogueChoice {
         this.count = 0;
     }
 
-    chooseSituation() {
+    chooseSituation(n) {
+        this.situations[n].occured = true;
+        return this.situations[n].occured;
+    }
+
+    randomSituation() {
         if(this.count >= this.situationCount) {
             return false;
         }

@@ -14,10 +14,13 @@ class encounter1 extends dialogueChoice {
                     "'Hello there'",
                     "'This is a test encounter'"],
                 options:[
-                    {text:"Option 1",effect:"",nextDialogue:false},
-                    {text:"Option 2",effect:"",nextDialogue:false},
-                    {text:"Option 3",effect:"",nextDialogue:false},
-                    {text:"Option 4",effect:"",nextDialogue:false}
+                    {
+                        text:"Option 1",minimumSum:1,successPoints:1,
+                        positiveResponse:"Happy :D",
+                        negativeResponse:"Anrgy >:I"
+                    },
+                    {text:"Option 2",effect:""},
+                    {text:"Option 3",effect:""},
                 ],
                 occured:false,
             },{
@@ -25,10 +28,9 @@ class encounter1 extends dialogueChoice {
                     "'Woah!'",
                     "'This is another test encounter'"],
                 options:[
-                    {text:"Option 1",effect:"",nextDialogue:false},
-                    {text:"Option 2",effect:"",nextDialogue:false},
-                    {text:"Option 3",effect:"",nextDialogue:false},
-                    {text:"Option 4",effect:"",nextDialogue:false}
+                    {text:"Option 1",effect:""},
+                    {text:"Option 2",effect:""},
+                    {text:"Option 3",effect:""},
                 ],
                 occured:false,
             }
