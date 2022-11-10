@@ -7,15 +7,9 @@ class Button {
         this.h = h;
         this.onClick = () => {};
 
+
         this.type = type;
         this.img = new Image();
-        this.open = false;
-
-        switch(this.type) {
-            case "dialogueOption":
-                this.dialogue = "";
-                break;
-        }
     }
 
     setDialogue(text) {
@@ -23,33 +17,46 @@ class Button {
     }
 
     update() {
-        // Click effect
+        //==================================================
+        // Looks if the mouse is on it and you have clicked on it
+        //==================================================
         if(mouseOn(this) && mouse.click) {
             this.onClick();
-            mouse.click = false;
         }
     }
 
     draw() {
-        // Placeholder visuals for button
+        //==================================================
+        // Door and box
+        //==================================================
         if(this.type == 'door') {
-            if(this.open){
+            if(prisonCell.Door) {
                 this.img.src = "assets/img/dooropen.png";
             } else {
                 this.img.src = "assets/img/doorclosed.png";
             }
             ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
         }
+        
+        
+        
+        //==================================================
+        // Box
+        //==================================================
         if(this.type == 'box') {
-            // Show crate opened if
-            console.log(this.open)
-            if(this.open) {
-                this.img.src = "assets/img/crateopen.png";
+            if(prisonCell.Box) {
+                this.img.src = "assets/img/boxopen.png";
             } else {
-                this.img.src = "assets/img/crateclosed.png";
+                this.img.src = "assets/img/boxclosed.png";
             }
             ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
         }
+
+
+
+        //==================================================
+        // Dialogue
+        //==================================================
         if(this.type == 'dialogue') {
             ctxSettings({strokeStyle:"white",fillStyle:"white",font:"24px Sketchy",textAlign:"center"});
             if(mouseOn(this)){
@@ -58,12 +65,17 @@ class Button {
                 ctx.lineWidth = 2;
             }
 
-            ctx.beginPath();
-            ctx.rect(this.x,this.y,this.w,this.h);
-            ctx.stroke();
-            ctx.closePath();
+            this.img.src = "./assets/img/dialougebox.png";
+            ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
+
             ctx.fillText(this.dialogue,this.x + this.w/2, this.y + this.h*0.2);
         }
+
+
+
+        //==================================================
+        // Button
+        //==================================================
         if(this.type == 'button') {
             if(mouseOn(this)){
                 this.img.src = "assets/img/button.png";
