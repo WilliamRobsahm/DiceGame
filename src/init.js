@@ -1,5 +1,5 @@
 let player = new Player(10);
-let enemy = new Enemy(10, "idk");
+let enemy = "";
 
 window.onload = init();
 
@@ -51,8 +51,10 @@ function gameLoop() {
             break;
         case "Intro Door":
             draw();
-            let doorButton = new Button('door',canvas.width*0.2,canvas.height*0.2,300,300);         
-            let boxButton = new Button('box',canvas.width*0.8 - 220,canvas.height*0.3,300,300);
+            
+            let doorButton = new Button(canvas.width*0.2,canvas.height*0.2,100,180);
+            let boxButton = new Button(canvas.width*0.8 - 220,canvas.height*0.3,220,160);
+            let testButton = new Button(canvas.width*0.8,canvas.height*0.3,20,20);
 
             doorButton.onClick = () => {
                 if(!heldItem) {
@@ -87,23 +89,62 @@ function gameLoop() {
                 }
             };
 
+            testButton.onClick = () => {
+                gameScene = "testEnemy";
+            }
+
             doorButton.update();
             doorButton.draw();
 
 
             boxButton.update();
             boxButton.draw();
+            testButton.update();
+            testButton.draw();
 
             break;
 
         case "Test Encounter":
             break;
 
-
-        case "ce":
+        case "testEnemy":
+            console.log("hej");
+            enemy = new Enemy(10, "idk");
+            gameScene = "combatEncounter";
+            break;
+        case "combatEncounter":
             draw();
-            let lightButton = new Button('button',canvas.width*0.8,canvas.height*0.8,400,100);
-            let heavyButton = new Button('button',canvas.width*0.3,canvas.height*0.8,400,100);
+
+            let lightButton = new Button(canvas.width*0.5,canvas.height*0.6,300,100);
+            let heavyButton = new Button(canvas.width*0.1,canvas.height*0.6,300,100);
+            
+            turn = 1;
+
+            lightButton.onClick = () => {
+                if(turn == 1){
+                    lightAttack(enemy);
+                }
+                mouse.click = false;
+            }
+
+            heavyButton.onClick = () => {
+                if(turn == 1){
+                    heavyAttack(enemy);
+                }
+                mouse.click = false;
+            }
+
+            if (turn == 0){
+                enemyAttack(player);
+            }
+
+            if(player.alive = false){
+                alert("U dide");
+            }
+            if(enemy.alive = false){
+                alert("They died");
+            }
+
 
             lightButton.update();
             lightButton.draw();

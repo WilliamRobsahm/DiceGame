@@ -12,7 +12,7 @@ class DiceRoll {
 
         this.displayingNumber = null;
 
-        console.log(this.numberArray);
+        console.log(this.finalResult);
     }
 
     generateResult() {

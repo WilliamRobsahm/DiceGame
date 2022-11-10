@@ -9,9 +9,10 @@ class Enemy{
         this.alive = true;
     }
     takeDmg(dmg){
-        this.hp-dmg;
+        this.hp = this.hp-dmg;
         if(this.hp <= 0){
             this.alive = false;
         }
+        console.log("hp:"+this.hp);
     }
 }
