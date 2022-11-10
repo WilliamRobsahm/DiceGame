@@ -1,5 +1,7 @@
 let player = new Player(10);
+
 let enemy = null;
+
 
 window.onload = init();
 
@@ -62,9 +64,13 @@ function gameLoop() {
         case "Intro Door":
 
             draw();
+
             let doorButton = new Button('door',canvas.width*0.2,canvas.height*0.2,300,300);         
             let boxButton = new Button('box',canvas.width*0.8 - 220,canvas.height*0.3,300,300);
-            buttons = [doorButton, boxButton];
+            
+            let testButton = new Button("box",canvas.width*0.8,canvas.height*0.3,20,20);
+            buttons = [doorButton, boxButton, testButton];
+
 
             doorButton.onClick = () => {
                 if(!heldItem) {
@@ -106,6 +112,10 @@ function gameLoop() {
             }
 
             draw();
+            testButton.onClick = () => {
+                gameScene = "testEnemy";
+            }
+
 
             break;
 
@@ -124,12 +134,65 @@ function gameLoop() {
             draw();
             break;
 
+        case "testEnemy":
+            console.log("hej");
+            enemy = new Enemy(10, "idk");
+            gameScene = "combatEncounter";
+            break;
         case "combatEncounter":
             draw();
-            let lightButton = new Button('button',canvas.width*0.8,canvas.height*0.8,400,100);
-            let heavyButton = new Button('button',canvas.width*0.3,canvas.height*0.8,400,100);
-            buttons = [lightButton,heavyButton];
 
+            let lightButton = new Button("box",canvas.width*0.5,canvas.height*0.6,300,100);
+            let heavyButton = new Button("box",canvas.width*0.1,canvas.height*0.6,300,100);
+            
+            turn = 1;
+
+            dialogueBox.onFinish = () => {
+                gameScene = "combatEncounter";
+            }
+
+            lightButton.onClick = () => {
+                if(turn == 1){
+                    lightAttack(enemy);
+                    turn == 0;
+                }
+            }
+
+            heavyButton.onClick = () => {
+                if(turn == 1){
+                    heavyAttack(enemy);
+                    turn == 0;
+                }
+            }
+
+            if (turn == 0){
+                enemyAttack(player);
+                turn == 1;
+            }
+
+            if(player.alive == false){
+                dialogueBox.onFinish = () => {
+                    gameScene = "Intro Door";
+                }
+                dialogueBox.startDialogue([
+                    "You Died"
+                ]);
+            }
+            if(enemy.alive == false){
+                dialogueBox.onFinish = () => {
+                    gameScene = "Intro Door";
+                }
+                dialogueBox.startDialogue([
+                    "They Died"
+                ]);
+            }
+
+
+            lightButton.update();
+            lightButton.draw();
+            heavyButton.update();
+            heavyButton.draw();
+            
             break;
 
         case "encounter":
