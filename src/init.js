@@ -94,8 +94,20 @@ function gameLoop() {
             boxButton.draw();
 
             break;
-        case "Test Encounter":
 
+        case "Test Encounter":
+            break;
+
+
+        case "ce":
+            draw();
+            let lightButton = new Button(canvas.width*0.8,canvas.height*0.8,400,100);
+            let heavyButton = new Button(canvas.width*0.3,canvas.height*0.8,400,100);
+
+            lightButton.update();
+            lightButton.draw();
+            heavyButton.update();
+            heavyButton.draw();
             break;
     }
 
