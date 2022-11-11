@@ -266,7 +266,7 @@ function gameLoop() {
             }
             if(enemy.alive == false){
                 dialogueBox.onFinish = () => {
-                    gameScene = "PrisonCell";
+                    gameScene = "next";
                 }
                 dialogueBox.startDialogue([
                     {character:"",text:"(They died)"},
@@ -442,6 +442,9 @@ function gameLoop() {
                     buttons = [];
                 }
             }
+            break;
+            case "next":
+                alert("To be countinued???");
             break;
     }
 
