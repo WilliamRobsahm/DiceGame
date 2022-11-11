@@ -1,6 +1,6 @@
 
 class Dice {
-    constructor(sides, modifier) {
+    constructor(sides, modifier,amount) {
         this.sides = sides;
         this.modifier = modifier;
         this.amount = amount;
@@ -21,11 +21,10 @@ class DiceRoll {
         this.numberArray = this.generateResult();
 
         // final result is the sum of all the final numbers in the dice array, plus the modifier
-        this.finalResult = this.modifier;;
+        this.finalResult = this.modifier;
         for(let i=0;i<this.numberArray.length;i++) {
-            this.numberArray[i][this.animationLength-1] += this.modifier;
+            this.finalResult += this.numberArray[i][this.animationLength-1];
         }
-        this.finalResult = this.result += this.modifier;
 
         this.displayingNumber = null;
     }

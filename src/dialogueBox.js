@@ -53,7 +53,7 @@ class DialogueBox {
 
     drawBox() {
         // Increase the amount of characters displayed by 1 every time the box is drawn
-        if(this.displayLength < this.dialogue[this.current].length) {
+        if(this.displayLength < this.dialogue[this.current].text.length) {
             this.displayLength += 0.37; // Displaying one more letter every 2,7 frame (1/0.37)
             if(this.displayLength == 0.37) { // Start playing "writing" audio
                 this.audio.play();
@@ -67,8 +67,18 @@ class DialogueBox {
         this.img.src = "./assets/img/dialougebox.png";
         ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
 
+        let textY;
+        if(this.dialogue[this.current].character == "") {
+            textY = this.y + 80;
+        } else {
+            textY = this.y + 110;
+        }
+
         ctxSettings({fillStyle:"#eee",font:"24px Sketchy",textAlign:"left"});
-        ctx.fillText(this.dialogue[this.current].substr(0,this.displayLength),this.x + 112.5,this.y + 75,this.x + this.w - 100);
+        ctx.fillText(this.dialogue[this.current].text.substr(0,this.displayLength),this.x + 112.5,textY,this.x + this.w - 100);
+
+        ctxSettings({fillStyle:"#aaa",font:"24px Sketchy",textAlign:"left"});
+        ctx.fillText(this.dialogue[this.current].character,this.x + 112.5,this.y + 70,this.x + this.w - 100);
     }
     
 }

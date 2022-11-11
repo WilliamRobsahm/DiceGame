@@ -11,7 +11,7 @@ class encounter1 extends dialogueChoice {
         this.situations = [
             {
                 dialogue:[
-                    "Guard: 'Care to explain why you got put in prison?'",
+                    {character:"Guard",text:"'Care to explain why you got put in prison?'"},
                 ],
                 options:[
                     {
@@ -31,7 +31,7 @@ class encounter1 extends dialogueChoice {
                 occured:false,
             },{
                 dialogue:[
-                    "Guard: 'Are you escaping to help or protect the world or something?'",
+                    {character:"Guard",text:"'Are you escaping to help or protect the world or something?'"},
                 ],
                 options:[
                     {
