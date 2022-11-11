@@ -53,12 +53,12 @@ function init() {
 function introLoop() {
     if(mouse.click) {
         dialogueBox.startDialogue([
-            "(You wake up on a cold stone floor)",
-            "'Woah!'",
-            "'Where am I?'",
-            "'This is not my bedroom...'",
-            "'THIS IS A PRISON CELL!'",
-            "'I gotta get out of here!'",
+            {character:"",text:"(You wake up on a cold stone floor)"},
+            {character:"You",text:"'Woah!'"},
+            {character:"You",text:"'Where am I?'"},
+            {character:"You",text:"'This is not my bedroom...'"},
+            {character:"You",text:"'THIS IS A PRISON CELL!'"},
+            {character:"You",text:"'I gotta get out of here!'"},
         ])
     
         dialogueBox.onFinish = () => {
@@ -79,6 +79,7 @@ function introLoop() {
 //==================================================
 function gameLoop() {
     clearCanvas();
+    document.body.style.cursor = "default";
 
     buttons = [];
     
@@ -90,10 +91,10 @@ function gameLoop() {
             //==================================================
             // Creates prisonCellDoor and prisonCellBox
             //==================================================
-            let prisonCellDoor = new Button('door',canvas.width*0.2,canvas.height*0.2,300,300);         
-            let prisonCellBox = new Button('box',canvas.width*0.8 - 220,canvas.height*0.3,300,300);
+            let prisonCellDoor = new DoorButton(canvas.width*0.2,canvas.height*0.2,300,300);         
+            let prisonCellBox = new BoxButton(canvas.width*0.8 - 220,canvas.height*0.3,300,300);
             
-            let testButton = new Button("button",canvas.width*0.8,canvas.height*0.3,20,20); //!!!!!!!!!!!! test button should not be here in final version
+            let testButton = new Button(canvas.width*0.8,canvas.height*0.3,20,20); //!!!!!!!!!!!! test button should not be here in final version
 
             buttons = [prisonCellDoor, prisonCellBox, testButton]; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! test button should not be here in final version
 
@@ -103,17 +104,18 @@ function gameLoop() {
             prisonCellDoor.onClick = () => {
                 if(!heldItem) {
                     dialogueBox.startDialogue([
-                        "(You pull the door handle)",
-                        "'The door is locked, I need something to get it open.'"
+                        {character:"",text:"(You pull the door handle)"},
+                        {character:"",text:"(The door is locked)"},
                     ]);
                 }
+
                 else if(heldItem == "Crowbar") {
                     changeState('door')
 
                     dialogueBox.startDialogue([
-                        "(You manage to break open the door)",
-                        "'Yes!'",
-                        "'I knew the crowbar would help me, now I can get out of here.'"
+                        {character:"",text:"(You manage to break open the door)"},
+                        {character:"You",text:"'Yes!'"},
+                        {character:"You",text:"'I knew the crowbar would help me, now I can get out of here.'"},
                     ]);
                     dialogueBox.onFinish = () => {
                         gameScene = "Test Encounter";
@@ -132,8 +134,8 @@ function gameLoop() {
                     changeState('box')
 
                     dialogueBox.startDialogue([
-                        "(You open the box)",
-                        "(There is a crowbar inside)",
+                        {character:"",text:"(You open the box)"},
+                        {character:"",text:"(There is a crowbar inside)"},
                     ]);
                     
                     heldItem = "Crowbar";
@@ -146,13 +148,13 @@ function gameLoop() {
 
 
             break;
+
         case "Test Encounter":
-            document.body.style.cursor = "default";
             dialogueBox.startDialogue([
-                "Player: 'Hey, you! I need your help to get out!'",
-                "Guard: 'How did you escape your cell? Oh whatever. Look, let me think...'",
-                "Guard: 'You know what?'",
-                "'Let me see if I like your style, and maybe I'll let you through.'"
+                {character:"You",text:"'Hey, you! I need your help to get out!'"},
+                {character:"Guard",text:"'How did you escape your cell? Oh whatever. Look, let me think...'"},
+                {character:"Guard",text:"'You know what?'"},
+                {character:"Guard",text:"'Let me see if I like your style, and maybe I'll let you through.'"},
             ]);
             dialogueBox.onFinish = () => {
                 enemy = new Enemy(10,"idk");
@@ -160,17 +162,19 @@ function gameLoop() {
                 gameScene = "encounter";
             }
             break;
+
         case "testEnemy":
             document.body.style.cursor = "default";
             enemy = new Enemy(10, "idk");
             gameScene = "combatEncounter";
             turn = 1;
             break;
+
         case "combatEncounter":
 
             console.log(turn);
-            let lightButton = new Button('dialogue',(canvas.width*1)-(canvas.width*0.5),canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
-            let heavyButton = new Button('dialogue',canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
+            let lightButton = new DialogueButton((canvas.width*1)-(canvas.width*0.5),canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
+            let heavyButton = new DialogueButton(canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
             buttons = [lightButton, heavyButton];
 
             dialogueBox.onFinish = () => {
@@ -218,7 +222,6 @@ function gameLoop() {
             break;
             
         case "encounter":
-            document.body.style.cursor = "default";
             if(!currentSituation) {
                 currentSituation = enemy.dialogueOptions.randomSituation();
 
@@ -229,12 +232,11 @@ function gameLoop() {
             }
             
             if(showDialogueOptions) {
-                let option1 = new Button('dialogue',canvas.width / 2 - 520,canvas.height * 0.6,320,240);
-                let option2 = new Button('dialogue',canvas.width / 2 - 160,canvas.height * 0.6,320,240);
-                let option3 = new Button('dialogue',canvas.width / 2 + 200,canvas.height * 0.6,320,240);
+                let option1 = new DialogueButton(canvas.width / 2 - 520,canvas.height * 0.6,320,240);
+                let option2 = new DialogueButton(canvas.width / 2 - 160,canvas.height * 0.6,320,240);
+                let option3 = new DialogueButton(canvas.width / 2 + 200,canvas.height * 0.6,320,240);
             
                 buttons = [option1, option2, option3];
-
 
                 option1.onClick = () => {
                     diceRoll = new DiceRoll(6,0,2);
@@ -247,6 +249,7 @@ function gameLoop() {
             break;
     }
 
+    // Update and draw all buttons
     for(let i=0;i<buttons.length;i++) {
         buttons[i].update();
         buttons[i].draw();
