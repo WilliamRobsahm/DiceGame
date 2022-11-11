@@ -15,6 +15,10 @@ function preloadImages() {
     images = {
         bg:image('assets/img/room.png'),
         emptyBg:image('assets/img/empty room.png'),
+        diceAtk:image('assets/img/diceatk.png'),
+        diceDef:image('assets/img/dicedef.png'),
+        diceHeal:image('assets/img/diceheal.png'),
+        diceNeg:image('assets/img/diceneg.png'),
         door:image('assets/img/doorclosed.png'),
         openDoor:image('assets/img/dooropen.png'),
         doorHighLight:image('assets/img/doorclosedhighlight.png'),
@@ -27,6 +31,12 @@ function preloadImages() {
         buttonDown:image('assets/img/buttondown.png'),
         dialogueBox:image("assets/img/dialougebox.png"),
         guard:image("assets/img/guard.png"),
+        dice1:image("assets/img/dice1.png"),
+        dice2:image("assets/img/dice2.png"),
+        dice3:image("assets/img/dice3.png"),
+        dice4:image("assets/img/dice4.png"),
+        dice5:image("assets/img/dice5.png"),
+        dice6:image("assets/img/dice6.png"),
     }
 }
 
@@ -42,8 +52,8 @@ function draw() {
 
     // Black overlay if dice are rolling
     if(diceRoll) {
-        console.log("e")
-        ctx.fillStyle = "rgba(0,0,0,0.5)";
+        ctx.fillStyle = "rgba(0,0,0,0.8)";
         ctx.fillRect(0,0,canvas.width,canvas.height);
+        diceRoll.drawDice();
     }
 }

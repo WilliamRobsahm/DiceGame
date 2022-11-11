@@ -4,7 +4,7 @@
 class dialogueChoice {
     constructor() {
         this.situations = [];
-        this.situationCount = this.situations.length;
+        this.situationCount;
         this.count = 0;
     }
 
@@ -19,10 +19,12 @@ class dialogueChoice {
         }
 
         while(true) {
+            console.log(this.count);
+            console.log(this.situationCount);
             let s = this.situations[rng(0,this.situationCount-1)];
-            console.log(s);
             if(!s.occured) {
                 s.occured = true;
+                this.count += 1;
                 return s;
             }
         }   

@@ -8,8 +8,8 @@ class DialogueButton extends Button {
 
     setOption(option) {
         this.dialogue = option.text;
-        this.negative = "1-" + (option.minimumSum - 1);
-        this.positive =option.minimumSum + "-12";
+        this.minimum = option.minimumSum;
+        this.reward = option.successPoints;
     }
 
     draw() {
@@ -22,7 +22,27 @@ class DialogueButton extends Button {
 
         ctx.drawImage(images.dialogueBox,this.x,this.y,this.w,this.h);
         ctx.fillText(this.dialogue,this.x + this.w/2, this.y + 70);
-        ctx.fillText(this.positive,this.x + this.w/2, this.y + this.h - 80);
-        ctx.fillText(this.negative,this.x + this.w/2, this.y + this.h - 40);
+        ctx.font = "20px Sketchy";
+
+        let color;
+        switch(this.minimum) {
+            case 8: case 9: case 10: case 11:
+                color = "rgb(60,200,0)"; break;
+            case 12: case 13:
+                color = "rgb(165,230,0)"; break;
+            case 14: case 15: 
+                color = "rgb(255,220,0)"; break;
+            case 16: case 17: 
+                color = "rgb(255,130,50)"; break;
+            case 18: case 19: 
+                color = "rgb(255,50,50)"; break;
+            case 20:
+                color = "rgb(125,0,0)"; break;
+        }
+        ctx.fillStyle = color;
+
+        ctx.fillText("Minimum roll:  " + this.minimum,this.x + this.w/2, this.y + this.h - 80);
+        ctxSettings({fillStyle:"rgb(200,200,200)",font:"20px Sketchy"});
+        ctx.fillText("Reward:  " + this.reward + " *",this.x + this.w/2, this.y + this.h - 48);
     }
 }

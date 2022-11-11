@@ -12,7 +12,7 @@ class Player {
     takeDmg(dmg){
         if(dmg>=0){
             this.hp = this.hp-dmg;
-            if(this.hp > 0){
+            if(this.hp <= 0){
                 this.alive = false;
             }
             return dmg;
@@ -24,6 +24,9 @@ class Player {
         if(this.hp>this.maxHp){
             heal = this.maxHp - this.hp;
             this.hp = this.maxHp;
+            if(heal<0){
+                heal = 0;
+            }
         }
         return heal;
     }

@@ -54,6 +54,8 @@ let dialogueOptions = null;
 let currentSituation = null;
 let showDialogueOptions = false;
 
+let diceSum;
+
 
 let prisonCell = {Door: false, Box: false};
 let prisonCellDoor = '';
@@ -144,13 +146,22 @@ function gameLoop() {
             // prisonCellDoor
             //==================================================
             prisonCellDoor.onClick = () => {
-                if(!heldItem) {
+
+                // If door is open when clicked, go to next scene
+                if(prisonCell.Door) {
+                    gameScene = "Test Encounter";
+                    dialogueOptions = new encounter1();
+                }
+
+                // If player hasn't opened box, the door remains locked
+                else if(!heldItem) {
                     dialogueBox.startDialogue([
                         {character:"",text:"(You pull the door handle)"},
                         {character:"",text:"(The door is locked)"},
                     ]);
                 }
 
+                // If player has opened box, the door is opened
                 else if(heldItem == "Crowbar") {
                     changeState('door')
 
@@ -159,11 +170,8 @@ function gameLoop() {
                         {character:"You",text:"'Yes!'"},
                         {character:"You",text:"'I knew the crowbar would help me, now I can get out of here.'"},
                     ]);
-                    dialogueBox.onFinish = () => {
-                        gameScene = "Test Encounter";
-                        dialogueOptions = new encounter1();
-                    }
                 }
+                mouse.click = false;
             };
 
 
@@ -172,6 +180,8 @@ function gameLoop() {
             // prisonCellBox
             //==================================================
             prisonCellBox.onClick = () => {
+
+                // Box can only be opened once
                 if(!heldItem) {
                     changeState('box')
 
@@ -180,6 +190,7 @@ function gameLoop() {
                         {character:"",text:"(There is a crowbar inside)"},
                     ]);
                     
+                    // Give player 'Crowbar', allowing them to open the door
                     heldItem = "Crowbar";
                 }
             };
@@ -210,14 +221,32 @@ function gameLoop() {
             enemy = new Enemy(10,images.guard,(canvas.width-canvas.height/3*2)/2,0,canvas.height/3*2,canvas.height/3*2);
             enemy.draw();
             gameScene = "combatEncounter";
+            reRollDice = [];
             turn = 1;
             reRolls = 3;
             reRoll(diceBag);
+            enemyDmg = Math.floor(Math.random() * 6);
+            enemyBlock = 6-enemyDmg;
+            console.log(enemyDmg);
+            console.log(enemyBlock);
             break;
 
         case "combatEncounter":
-            let done = new Button('button',canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
+            let done = new CombatButton(canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3,"Engage");
+            let roll = new CombatButton(canvas.width*0.5,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3,"Reroll");
 
+            let one = new DiceButton(canvas.width*0.2,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,0);
+            let two = new DiceButton(canvas.width*0.3,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,1);
+            let three = new DiceButton(canvas.width*0.4,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,2);
+            let four = new DiceButton(canvas.width*0.5,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,3);
+            let five = new DiceButton(canvas.width*0.6,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,4);
+            let six = new DiceButton(canvas.width*0.7,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,5);
+            let cButtons = [];
+            let diceButtons = [];
+            
+            cButtons.push(one,two,three,four,five,six,done,roll);
+            diceButtons.push(one,two,three,four,five,six);
+            
             dialogueBox.onFinish = () => {
                 gameScene = "combatEncounter";
             }
@@ -226,10 +255,12 @@ function gameLoop() {
 
             if(player.alive == false){
                 dialogueBox.onFinish = () => {
-                    gameScene = "PrisonCell";
+                    gameScene = "Intro";
+                    player.hp = player.maxHp;
+                    player.alive = true;
                 }
                 dialogueBox.startDialogue([
-                    "You Died"
+                    {character:"",text:"(You died)"},
                 ]);
             }
             if(enemy.alive == false){
@@ -237,8 +268,47 @@ function gameLoop() {
                     gameScene = "PrisonCell";
                 }
                 dialogueBox.startDialogue([
-                    "They Died"
+                    {character:"",text:"(They died)"},
                 ]);
+            }
+            for(let i = 0;i<diceButtons.length;i++){
+                diceButtons[i].onClick = () => {
+                    console.log(i+" "+diceButtons);
+                    if (diceButtons[i].clicked){
+                        diceButtons[i].clicked == false;
+                        for(x = reRollDice.length;x>=0;--x){
+                            if(reRollDice[x] == diceButtons[i]){
+                                reRollDice[i].splice(i,1);
+                            }
+                        }
+                    }
+                    else{
+                        diceButtons[i].clicked == true;
+                        reRollDice.push(diceBag[diceButtons[i].diceBagSpot]);
+                        console.log(reRollDice);
+                    }
+                    mouse.click = false;
+                }
+                
+            }
+            
+            roll.onClick = () => {
+                if(reRolls > 0){
+                    let temp = [];
+                    console.log(reRollDice);
+                    for(let i=reRollDice.length-1;i>=0;i--){
+                        
+                        temp.push(reRollDice[i]);
+                        reRollDice[i].clicked = false;
+                    }
+                    
+                    reRoll(temp);
+                    reRolls--;
+                    reRollDice = [];
+                }
+                
+                mouse.click = false;
+                
             }
 
             done.onClick = () => {
@@ -260,39 +330,50 @@ function gameLoop() {
                         neg ++;
                     }
                 });
+                dialogueBox.onFinish = () => {
+                    gameScene = "";
+                }
+                anwser = [];
                 if (dmg > 0){
                     dmgDone = enemy.takeDmg(dmg-enemyBlock);
-                    alert("U attack for "+dmgDone);
+                    anwser.push({character:"",text:"(You deal "+dmgDone+" damage)"});
                     
                 }
                 if (heal > 0){
                     healDone = player.heal(heal);
-                    alert("U heal for "+healDone);
+                    anwser.push({character:"",text:"(You heal for "+healDone+")"});
                 }
                 if (def > 0){
                     dmgDone = player.takeDmg(enemyDmg-def);
-                    alert("U take "+dmgDone+" damage");
+                    anwser.push({character:"",text:"(You take "+dmgDone+")"});
                 }
                 if (neg > 0){
                     dmgDone = player.takeDmg(neg);
-                    alert("U take "+dmgDone+" damage from recoil");
+                    anwser.push({character:"",text:"(You take "+dmgDone+" from recoil)"});
                 }
+                dialogueBox.startDialogue(anwser);
+                console.log(player.alive);
                 turn = 0;
+                mouse.click = false;
             };
 
             if (turn == 0){
-                enemyAttack(player);
                 turn = 1;
-            }
-
-            for(i=diceBag.length-1;i>=0;--i){
-                diceBag[i].draw((i+1)/10,0.5);
+                reRolls = 3;
+                reRoll(diceBag);
+                enemyDmg = Math.floor(Math.random() * 6);
+                enemyBlock = 6-enemyDmg-Math.floor(Math.random() * 3);
             }
 
 
             ctx.fillText(enemy.hp+"/"+enemy.maxHp, canvas.width*0.05, canvas.height*0.05); 
+            ctx.fillText("Enemy Attack: "+enemyDmg+" Enemy Block: "+enemyBlock, canvas.width*0.1, canvas.height*0.05);  
             ctx.fillText(player.hp+"/"+player.maxHp, canvas.width*0.92, canvas.height*0.64);
-            buttons = [done];
+            ctx.fillText("Rerolls Left: "+reRolls, canvas.width*0.8, canvas.height*0.64);
+            for(let i=cButtons.length-1;i>=0;--i){
+                cButtons[i].draw();
+                cButtons[i].update();
+            }
             enemy.draw();
             
             break;
@@ -309,18 +390,55 @@ function gameLoop() {
             
             if(showDialogueOptions) {
                 ctx.drawImage(images.emptyBg,(((canvas.height/0.5625)-canvas.width)/2)*-1,0,canvas.height/0.5625,canvas.height);
-                let option1 = new DialogueButton(canvas.width / 2 - 520,canvas.height * 0.6,320,240);
-                let option2 = new DialogueButton(canvas.width / 2 - 160,canvas.height * 0.6,320,240);
-                let option3 = new DialogueButton(canvas.width / 2 + 200,canvas.height * 0.6,320,240);
+                let m = canvas.width / 2;
+                let y = canvas.height * 0.6;
+                let buttonW = 400; // + followed + not ratio
+                let spaceBetween = 32;
+                let option1 = new DialogueButton(m - buttonW / 2 - buttonW - spaceBetween, y, buttonW, 240);
+                let option2 = new DialogueButton(m - buttonW / 2,   y, buttonW, 240);
+                let option3 = new DialogueButton(m + buttonW / 2 + spaceBetween, y, buttonW, 240);
             
                 buttons = [option1, option2, option3];
 
+                // Open dice window
                 option1.onClick = () => {
-                    diceRoll = new DiceRoll(6,0,2);
+                    diceRoll = new DiceRoll(6,0,4);
+                    option = currentSituation.options[0];
+                }
+
+                option2.onClick = () => {
+                    diceRoll = new DiceRoll(6,0,4);
+                    option = currentSituation.options[1];
+                }
+
+                option3.onClick = () => {
+                    diceRoll = new DiceRoll(6,0,4);
+                    option = currentSituation.options[2];
                 }
 
                 for(let i=0;i<buttons.length;i++) {
                     buttons[i].setOption(currentSituation.options[i]);
+                }
+
+                // Close dice window
+                if(diceRoll && diceRoll.doneRolling && mouse.click) {
+
+                    if(diceRoll.finalResult >= option.minimumSum) {
+                        console.log(option.positiveResponse);
+                        dialogueBox.startDialogue(option.positiveResponse);
+                    } else {
+                        console.log(option.negativeResponse);
+                        dialogueBox.startDialogue(option.negativeResponse);
+                    }
+                    dialogueBox.onFinish = () => {
+                        currentSituation = null;
+                        option = null;
+                    }
+
+                    diceRoll = null;
+                    mouse.click = false;
+                    showDialogueOptions = false;
+                    buttons = [];
                 }
             }
             break;
