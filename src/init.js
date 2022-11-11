@@ -212,7 +212,7 @@ function gameLoop() {
                 {character:"Guard",text:"'Let me see if I like your style, and maybe I'll let you through.'"},
             ]);
             dialogueBox.onFinish = () => {
-                enemy = new Enemy(10,'images.guard',(canvas.width-canvas.height/3*2)/2,0,canvas.height/3*2,canvas.height/3*2);
+                enemy = new Enemy(10,images.guard,(canvas.width-canvas.height/3*2)/2,0,canvas.height/3*2,canvas.height/3*2);
                 enemy.dialogueOptions = new encounter1;
                 gameScene = "encounter";
             }
@@ -221,7 +221,6 @@ function gameLoop() {
         case "testEnemy":
             document.body.style.cursor = "default";
             enemy = new Enemy(10,images.guard,(canvas.width-canvas.height/3*2)/2,0,canvas.height/3*2,canvas.height/3*2);
-            enemy.draw();
             gameScene = "combatEncounter";
             reRollDice = [];
             turn = 1;
@@ -277,8 +276,8 @@ function gameLoop() {
             for(let i = 0;i<diceButtons.length;i++){
                 diceButtons[i].onClick = () => {
                     console.log(i+" "+diceButtons);
-                    if (diceButtons[i].clicked){
-                        diceButtons[i].clicked == false;
+                    if(diceButtons[i].clicked){
+                        diceButtons[i].clicked = false;
                         for(x = reRollDice.length;x>=0;--x){
                             if(reRollDice[x] == diceButtons[i]){
                                 reRollDice[i].splice(i,1);
@@ -286,13 +285,12 @@ function gameLoop() {
                         }
                     }
                     else{
-                        diceButtons[i].clicked == true;
+                        diceButtons[i].clicked = true;
                         reRollDice.push(diceBag[diceButtons[i].diceBagSpot]);
                         console.log(reRollDice);
                     }
                     mouse.click = false;
                 }
-                
             }
             
             roll.onClick = () => {
@@ -384,15 +382,37 @@ function gameLoop() {
         case "encounter":
             if(!currentSituation) {
                 currentSituation = enemy.dialogueOptions.randomSituation();
+                enemy.dialogueCount += 1;
 
-                dialogueBox.startDialogue(currentSituation.dialogue);
-                dialogueBox.onFinish = () => {
-                    showDialogueOptions = true;
+                // If charm still hasn't maxed out before the 5th question ends, go to battle.
+                if(enemy.dialogueCount > 5) {
+                    dialogueBox.startDialogue([
+                        {character:"Guard",text:"'Alright, buddy'"},
+                        {character:"Guard",text:"'I've had enough of your babbling.'"},
+                        {character:"Guard",text:"'Go back to your cell immediately, or else!'"},
+                    ]);
+                    dialogueBox.onFinish = () => {
+                        gameScene = "testEnemy";
+                    }
+                } 
+                
+                // Enemy asks their question
+                else {
+                    dialogueBox.startDialogue(currentSituation.dialogue);
+                    dialogueBox.onFinish = () => {
+                        showDialogueOptions = true;
+                    }
                 }
             }
             
+            ctx.drawImage(images.emptyBg,(((canvas.height/0.5625)-canvas.width)/2)*-1,0,canvas.height/0.5625,canvas.height);
+            enemy.draw();
+            ctxSettings({font:"32px Sketchy",textAlign:"left",fillStyle:"rgb(220,220,220)"});
+            ctx.fillText(enemy.dialogueCount + "/5 questions",canvas.width * 0.15,canvas.height * 0.15);
+            ctxSettings({textAlign:"right"});
+            ctx.fillText("Charm: " + enemy.charmPoints + "/" + enemy.requiredPoints,canvas.width * 0.85,canvas.height * 0.15);
+
             if(showDialogueOptions) {
-                ctx.drawImage(images.emptyBg,(((canvas.height/0.5625)-canvas.width)/2)*-1,0,canvas.height/0.5625,canvas.height);
                 let m = canvas.width / 2;
                 let y = canvas.height * 0.6;
                 let buttonW = 400; // + followed + not ratio
@@ -427,10 +447,9 @@ function gameLoop() {
                 if(diceRoll && diceRoll.doneRolling && mouse.click) {
 
                     if(diceRoll.finalResult >= option.minimumSum) {
-                        console.log(option.positiveResponse);
+                        enemy.charmPoints += option.successPoints;
                         dialogueBox.startDialogue(option.positiveResponse);
                     } else {
-                        console.log(option.negativeResponse);
                         dialogueBox.startDialogue(option.negativeResponse);
                     }
                     dialogueBox.onFinish = () => {
@@ -438,11 +457,22 @@ function gameLoop() {
                         option = null;
                     }
 
+                    
                     diceRoll = null;
                     mouse.click = false;
                     showDialogueOptions = false;
                     buttons = [];
                 }
+            }
+
+            if(enemy.charmPoints >= enemy.requiredPoints) {
+                dialogueBox.startDialogue([
+                    {character:"Guard",text:"'You know what, fine. I like your style.'"},
+                    {character:"Guard",text:"'You may go ahead, I wont stop you.'"},
+                    {character:"Guard",text:"'Here I got these prison guard pants you could have. Maybe it will be useful to you.'"},
+                    {character:"Guard",text:"'I also heard that the guard standing at the entrance is scheduled to take a lunch break soon.'"},
+                    {character:"You",text:"'Okay, I will keep that in mind. Thank you!'"},
+                ])
             }
             break;
             case "next":
