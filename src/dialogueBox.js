@@ -1,16 +1,24 @@
 class DialogueBox {
     constructor(dialogue) {
         this.dialogue;
+        this.current;
         this.currentText;
         this.displayLength = 0;
         this.img = new Image();
 
 
-        // onFinish is the function that runs when the dialogue is over
-        this.audio = new Audio('assets/sound/dialog_text.wav');
-        this.audio.loop = true;
-        this.audio.volume = 0.75;
+        this.audioDefault = new Audio('assets/sound/dialog_text.wav');
+        this.audioYou = new Audio('assets/sound/dialogue_2.wav');
+        this.audioGuard = new Audio('assets/sound/dialogue_8.wav');
+        this.audioDefault.loop = true;
+        this.audioDefault.volume = 0.75;
+        this.audioYou.loop = true;
+        this.audioYou.volume = 0.75;
+        this.audioGuard.loop = true;
+        this.audioGuard.volume = 0.75;
 
+
+        // onFinish is the function that runs when the dialogue is over
         this.onFinish = () => {};
     }
 
@@ -55,13 +63,22 @@ class DialogueBox {
         // Increase the amount of characters displayed by 1 every time the box is drawn
         if(this.displayLength < this.dialogue[this.current].text.length) {
             this.displayLength += 0.37; // Displaying one more letter every 2,7 frame (1/0.37)
-            if(this.displayLength == 0.37) { // Start playing "writing" audio
-                this.audio.play();
+            if(this.dialogue[this.current].character == 'You') {
+                this.audioYou.play();
+            } if(this.dialogue[this.current].character == 'Guard') {
+                console.log(this.audioGuard.currentTime)
+                if(this.audioGuard.currentTime >= (0.12052083333333333 / Math.floor(Math.random() * (6 - 4)))) {
+                    this.audioGuard.currentTime = 0;
+                }
+                this.audioGuard.play();
+            } else {
+                this.audioDefault.play();
             }
         } else { // Stops playing "writing" sound and resets the time of the audio
             this.doneTalking = true;
-            this.audio.currentTime = 0;
-            this.audio.pause();
+            this.audioDefault.pause();
+            this.audioYou.pause();
+            this.audioGuard.pause();
         }
 
         this.img.src = "./assets/img/dialougebox.png";

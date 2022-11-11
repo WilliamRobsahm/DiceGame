@@ -61,6 +61,8 @@ let prisonCell = {Door: false, Box: false};
 let prisonCellDoor = '';
 let prisonCellBox = '';
 
+let anime = false;
+
 
 
 //==================================================
