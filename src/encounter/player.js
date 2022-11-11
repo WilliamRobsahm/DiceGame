@@ -10,10 +10,21 @@ class Player {
     }
 
     takeDmg(dmg){
-        this.hp = this.hp-dmg;
-        if(this.hp <= 0){
-            console.log("test");
-            this.alive = false;
+        if(dmg>=0){
+            this.hp = this.hp-dmg;
+            if(this.hp > 0){
+                this.alive = false;
+            }
+            return dmg;
         }
+        return 0;
+    }
+    heal(heal){
+        this.hp = this.hp+heal;
+        if(this.hp>this.maxHp){
+            heal = this.maxHp - this.hp;
+            this.hp = this.maxHp;
+        }
+        return heal;
     }
 }
