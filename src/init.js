@@ -3,7 +3,44 @@
 //==================================================
 let player = new Player(10);
 let turn = 1;
+let reRolls = 3;
 let enemy = null;
+
+let jackDie = [
+    "def",
+    "def",
+    "atc",
+    "atc",
+    "heal",
+    "neg"
+];
+
+let enemyDie = [
+    "def",
+    "def",
+    "atc",
+    "atc",
+    "atc",
+    "neg"
+];
+
+let diceBag = [];
+let a = new die(6, jackDie);
+let b = new die(6, jackDie);
+let c = new die(6, jackDie);
+let d = new die(6, jackDie);
+let e = new die(6, jackDie);
+let f = new die(6, jackDie);
+diceBag.push(a,b,c,d,e,f);
+
+let eDiceBag = [];
+let g = new die(6, enemyDie);
+let h = new die(6, enemyDie);
+let i = new die(6, enemyDie);
+let j = new die(6, enemyDie);
+let k = new die(6, enemyDie);
+let l = new die(6, enemyDie);
+eDiceBag.push(a,b,c,d,e,f);
 
 
 let gameScene = "Intro";
@@ -165,36 +202,20 @@ function gameLoop() {
             enemy = new Enemy(10, "idk");
             gameScene = "combatEncounter";
             turn = 1;
+            reRolls = 3;
+            reRoll(diceBag);
             break;
         case "combatEncounter":
 
             console.log(turn);
-            let lightButton = new Button('dialogue',(canvas.width*1)-(canvas.width*0.5),canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
-            let heavyButton = new Button('dialogue',canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
-            buttons = [lightButton, heavyButton];
+            let done = new Button('button',canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
+
 
             dialogueBox.onFinish = () => {
                 gameScene = "combatEncounter";
             }
 
-            lightButton.onClick = () => {
-                if(turn == 1){
-                    lightAttack(enemy);
-                    turn = 0;
-                }
-            }
-
-            heavyButton.onClick = () => {
-                if(turn == 1){
-                    heavyAttack(enemy);
-                    turn = 0;
-                }
-            }
-
-            if (turn == 0){
-                enemyAttack(player);
-                turn = 1;
-            }
+            
 
             if(player.alive == false){
                 dialogueBox.onFinish = () => {
@@ -213,8 +234,59 @@ function gameLoop() {
                 ]);
             }
 
+            done.onClick = () => {
+                let dmg = 0;
+                let def = 0;
+                let heal = 0;
+                let neg = 0;
+                diceBag.forEach(i => {
+                    if(i.die[i.sideUp] == "atc"){
+                        dmg ++;
+                    }
+                    if(i.die[i.sideUp] == "def"){
+                        def ++;
+                    }
+                    if(i.die[i.sideUp] == "heal"){
+                        heal ++;
+                    }
+                    if(i.die[i.sideUp] == "neg"){
+                        neg ++;
+                    }
+                });
+                if (dmg > 0){
+                    dmgDone = enemy.takeDmg(dmg-enemyBlock);
+                    alert("U attack for "+dmgDone);
+                    
+                }
+                if (heal > 0){
+                    healDone = player.heal(heal);
+                    alert("U heal for "+healDone);
+                }
+                if (def > 0){
+                    dmgDone = player.takeDmg(enemyDmg-def);
+                    alert("U take "+dmgDone+" damage");
+                }
+                if (neg > 0){
+                    dmgDone = player.takeDmg(neg);
+                    alert("U take "+dmgDone+" damage from recoil");
+                }
+                turn = 0;
+            };
+
+            if (turn == 0){
+                enemyAttack(player);
+                turn = 1;
+            }
+
+            for(i=diceBag.length-1;i>=0;--i){
+                diceBag[i].draw((i+1)/10,0.5);
+            }
+
             ctx.fillText(enemy.hp+"/"+enemy.maxHp, canvas.width*0.05, canvas.height*0.05); 
             ctx.fillText(player.hp+"/"+player.maxHp, canvas.width*0.92, canvas.height*0.64);
+            done.update();
+            done.draw();
+            
             break;
             
         case "encounter":
