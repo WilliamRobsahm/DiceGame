@@ -15,6 +15,10 @@
     src:url("assets/font/Sketchy.ttf") format("truetype");
 }
 
+body {
+    filter: invert(0);
+}
+
 canvas {
     background-color:black;
 }

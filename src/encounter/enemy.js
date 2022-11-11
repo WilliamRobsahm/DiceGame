@@ -3,10 +3,14 @@
     img obj | sprite    -- Sprite för motsåndare
 */
 class Enemy{
-    constructor(hp, sprite){
+    constructor(hp, sprite, x, y, w, h){
         this.hp = hp;
         this.maxHp = hp;
         this.sprite = sprite;
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
         this.alive = true;
     }
     takeDmg(dmg){
@@ -29,6 +33,6 @@ class Enemy{
     }
 
     draw(){
-        
+        ctx.drawImage(this.sprite,this.x,this.y,this.w,this.h);
     }
 }

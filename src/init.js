@@ -57,7 +57,7 @@ let showDialogueOptions = false;
 let diceSum;
 
 
-let prisonCell = {Create: false, Box: false};
+let prisonCell = {Door: false, Box: false};
 let prisonCellDoor = '';
 let prisonCellBox = '';
 
@@ -130,8 +130,13 @@ function gameLoop() {
             //==================================================
             // Creates prisonCellDoor and prisonCellBox
             //==================================================
-            let prisonCellDoor = new DoorButton(canvas.width*0.2,canvas.height*0.2,300,300);         
-            let prisonCellBox = new BoxButton(canvas.width*0.8 - 220,canvas.height*0.3,300,300);
+            ctx.drawImage(images.bg,(((canvas.height/0.5625)-canvas.width)/2)*-1,0,canvas.height/0.5625,canvas.height);
+            if(prisonCell.Door) {
+                prisonCellDoor = new DoorButton((canvas.width-(750/1.75))*0.43,(canvas.height-(716/1.75))*0.29,750/1.75,716/1.75);
+            } else {
+                prisonCellDoor = new DoorButton((canvas.width-(750/1.75))*0.43,(canvas.height-(716/1.75))*0.29,396/1.75,716/1.75);         
+            }
+            prisonCellBox = new BoxButton(canvas.width*0.55,canvas.height*0.46,750/2.5,458/2.5);
             
             let testButton = new Button(canvas.width*0.8,canvas.height*0.3,20,20); //!!!!!!!!!!!! test button should not be here in final version
 
@@ -205,7 +210,7 @@ function gameLoop() {
                 {character:"Guard",text:"'Let me see if I like your style, and maybe I'll let you through.'"},
             ]);
             dialogueBox.onFinish = () => {
-                enemy = new Enemy(10,"idk");
+                enemy = new Enemy(10,'images.guard',(canvas.width-canvas.height/3*2)/2,0,canvas.height/3*2,canvas.height/3*2);
                 enemy.dialogueOptions = new encounter1;
                 gameScene = "encounter";
             }
@@ -213,7 +218,8 @@ function gameLoop() {
 
         case "testEnemy":
             document.body.style.cursor = "default";
-            enemy = new Enemy(10, "idk");
+            enemy = new Enemy(10,images.guard,(canvas.width-canvas.height/3*2)/2,0,canvas.height/3*2,canvas.height/3*2);
+            enemy.draw();
             gameScene = "combatEncounter";
             reRollDice = [];
             turn = 1;
@@ -240,7 +246,7 @@ function gameLoop() {
             
             cButtons.push(one,two,three,four,five,six,done,roll);
             diceButtons.push(one,two,three,four,five,six);
-
+            
             dialogueBox.onFinish = () => {
                 gameScene = "combatEncounter";
             }
@@ -359,6 +365,7 @@ function gameLoop() {
                 enemyBlock = 6-enemyDmg-Math.floor(Math.random() * 3);
             }
 
+
             ctx.fillText(enemy.hp+"/"+enemy.maxHp, canvas.width*0.05, canvas.height*0.05); 
             ctx.fillText("Enemy Attack: "+enemyDmg+" Enemy Block: "+enemyBlock, canvas.width*0.1, canvas.height*0.05);  
             ctx.fillText(player.hp+"/"+player.maxHp, canvas.width*0.92, canvas.height*0.64);
@@ -367,6 +374,7 @@ function gameLoop() {
                 cButtons[i].draw();
                 cButtons[i].update();
             }
+            enemy.draw();
             
             break;
             
@@ -381,6 +389,7 @@ function gameLoop() {
             }
             
             if(showDialogueOptions) {
+                ctx.drawImage(images.emptyBg,(((canvas.height/0.5625)-canvas.width)/2)*-1,0,canvas.height/0.5625,canvas.height);
                 let m = canvas.width / 2;
                 let y = canvas.height * 0.6;
                 let buttonW = 400; // + followed + not ratio

@@ -13,17 +13,24 @@ const image = (src) => {
 
 function preloadImages() {
     images = {
+        bg:image('assets/img/room.png'),
+        emptyBg:image('assets/img/empty room.png'),
         diceAtk:image('assets/img/diceatk.png'),
         diceDef:image('assets/img/dicedef.png'),
         diceHeal:image('assets/img/diceheal.png'),
         diceNeg:image('assets/img/diceneg.png'),
         door:image('assets/img/doorclosed.png'),
         openDoor:image('assets/img/dooropen.png'),
-        crate:image('assets/img/boxclosed.png'),
-        openCrate:image('assets/img/boxopen.png'),
+        doorHighLight:image('assets/img/doorclosedhighlight.png'),
+        openDoorHighLight:image('assets/img/dooropenhighlight.png'),
+        box:image('assets/img/boxclosed.png'),
+        openBox:image('assets/img/boxopen.png'),
+        boxHighLight:image('assets/img/boxclosedhighlight.png'),
+        openBoxHighLight:image('assets/img/boxopenhighlight.png'),
         button:image('assets/img/button.png'),
         buttonDown:image('assets/img/buttondown.png'),
         dialogueBox:image("assets/img/dialougebox.png"),
+        guard:image("assets/img/guard.png"),
         dice1:image("assets/img/dice1.png"),
         dice2:image("assets/img/dice2.png"),
         dice3:image("assets/img/dice3.png"),
@@ -33,17 +40,11 @@ function preloadImages() {
     }
 }
 
-function preloadSounds() {
-    sounds = {
-
-    }
-}
-
 /**
  * Draw everything on the canvas
  */ 
 function draw() {
-    
+
     // Draw dialogue box (if it has text)
     if(dialogueBox.dialogue) {
         dialogueBox.drawBox();
