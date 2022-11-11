@@ -20,7 +20,11 @@ document.addEventListener('mousedown', function() {
         } else {
             dialogueBox.displayLength = dialogueBox.dialogue[dialogueBox.current].length;
         }
-    } else {
+    } 
+    else if(diceRoll && !diceRoll.doneRolling) {
+        return;
+    }
+    else {
         mouse.click = true;
     }
 });

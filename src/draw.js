@@ -24,6 +24,12 @@ function preloadImages() {
         button:image('assets/img/button.png'),
         buttonDown:image('assets/img/buttondown.png'),
         dialogueBox:image("assets/img/dialougebox.png"),
+        dice1:image("assets/img/dice1.png"),
+        dice2:image("assets/img/dice2.png"),
+        dice3:image("assets/img/dice3.png"),
+        dice4:image("assets/img/dice4.png"),
+        dice5:image("assets/img/dice5.png"),
+        dice6:image("assets/img/dice6.png"),
     }
 }
 
@@ -45,8 +51,8 @@ function draw() {
 
     // Black overlay if dice are rolling
     if(diceRoll) {
-        console.log("e")
-        ctx.fillStyle = "rgba(0,0,0,0.5)";
+        ctx.fillStyle = "rgba(0,0,0,0.8)";
         ctx.fillRect(0,0,canvas.width,canvas.height);
+        diceRoll.drawDice();
     }
 }
