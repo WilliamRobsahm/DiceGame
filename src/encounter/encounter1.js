@@ -11,26 +11,42 @@ class encounter1 extends dialogueChoice {
         this.situations = [
             {
                 dialogue:[
-                    "'Hello there'",
-                    "'This is a test encounter'"],
+                    "Guard: 'Care to explain why you got put in prison?'",
+                ],
                 options:[
                     {
-                        text:"Option 1",minimumSum:1,successPoints:1,
+                        text:"It'd take a while to explain.",minimumSum:6,successPoints:1,
+                        positiveResponse:"Happy :D",
+                        negativeResponse:"Anrgy >:I"
+                    },{
+                        text:"There's no need to explain.",minimumSum:8,successPoints:2,
+                        positiveResponse:"Happy :D",
+                        negativeResponse:"Anrgy >:I"
+                    },{
+                        text:"Just shut up.",minimumSum:10,successPoints:3,
                         positiveResponse:"Happy :D",
                         negativeResponse:"Anrgy >:I"
                     },
-                    {text:"Option 2",effect:""},
-                    {text:"Option 3",effect:""},
                 ],
                 occured:false,
             },{
                 dialogue:[
-                    "'Woah!'",
-                    "'This is another test encounter'"],
+                    "Guard: 'Are you escaping to help or protect the world or something?'",
+                ],
                 options:[
-                    {text:"Option 1",effect:""},
-                    {text:"Option 2",effect:""},
-                    {text:"Option 3",effect:""},
+                    {
+                        text:"That's right.",minimumSum:6,successPoints:1,
+                        positiveResponse:["Happy :D"],
+                        negativeResponse:["Anrgy >:I"]
+                    },{
+                        text:"Does that really matter?",minimumSum:8,successPoints:2,
+                        positiveResponse:["Happy :D"],
+                        negativeResponse:["Anrgy >:I"]
+                    },{
+                        text:"It pays the bills.",minimumSum:10,successPoints:3,
+                        positiveResponse:"Happy :D",
+                        negativeResponse:"Anrgy >:I"
+                    },
                 ],
                 occured:false,
             }

@@ -36,7 +36,6 @@ function introLoop() {
             "'This is not my bedroom...'",
             "'THIS IS A PRISON CELL!'",
             "'I gotta get out of here!'",
-            "'There's a crate on the floor, I wonder who sent me that.'"
         ])
     
         dialogueBox.onFinish = () => {
@@ -58,17 +57,14 @@ function gameLoop() {
     switch(gameScene) {
 
         case "Intro":
-            draw();
             break;
 
         case "Intro Door":
 
-            draw();
-
-            let doorButton = new Button('door',canvas.width*0.2,canvas.height*0.2,300,300);         
-            let boxButton = new Button('box',canvas.width*0.8 - 220,canvas.height*0.3,300,300);
-            
+            let doorButton = new Button('door',canvas.width*0.3,canvas.height*0.2,300,300);         
+            let boxButton = new Button('box',canvas.width*0.3 + 300,canvas.height*0.35,300,300);
             let testButton = new Button("box",canvas.width*0.8,canvas.height*0.3,20,20);
+
             buttons = [doorButton, boxButton, testButton];
 
             doorButton.onClick = () => {
@@ -110,7 +106,6 @@ function gameLoop() {
                 doorButton.open = true;
             }
 
-            draw();
             testButton.onClick = () => {
                 gameScene = "testEnemy";
             }
@@ -130,7 +125,6 @@ function gameLoop() {
                 enemy.dialogueOptions = new encounter1;
                 gameScene = "encounter";
             }
-            draw();
             break;
 
         case "testEnemy":
@@ -139,10 +133,10 @@ function gameLoop() {
             gameScene = "combatEncounter";
             break;
         case "combatEncounter":
-            draw();
 
             let lightButton = new Button('button',(canvas.width*1)-(canvas.width*0.5),canvas.height*0.7,canvas.width*0.5,(canvas.width*0.5)/3);
             let heavyButton = new Button('button',canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.5)/3);
+            buttons = [lightButton, heavyButton];
             
             turn = 1;
 
@@ -186,12 +180,6 @@ function gameLoop() {
                 ]);
             }
 
-
-            lightButton.update();
-            lightButton.draw();
-            heavyButton.update();
-            heavyButton.draw();
-            
             break;
 
         case "encounter":
@@ -205,18 +193,22 @@ function gameLoop() {
             }
             
             if(showDialogueOptions) {
-                let button1 = new Button('dialogue',canvas.width / 2 - 520,canvas.height * 0.5,320,240);
-                let button2 = new Button('dialogue',canvas.width / 2 - 160,canvas.height * 0.5,320,240);
-                let button3 = new Button('dialogue',canvas.width / 2 + 200,canvas.height * 0.5,320,240);
+                let option1 = new Button('dialogue',canvas.width / 2 - 520,canvas.height * 0.6,320,240);
+                let option2 = new Button('dialogue',canvas.width / 2 - 160,canvas.height * 0.6,320,240);
+                let option3 = new Button('dialogue',canvas.width / 2 + 200,canvas.height * 0.6,320,240);
             
-                buttons = [button1, button2, button3];
+                buttons = [option1, option2, option3];
+
+
+                option1.onClick = () => {
+                    diceRoll = new DiceRoll(6,0,2);
+                }
 
                 for(let i=0;i<3;i++) {
-                    buttons[i].setDialogue(currentSituation.options[i].text);
+                    buttons[i].setOption(currentSituation.options[i]);
                 }
             }
 
-            draw();
             break;
     }
 
@@ -224,6 +216,8 @@ function gameLoop() {
         buttons[i].update();
         buttons[i].draw();
     }
+
+    draw();
 
     window.requestAnimationFrame(gameLoop);
 }

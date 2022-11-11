@@ -9,6 +9,7 @@ class DialogueBox {
         this.displayLength = 0;
         this.img = new Image();
 
+        // onFinish is the function that runs when the dialogue is over
         this.onFinish = () => {};
     }
 
@@ -26,6 +27,8 @@ class DialogueBox {
         if(this.dialogue) {
             return;
         }
+
+        // Set starting properties
         this.dialogue = dialogue;
         this.current = 0;
         this.displayLength = 0;
@@ -45,6 +48,7 @@ class DialogueBox {
     }
 
     drawBox() {
+        // Increase the amount of characters displayed by 1 every time the box is drawn
         if(this.displayLength < this.dialogue[this.current].length) {
             this.displayLength += 1;
         } else {
