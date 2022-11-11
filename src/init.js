@@ -276,16 +276,16 @@ function gameLoop() {
             for(let i = 0;i<diceButtons.length;i++){
                 diceButtons[i].onClick = () => {
                     console.log(i+" "+diceButtons);
-                    if(diceButtons[i].clicked){
-                        diceButtons[i].clicked = false;
+                    if(diceBag[diceButtons[i].diceBagSpot].clicked){
+                        diceBag[diceButtons[i].diceBagSpot].clicked = false;
                         for(x = reRollDice.length;x>=0;--x){
-                            if(reRollDice[x] == diceButtons[i]){
-                                reRollDice[i].splice(i,1);
+                            if(reRollDice[x] == diceBag[diceButtons[i].diceBagSpot]){
+                                reRollDice.splice(x,1);
                             }
                         }
                     }
                     else{
-                        diceButtons[i].clicked = true;
+                        diceBag[diceButtons[i].diceBagSpot].clicked = true;
                         reRollDice.push(diceBag[diceButtons[i].diceBagSpot]);
                         console.log(reRollDice);
                     }
@@ -365,7 +365,7 @@ function gameLoop() {
                 enemyDmg = Math.floor(Math.random() * 6);
                 enemyBlock = 6-enemyDmg-Math.floor(Math.random() * 3);
             }
-
+            ctx.drawImage(images.emptyBg,(((canvas.height/0.5625)-canvas.width)/2)*-1,0,canvas.height/0.5625,canvas.height);
             enemy.draw();
 
             ctx.fillText(enemy.hp+"/"+enemy.maxHp, canvas.width*0.05, canvas.height*0.05); 
