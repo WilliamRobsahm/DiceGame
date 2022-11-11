@@ -13,6 +13,10 @@ const image = (src) => {
 
 function preloadImages() {
     images = {
+        diceAtk:image('assets/img/diceatk.png'),
+        diceDef:image('assets/img/dicedef.png'),
+        diceHeal:image('assets/img/diceheal.png'),
+        diceNeg:image('assets/img/diceneg.png'),
         door:image('assets/img/doorclosed.png'),
         openDoor:image('assets/img/dooropen.png'),
         crate:image('assets/img/boxclosed.png'),
