@@ -258,6 +258,7 @@ function gameLoop() {
                     gameScene = "Intro";
                     player.hp = player.maxHp;
                     player.alive = true;
+                    requestAnimationFrame(introLoop);
                 }
                 dialogueBox.startDialogue([
                     {character:"",text:"(You died)"},
