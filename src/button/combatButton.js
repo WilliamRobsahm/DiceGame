@@ -1,7 +1,8 @@
 
 class CombatButton extends Button {
-    constructor(x,y,w,h) {
+    constructor(x,y,w,h,text) {
         super(x,y,w,h);
+        this.text = text;
         this.onClick = () => {};
     }
 
@@ -11,5 +12,6 @@ class CombatButton extends Button {
         } else {
             ctx.drawImage(images.buttonDown,this.x,this.y,this.w,this.h);
         }
+        ctx.fillText(this.text,this.x + this.w/2, this.y+this.h/2);
     }
 }

@@ -215,8 +215,8 @@ function gameLoop() {
             break;
 
         case "combatEncounter":
-            let done = new CombatButton(canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
-            let roll = new CombatButton(canvas.width*0.5,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
+            let done = new CombatButton(canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3,"Engage");
+            let roll = new CombatButton(canvas.width*0.5,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3,"Reroll");
 
             let one = new DiceButton(canvas.width*0.2,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,0);
             let two = new DiceButton(canvas.width*0.3,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,1);

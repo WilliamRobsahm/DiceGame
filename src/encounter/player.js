@@ -24,6 +24,9 @@ class Player {
         if(this.hp>this.maxHp){
             heal = this.maxHp - this.hp;
             this.hp = this.maxHp;
+            if(heal<0){
+                heal = 0;
+            }
         }
         return heal;
     }
