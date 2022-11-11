@@ -238,7 +238,9 @@ function gameLoop() {
 
             if(player.alive == false){
                 dialogueBox.onFinish = () => {
-                    gameScene = "PrisonCell";
+                    gameScene = "Intro";
+                    player.hp = player.maxHp;
+                    player.alive = true;
                 }
                 dialogueBox.startDialogue([
                     {character:"",text:"(You died)"},
@@ -342,16 +344,14 @@ function gameLoop() {
                 turn = 1;
                 reRolls = 3;
                 reRoll(diceBag);
-                enemyDmg = Math.floor(Math.random() * this.sides);
-                enemyBlock = 6-enemyDmg;
+                enemyDmg = Math.floor(Math.random() * 6);
+                enemyBlock = 6-enemyDmg-Math.floor(Math.random() * 3);
             }
 
-            //for(i=diceBag.length-1;i>=0;--i){
-            //    diceBag[i].draw((i+1)/10,0.5);
-            //}
-
             ctx.fillText(enemy.hp+"/"+enemy.maxHp, canvas.width*0.05, canvas.height*0.05); 
+            ctx.fillText("Enemy Attack: "+enemyDmg+" Enemy Block: "+enemyBlock, canvas.width*0.1, canvas.height*0.05);  
             ctx.fillText(player.hp+"/"+player.maxHp, canvas.width*0.92, canvas.height*0.64);
+            ctx.fillText("Rerolls Left: "+reRolls, canvas.width*0.8, canvas.height*0.64);
             for(let i=cButtons.length-1;i>=0;--i){
                 cButtons[i].draw();
                 cButtons[i].update();
