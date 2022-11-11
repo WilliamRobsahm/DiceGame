@@ -13,7 +13,11 @@ class Button {
         // Looks if the mouse is on it and you have clicked on it
         //==================================================
         if(mouseOn(this)){
-            document.body.style.cursor = "pointer";
+
+            if(!diceRoll) {
+                document.body.style.cursor = "pointer";
+            }
+            
             if(mouse.click) {
                 this.onClick();
             }

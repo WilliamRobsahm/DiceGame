@@ -17,6 +17,8 @@ let dialogueOptions = null;
 let currentSituation = null;
 let showDialogueOptions = false;
 
+let diceSum;
+
 
 let prisonCell = {Create: false, Box: false};
 let prisonCellDoor = '';
@@ -102,13 +104,22 @@ function gameLoop() {
             // prisonCellDoor
             //==================================================
             prisonCellDoor.onClick = () => {
-                if(!heldItem) {
+
+                // If door is open when clicked, go to next scene
+                if(prisonCell.Door) {
+                    gameScene = "Test Encounter";
+                    dialogueOptions = new encounter1();
+                }
+
+                // If player hasn't opened box, the door remains locked
+                else if(!heldItem) {
                     dialogueBox.startDialogue([
                         {character:"",text:"(You pull the door handle)"},
                         {character:"",text:"(The door is locked)"},
                     ]);
                 }
 
+                // If player has opened box, the door is opened
                 else if(heldItem == "Crowbar") {
                     changeState('door')
 
@@ -117,11 +128,8 @@ function gameLoop() {
                         {character:"You",text:"'Yes!'"},
                         {character:"You",text:"'I knew the crowbar would help me, now I can get out of here.'"},
                     ]);
-                    dialogueBox.onFinish = () => {
-                        gameScene = "Test Encounter";
-                        dialogueOptions = new encounter1();
-                    }
                 }
+                mouse.click = false;
             };
 
 
@@ -130,6 +138,8 @@ function gameLoop() {
             // prisonCellBox
             //==================================================
             prisonCellBox.onClick = () => {
+
+                // Box can only be opened once
                 if(!heldItem) {
                     changeState('box')
 
@@ -138,6 +148,7 @@ function gameLoop() {
                         {character:"",text:"(There is a crowbar inside)"},
                     ]);
                     
+                    // Give player 'Crowbar', allowing them to open the door
                     heldItem = "Crowbar";
                 }
             };
@@ -232,18 +243,55 @@ function gameLoop() {
             }
             
             if(showDialogueOptions) {
-                let option1 = new DialogueButton(canvas.width / 2 - 520,canvas.height * 0.6,320,240);
-                let option2 = new DialogueButton(canvas.width / 2 - 160,canvas.height * 0.6,320,240);
-                let option3 = new DialogueButton(canvas.width / 2 + 200,canvas.height * 0.6,320,240);
+                let m = canvas.width / 2;
+                let y = canvas.height * 0.6;
+                let buttonW = 400; // + followed + not ratio
+                let spaceBetween = 32;
+                let option1 = new DialogueButton(m - buttonW / 2 - buttonW - spaceBetween, y, buttonW, 240);
+                let option2 = new DialogueButton(m - buttonW / 2,   y, buttonW, 240);
+                let option3 = new DialogueButton(m + buttonW / 2 + spaceBetween, y, buttonW, 240);
             
                 buttons = [option1, option2, option3];
 
+                // Open dice window
                 option1.onClick = () => {
-                    diceRoll = new DiceRoll(6,0,2);
+                    diceRoll = new DiceRoll(6,0,4);
+                    option = currentSituation.options[0];
+                }
+
+                option2.onClick = () => {
+                    diceRoll = new DiceRoll(6,0,4);
+                    option = currentSituation.options[1];
+                }
+
+                option3.onClick = () => {
+                    diceRoll = new DiceRoll(6,0,4);
+                    option = currentSituation.options[2];
                 }
 
                 for(let i=0;i<buttons.length;i++) {
                     buttons[i].setOption(currentSituation.options[i]);
+                }
+
+                // Close dice window
+                if(diceRoll && diceRoll.doneRolling && mouse.click) {
+
+                    if(diceRoll.finalResult >= option.minimumSum) {
+                        console.log(option.positiveResponse);
+                        dialogueBox.startDialogue(option.positiveResponse);
+                    } else {
+                        console.log(option.negativeResponse);
+                        dialogueBox.startDialogue(option.negativeResponse);
+                    }
+                    dialogueBox.onFinish = () => {
+                        currentSituation = null;
+                        option = null;
+                    }
+
+                    diceRoll = null;
+                    mouse.click = false;
+                    showDialogueOptions = false;
+                    buttons = [];
                 }
             }
             break;
