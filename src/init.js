@@ -204,11 +204,14 @@ function gameLoop() {
             document.body.style.cursor = "default";
             enemy = new Enemy(10, "idk");
             gameScene = "combatEncounter";
+            reRollDice = [];
             turn = 1;
             reRolls = 3;
             reRoll(diceBag);
-            enemyDmg = Math.floor(Math.random() * this.sides);
+            enemyDmg = Math.floor(Math.random() * 6);
             enemyBlock = 6-enemyDmg;
+            console.log(enemyDmg);
+            console.log(enemyBlock);
             break;
 
         case "combatEncounter":
@@ -221,10 +224,10 @@ function gameLoop() {
             let four = new DiceButton(canvas.width*0.5,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,3);
             let five = new DiceButton(canvas.width*0.6,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,4);
             let six = new DiceButton(canvas.width*0.7,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,5);
-            buttons = [];
-            diceButtons = [];
-            reRollDice = [];
-            buttons.push(one,two,three,four,five,six,done,roll);
+            let cButtons = [];
+            let diceButtons = [];
+            
+            cButtons.push(one,two,three,four,five,six,done,roll);
             diceButtons.push(one,two,three,four,five,six);
 
             dialogueBox.onFinish = () => {
@@ -238,7 +241,7 @@ function gameLoop() {
                     gameScene = "PrisonCell";
                 }
                 dialogueBox.startDialogue([
-                    "You Died"
+                    {character:"",text:"(You died)"},
                 ]);
             }
             if(enemy.alive == false){
@@ -246,7 +249,7 @@ function gameLoop() {
                     gameScene = "PrisonCell";
                 }
                 dialogueBox.startDialogue([
-                    "They Died"
+                    {character:"",text:"(They died)"},
                 ]);
             }
             for(let i = 0;i<diceButtons.length;i++){
@@ -262,7 +265,8 @@ function gameLoop() {
                     }
                     else{
                         diceButtons[i].clicked == true;
-                        reRollDice.push(diceButtons[i]);
+                        reRollDice.push(diceBag[diceButtons[i].diceBagSpot]);
+                        console.log(reRollDice);
                     }
                     mouse.click = false;
                 }
@@ -271,12 +275,20 @@ function gameLoop() {
             
             roll.onClick = () => {
                 if(reRolls > 0){
+                    let temp = [];
+                    console.log(reRollDice);
                     for(let i=reRollDice.length-1;i>=0;i--){
                         
+                        temp.push(reRollDice[i]);
+                        reRollDice[i].clicked = false;
                     }
-                    reRoll(reRollDice);
+                    
+                    reRoll(temp);
+                    reRolls--;
                     reRollDice = [];
                 }
+                
+                mouse.click = false;
                 
             }
 
@@ -299,24 +311,31 @@ function gameLoop() {
                         neg ++;
                     }
                 });
+                dialogueBox.onFinish = () => {
+                    gameScene = "";
+                }
+                anwser = [];
                 if (dmg > 0){
                     dmgDone = enemy.takeDmg(dmg-enemyBlock);
-                    alert("U attack for "+dmgDone);
+                    anwser.push({character:"",text:"(You deal "+dmgDone+" damage)"});
                     
                 }
                 if (heal > 0){
                     healDone = player.heal(heal);
-                    alert("U heal for "+healDone);
+                    anwser.push({character:"",text:"(You heal for "+healDone+")"});
                 }
                 if (def > 0){
                     dmgDone = player.takeDmg(enemyDmg-def);
-                    alert("U take "+dmgDone+" damage");
+                    anwser.push({character:"",text:"(You take "+dmgDone+")"});
                 }
                 if (neg > 0){
                     dmgDone = player.takeDmg(neg);
-                    alert("U take "+dmgDone+" damage from recoil");
+                    anwser.push({character:"",text:"(You take "+dmgDone+" from recoil)"});
                 }
+                dialogueBox.startDialogue(anwser);
+                console.log(player.alive);
                 turn = 0;
+                mouse.click = false;
             };
 
             if (turn == 0){
@@ -333,9 +352,9 @@ function gameLoop() {
 
             ctx.fillText(enemy.hp+"/"+enemy.maxHp, canvas.width*0.05, canvas.height*0.05); 
             ctx.fillText(player.hp+"/"+player.maxHp, canvas.width*0.92, canvas.height*0.64);
-            for(let i=buttons.length-1;i>=0;--i){
-                buttons[i].draw();
-                buttons[i].update();
+            for(let i=cButtons.length-1;i>=0;--i){
+                cButtons[i].draw();
+                cButtons[i].update();
             }
             
             break;
