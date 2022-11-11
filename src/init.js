@@ -365,6 +365,7 @@ function gameLoop() {
                 enemyBlock = 6-enemyDmg-Math.floor(Math.random() * 3);
             }
 
+            enemy.draw();
 
             ctx.fillText(enemy.hp+"/"+enemy.maxHp, canvas.width*0.05, canvas.height*0.05); 
             ctx.fillText("Enemy Attack: "+enemyDmg+" Enemy Block: "+enemyBlock, canvas.width*0.1, canvas.height*0.05);  
@@ -374,7 +375,6 @@ function gameLoop() {
                 cButtons[i].draw();
                 cButtons[i].update();
             }
-            enemy.draw();
             
             break;
             
