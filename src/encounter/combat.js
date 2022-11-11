@@ -1,14 +1,19 @@
-
-/*  Combat
-    player obj | player         -- Spelaren i encountern
-    enemy obj  | enemy          -- Motståndare i encountern 
-    int        | turn           -- 1 == "Spelaren" 0 == "Motståndaren"
+/*  Die(dice)
+    int     | sides     -- Vilken typ av tärning d6 = 6
+    array   | die       -- Vilka sidor tärningarna ska ha
 */
+class die{
+    constructor(sides, die){
+        this.sides = sides;
+        this.die = die;
+        this.sideUp = 0;
+    }
 
-class Combat{
-    constructor(player,enemy){
-        this.player = player;
-        this.enemy = enemy;
-        this.turn = 1;
+    roll(){
+        this.sideUp = Math.floor(Math.random() * this.sides);
+    }
+
+    draw(x,y){
+        ctx.fillText(this.die[this.sideUp], canvas.width*x, canvas.height*y); 
     }
 }
