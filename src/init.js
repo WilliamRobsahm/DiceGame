@@ -32,10 +32,11 @@ window.onload = init();
 
 
 //==================================================
-// Start menu
+// Runs on game launch
 //==================================================
 function init() {
     resizeCanvas();
+    preloadImages();
 
     dialogueBox.setSize();
 

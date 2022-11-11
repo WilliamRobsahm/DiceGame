@@ -11,19 +11,17 @@ class Button {
         switch(this.type) {
             case "door":
                 this.open = false;
-                this.img1.src = "assets/img/doorclosed.png";
-                this.img2.src = "assets/img/dooropen.png";
                 break;
             case "box":
-                this.img1.src = "assets/img/crateclosed.png";
-                this.img2.src = "assets/img/crateopen.png";
+                this.img1 = images.crate;
+                this.img2 = images.crateClosed;
                 break;
             case "dialogueOption":
                 this.dialogue = "";
                 break;
             case "button":
-                this.img1.src = "assets/img/button.png";
-                this.img2.src = "assets/img/buttondown.png";
+                this.img1 = images.button;
+                this.img2 = images.buttonDown;
                 break;
         }
 
@@ -55,25 +53,21 @@ class Button {
         //==================================================
         if(this.type == 'door') {
             if(prisonCell.Door) {
-                this.img.src = "assets/img/dooropen.png";
+                ctx.drawImage(images.openDoor,this.x,this.y,this.w,this.h);
             } else {
-                this.img.src = "assets/img/doorclosed.png";
+                ctx.drawImage(images.door,this.x,this.y,this.w,this.h);
             }
-            ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
         }
-        
-        
         
         //==================================================
         // Box
         //==================================================
         if(this.type == 'box') {
             if(prisonCell.Box) {
-                this.img.src = "assets/img/boxopen.png";
+                ctx.drawImage(images.openCrate,this.x,this.y,this.w,this.h);
             } else {
-                this.img.src = "assets/img/boxclosed.png";
+                ctx.drawImage(images.crate,this.x,this.y,this.w,this.h);
             }
-            ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
         }
 
 
@@ -90,7 +84,7 @@ class Button {
             }
 
             this.img.src = "./assets/img/dialougebox.png";
-            ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
+            ctx.drawImage(images.dialogueBox,this.x,this.y,this.w,this.h);
             ctx.fillText(this.dialogue,this.x + this.w/2, this.y + 40);
             ctx.fillText(this.positive,this.x + this.w/2, this.y + this.h - 80);
             ctx.fillText(this.negative,this.x + this.w/2, this.y + this.h - 40);
@@ -103,11 +97,10 @@ class Button {
         //==================================================
         if(this.type == 'button') {
             if(mouseOn(this)){
-                this.img.src = "assets/img/button.png";
+                ctx.drawImage(images.button,this.x,this.y,this.w,this.h);
             } else {
-                this.img.src = "assets/img/buttondown.png";
+                ctx.drawImage(images.buttonDown,this.x,this.y,this.w,this.h);
             }
-            ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
         }
     }
 }
