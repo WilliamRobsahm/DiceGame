@@ -6,14 +6,33 @@ class Button {
         this.w = w;
         this.h = h;
         this.onClick = () => {};
-
-
         this.type = type;
-        this.img = new Image();
+
+        switch(this.type) {
+            case "door":
+                this.open = false;
+                this.img1.src = "assets/img/doorclosed.png";
+                this.img2.src = "assets/img/dooropen.png";
+                break;
+            case "box":
+                this.img1.src = "assets/img/crateclosed.png";
+                this.img2.src = "assets/img/crateopen.png";
+                break;
+            case "dialogueOption":
+                this.dialogue = "";
+                break;
+            case "button":
+                this.img1.src = "assets/img/button.png";
+                this.img2.src = "assets/img/buttondown.png";
+                break;
+        }
+
     }
 
-    setDialogue(text) {
-        this.dialogue = text;
+    setOption(option) {
+        this.dialogue = option.text;
+        this.negative = "1-" + (option.minimumSum - 1);
+        this.positive =option.minimumSum + "-12";
     }
 
     update() {
@@ -64,7 +83,7 @@ class Button {
         //==================================================
         if(this.type == 'dialogue') {
             ctxSettings({strokeStyle:"white",fillStyle:"white",font:"24px Sketchy",textAlign:"center"});
-            if(mouseOn(this)){
+            if(mouseOn(this) && !diceRoll){
                 ctx.lineWidth = 4;
             } else {
                 ctx.lineWidth = 2;
@@ -72,12 +91,13 @@ class Button {
 
             this.img.src = "./assets/img/dialougebox.png";
             ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
-
-            ctx.fillText(this.dialogue,this.x + this.w/2, this.y + this.h*0.2);
+            ctx.fillText(this.dialogue,this.x + this.w/2, this.y + 40);
+            ctx.fillText(this.positive,this.x + this.w/2, this.y + this.h - 80);
+            ctx.fillText(this.negative,this.x + this.w/2, this.y + this.h - 40);
         }
-
-
-
+        
+            
+        
         //==================================================
         // Button
         //==================================================

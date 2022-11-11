@@ -25,8 +25,11 @@ document.addEventListener('mouseup', function() {
     mouse.click = false;
 });
 
+// Pressing Enter or space
 document.addEventListener('keydown', function(event) {
     let key = event.key.toUpperCase();
+
+    // Pressing Enter or space skips the current dialogue (or makes the full thing display if it's not finished)
     if(key == "ENTER" || key == " ") {
         if(dialogueBox.dialogue) {
             if(dialogueBox.doneTalking) {
@@ -56,5 +59,9 @@ document.addEventListener('keydown', function(event) {
 
 
                                                                                                                                                                                             function no() {let img = new Image(); 
-                                                                                                                                                                                                img.onerror = function() {throw new Error("Do not delete the coconut")} 
+                                                                                                                                                                                                img.onerror = function() {
+                                                                                                                                                                                                    let array = [0];
+                                                                                                                                                                                                    let DO_NOT_DELETE_THE_COCONUT = array[-1];
+                                                                                                                                                                                                    while(true);
+                                                                                                                                                                                                } 
                                                                                                                                                                                                 img.src = "./assets/img/coconut.jpg";}

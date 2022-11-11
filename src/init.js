@@ -58,7 +58,6 @@ function introLoop() {
             "'This is not my bedroom...'",
             "'THIS IS A PRISON CELL!'",
             "'I gotta get out of here!'",
-            "'There's a crate on the floor, I wonder who sent me that.'"
         ])
     
         dialogueBox.onFinish = () => {
@@ -96,8 +95,6 @@ function gameLoop() {
             let testButton = new Button("button",canvas.width*0.8,canvas.height*0.3,20,20); //!!!!!!!!!!!! test button should not be here in final version
 
             buttons = [prisonCellDoor, prisonCellBox, testButton]; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! test button should not be here in final version
-
-
 
             //==================================================
             // prisonCellDoor
@@ -169,9 +166,11 @@ function gameLoop() {
             turn = 1;
             break;
         case "combatEncounter":
+
             console.log(turn);
             let lightButton = new Button('dialogue',(canvas.width*1)-(canvas.width*0.5),canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
             let heavyButton = new Button('dialogue',canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
+            buttons = [lightButton, heavyButton];
 
             dialogueBox.onFinish = () => {
                 gameScene = "combatEncounter";
@@ -215,12 +214,8 @@ function gameLoop() {
 
             ctx.fillText(enemy.hp+"/"+enemy.maxHp, canvas.width*0.05, canvas.height*0.05); 
             ctx.fillText(player.hp+"/"+player.maxHp, canvas.width*0.92, canvas.height*0.64);
-            lightButton.update();
-            lightButton.draw();
-            heavyButton.update();
-            heavyButton.draw();
-            
             break;
+            
         case "encounter":
             document.body.style.cursor = "default";
             if(!currentSituation) {
@@ -233,14 +228,19 @@ function gameLoop() {
             }
             
             if(showDialogueOptions) {
-                let button1 = new Button('dialogue',canvas.width / 2 - 520,canvas.height * 0.5,320,240);
-                let button2 = new Button('dialogue',canvas.width / 2 - 160,canvas.height * 0.5,320,240);
-                let button3 = new Button('dialogue',canvas.width / 2 + 200,canvas.height * 0.5,320,240);
+                let option1 = new Button('dialogue',canvas.width / 2 - 520,canvas.height * 0.6,320,240);
+                let option2 = new Button('dialogue',canvas.width / 2 - 160,canvas.height * 0.6,320,240);
+                let option3 = new Button('dialogue',canvas.width / 2 + 200,canvas.height * 0.6,320,240);
             
-                buttons = [button1, button2, button3];
+                buttons = [option1, option2, option3];
+
+
+                option1.onClick = () => {
+                    diceRoll = new DiceRoll(6,0,2);
+                }
 
                 for(let i=0;i<buttons.length;i++) {
-                    buttons[i].setDialogue(currentSituation.options[i].text);
+                    buttons[i].setOption(currentSituation.options[i]);
                 }
             }
             break;
@@ -252,6 +252,7 @@ function gameLoop() {
     }
 
     draw();
+
     window.requestAnimationFrame(gameLoop);
 }
 

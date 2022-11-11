@@ -5,6 +5,8 @@ class DialogueBox {
         this.displayLength = 0;
         this.img = new Image();
 
+
+        // onFinish is the function that runs when the dialogue is over
         this.audio = new Audio('assets/sound/dialog_text.wav');
         this.audio.loop = true;
         this.audio.volume = 0.75;
@@ -26,6 +28,8 @@ class DialogueBox {
         if(this.dialogue) {
             return;
         }
+
+        // Set starting properties
         this.dialogue = dialogue;
         this.current = 0;
         this.displayLength = 0;
@@ -48,6 +52,7 @@ class DialogueBox {
     }
 
     drawBox() {
+        // Increase the amount of characters displayed by 1 every time the box is drawn
         if(this.displayLength < this.dialogue[this.current].length) {
             this.displayLength += 0.37; // Displaying one more letter every 2,7 frame (1/0.37)
             if(this.displayLength == 0.37) { // Start playing "writing" audio
