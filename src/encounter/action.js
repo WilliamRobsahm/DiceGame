@@ -1,55 +1,17 @@
-
-/*  lightAttack
-    enemy obj | target      -- Vilket motståndare som ska attackeras
+/* reRoll
+    array   | dice      -- Lista på alla tärningar som ska rullas om
 */
-function lightAttack(target){
-    roll = new DiceRoll(6, 0);
-    if(roll.finalResult % 2 === 0){
-        rollD = new DiceRoll(6, 0);
-        target.takeDmg(rollD.finalResult);
-        dialogueBox.startDialogue([
-            "Hit for "+rollD.finalResult+" damage"
-        ]);
-    }else{
-        dialogueBox.startDialogue([
-            "Miss"
-        ]);
-    }
-    
-}
-
-/*  heavyAttack
-    enemy obj | target      -- Vilket motståndare som ska attackeras
-*/
-function heavyAttack(target){
-    roll = new DiceRoll(6, 0)
-    if(roll.finalResult >= 5){
-        rollD = new DiceRoll(6, 5);
-        target.takeDmg(rollD.finalResult);
-        dialogueBox.startDialogue([
-            "Hit for "+rollD.finalResult+" damage"
-        ]);
-    }else{
-        dialogueBox.startDialogue([
-            "Miss"
-        ]);
+function reRoll(dice){
+    for(i = dice.length-1;i>=0;--i){
+        dice[i].roll();
     }
 }
 
 /* enemyAttack
-    player obj | target      -- Vilket motståndare som ska attackeras
+    array   | dice      -- Lista på alla tärningar som ska rullas om
 */
-function enemyAttack(target){
-    roll = new DiceRoll(6, 0);
-    if(roll.finalResult % 2 === 0){
-        rollD = new DiceRoll(6, 0);
-        target.takeDmg(rollD.finalResult);
-        dialogueBox.startDialogue([
-            "You got hit for "+rollD.finalResult+" damage"
-        ]);
-    }else{
-        dialogueBox.startDialogue([
-            "They missed"
-        ]);
-    }
+function enemyAttack(dice){
+    for(i = dice.length;i>=0;--i){
+        dice[i].roll();
+    } 
 }
