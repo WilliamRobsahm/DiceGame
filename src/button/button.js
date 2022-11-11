@@ -83,7 +83,6 @@ class Button {
                 ctx.lineWidth = 2;
             }
 
-            this.img.src = "./assets/img/dialougebox.png";
             ctx.drawImage(images.dialogueBox,this.x,this.y,this.w,this.h);
             ctx.fillText(this.dialogue,this.x + this.w/2, this.y + 40);
             ctx.fillText(this.positive,this.x + this.w/2, this.y + this.h - 80);

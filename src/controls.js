@@ -15,7 +15,11 @@ document.addEventListener('mousemove',function(event) {
 // Register player clicks
 document.addEventListener('mousedown', function() {
     if(dialogueBox.dialogue) {
-        dialogueBox.nextDialogue();
+        if(dialogueBox.doneTalking) {
+            dialogueBox.nextDialogue();
+        } else {
+            dialogueBox.displayLength = dialogueBox.dialogue[dialogueBox.current].length;
+        }
     } else {
         mouse.click = true;
     }
@@ -33,7 +37,6 @@ document.addEventListener('keydown', function(event) {
     if(key == "ENTER" || key == " ") {
         if(dialogueBox.dialogue) {
             if(dialogueBox.doneTalking) {
-                console.log("next");
                 dialogueBox.nextDialogue();
             } else {
                 dialogueBox.displayLength = dialogueBox.dialogue[dialogueBox.current].length;
