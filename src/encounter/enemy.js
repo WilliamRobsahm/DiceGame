@@ -12,7 +12,12 @@ class Enemy{
         this.w = w;
         this.h = h;
         this.alive = true;
+
+        this.dialogueCount = 0;
+        this.charmPoints = 0;
+        this.requiredPoints = 10;
     }
+
     takeDmg(dmg){
         if(dmg>=0){
             this.hp = this.hp-dmg;
@@ -23,6 +28,7 @@ class Enemy{
         }
         return 0;
     }
+
     heal(heal){
         this.hp = this.hp+heal;
         if(this.hp>this.maxHp){

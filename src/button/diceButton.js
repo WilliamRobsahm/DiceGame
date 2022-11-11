@@ -7,10 +7,7 @@ class DiceButton extends Button {
     }
 
     draw() {
-        if(this.clicked){
-            ctx.fillStyle = "rgba(255,255,255,0.5)";
-            ctx.fillRect(this.x,this.y,this.w,this.h);
-        }
+        
         if(diceBag[this.diceBagSpot].die[diceBag[this.diceBagSpot].sideUp] =="atc") {
             ctx.drawImage(images.diceAtk,this.x,this.y,this.w,this.h);
         }
@@ -22,6 +19,11 @@ class DiceButton extends Button {
         }
         if(diceBag[this.diceBagSpot].die[diceBag[this.diceBagSpot].sideUp] =="neg") {
             ctx.drawImage(images.diceNeg,this.x,this.y,this.w,this.h);
+        }
+        if(this.clicked){
+            console.log("booba");
+            ctx.fillStyle = "rgba(255,255,255,0.5)";
+            ctx.fillRect(this.x,this.y,this.w,this.h);
         }
         
     }
