@@ -10,8 +10,9 @@ function reRoll(dice){
 /* enemyAttack
     array   | dice      -- Lista på alla tärningar som ska rullas om
 */
-function enemyAttack(dice){
-    for(i = dice.length;i>=0;--i){
-        dice[i].roll();
-    } 
-}
+//function enemyAttack(dice){
+//    for(i = dice.length;i>=0;--i){
+//        dice[i].roll();
+//    } 
+    
+//}

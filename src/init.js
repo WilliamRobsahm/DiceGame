@@ -204,16 +204,31 @@ function gameLoop() {
             document.body.style.cursor = "default";
             enemy = new Enemy(10, "idk");
             gameScene = "combatEncounter";
+            reRollDice = [];
             turn = 1;
             reRolls = 3;
             reRoll(diceBag);
+            enemyDmg = Math.floor(Math.random() * 6);
+            enemyBlock = 6-enemyDmg;
+            console.log(enemyDmg);
+            console.log(enemyBlock);
             break;
 
         case "combatEncounter":
+            let done = new CombatButton(canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
+            let roll = new CombatButton(canvas.width*0.5,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
 
-            console.log(turn);
-
-            let done = new Button('button',canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3);
+            let one = new DiceButton(canvas.width*0.2,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,0);
+            let two = new DiceButton(canvas.width*0.3,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,1);
+            let three = new DiceButton(canvas.width*0.4,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,2);
+            let four = new DiceButton(canvas.width*0.5,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,3);
+            let five = new DiceButton(canvas.width*0.6,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,4);
+            let six = new DiceButton(canvas.width*0.7,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,5);
+            let cButtons = [];
+            let diceButtons = [];
+            
+            cButtons.push(one,two,three,four,five,six,done,roll);
+            diceButtons.push(one,two,three,four,five,six);
 
             dialogueBox.onFinish = () => {
                 gameScene = "combatEncounter";
@@ -223,10 +238,12 @@ function gameLoop() {
 
             if(player.alive == false){
                 dialogueBox.onFinish = () => {
-                    gameScene = "PrisonCell";
+                    gameScene = "Intro";
+                    player.hp = player.maxHp;
+                    player.alive = true;
                 }
                 dialogueBox.startDialogue([
-                    "You Died"
+                    {character:"",text:"(You died)"},
                 ]);
             }
             if(enemy.alive == false){
@@ -234,8 +251,47 @@ function gameLoop() {
                     gameScene = "PrisonCell";
                 }
                 dialogueBox.startDialogue([
-                    "They Died"
+                    {character:"",text:"(They died)"},
                 ]);
+            }
+            for(let i = 0;i<diceButtons.length;i++){
+                diceButtons[i].onClick = () => {
+                    console.log(i+" "+diceButtons);
+                    if (diceButtons[i].clicked){
+                        diceButtons[i].clicked == false;
+                        for(x = reRollDice.length;x>=0;--x){
+                            if(reRollDice[x] == diceButtons[i]){
+                                reRollDice[i].splice(i,1);
+                            }
+                        }
+                    }
+                    else{
+                        diceButtons[i].clicked == true;
+                        reRollDice.push(diceBag[diceButtons[i].diceBagSpot]);
+                        console.log(reRollDice);
+                    }
+                    mouse.click = false;
+                }
+                
+            }
+            
+            roll.onClick = () => {
+                if(reRolls > 0){
+                    let temp = [];
+                    console.log(reRollDice);
+                    for(let i=reRollDice.length-1;i>=0;i--){
+                        
+                        temp.push(reRollDice[i]);
+                        reRollDice[i].clicked = false;
+                    }
+                    
+                    reRoll(temp);
+                    reRolls--;
+                    reRollDice = [];
+                }
+                
+                mouse.click = false;
+                
             }
 
             done.onClick = () => {
@@ -257,39 +313,49 @@ function gameLoop() {
                         neg ++;
                     }
                 });
+                dialogueBox.onFinish = () => {
+                    gameScene = "";
+                }
+                anwser = [];
                 if (dmg > 0){
                     dmgDone = enemy.takeDmg(dmg-enemyBlock);
-                    alert("U attack for "+dmgDone);
+                    anwser.push({character:"",text:"(You deal "+dmgDone+" damage)"});
                     
                 }
                 if (heal > 0){
                     healDone = player.heal(heal);
-                    alert("U heal for "+healDone);
+                    anwser.push({character:"",text:"(You heal for "+healDone+")"});
                 }
                 if (def > 0){
                     dmgDone = player.takeDmg(enemyDmg-def);
-                    alert("U take "+dmgDone+" damage");
+                    anwser.push({character:"",text:"(You take "+dmgDone+")"});
                 }
                 if (neg > 0){
                     dmgDone = player.takeDmg(neg);
-                    alert("U take "+dmgDone+" damage from recoil");
+                    anwser.push({character:"",text:"(You take "+dmgDone+" from recoil)"});
                 }
+                dialogueBox.startDialogue(anwser);
+                console.log(player.alive);
                 turn = 0;
+                mouse.click = false;
             };
 
             if (turn == 0){
-                enemyAttack(player);
                 turn = 1;
-            }
-
-            for(i=diceBag.length-1;i>=0;--i){
-                diceBag[i].draw((i+1)/10,0.5);
+                reRolls = 3;
+                reRoll(diceBag);
+                enemyDmg = Math.floor(Math.random() * 6);
+                enemyBlock = 6-enemyDmg-Math.floor(Math.random() * 3);
             }
 
             ctx.fillText(enemy.hp+"/"+enemy.maxHp, canvas.width*0.05, canvas.height*0.05); 
+            ctx.fillText("Enemy Attack: "+enemyDmg+" Enemy Block: "+enemyBlock, canvas.width*0.1, canvas.height*0.05);  
             ctx.fillText(player.hp+"/"+player.maxHp, canvas.width*0.92, canvas.height*0.64);
-            done.update();
-            done.draw();
+            ctx.fillText("Rerolls Left: "+reRolls, canvas.width*0.8, canvas.height*0.64);
+            for(let i=cButtons.length-1;i>=0;--i){
+                cButtons[i].draw();
+                cButtons[i].update();
+            }
             
             break;
             

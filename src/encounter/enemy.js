@@ -12,7 +12,7 @@ class Enemy{
     takeDmg(dmg){
         if(dmg>=0){
             this.hp = this.hp-dmg;
-            if(this.hp > 0){
+            if(this.hp <= 0){
                 this.alive = false;
             }
             return dmg;
