@@ -258,6 +258,7 @@ function gameLoop() {
                     gameScene = "Intro";
                     player.hp = player.maxHp;
                     player.alive = true;
+                    requestAnimationFrame(introLoop);
                 }
                 dialogueBox.startDialogue([
                     {character:"",text:"(You died)"},
@@ -265,7 +266,7 @@ function gameLoop() {
             }
             if(enemy.alive == false){
                 dialogueBox.onFinish = () => {
-                    gameScene = "PrisonCell";
+                    gameScene = "next";
                 }
                 dialogueBox.startDialogue([
                     {character:"",text:"(They died)"},
@@ -441,6 +442,9 @@ function gameLoop() {
                     buttons = [];
                 }
             }
+            break;
+            case "next":
+                alert("To be countinued???");
             break;
     }
 
