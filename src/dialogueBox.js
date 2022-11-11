@@ -1,15 +1,16 @@
-
 class DialogueBox {
     constructor(dialogue) {
-
-        
-
         this.dialogue;
         this.currentText;
         this.displayLength = 0;
         this.img = new Image();
 
+
         // onFinish is the function that runs when the dialogue is over
+        this.audio = new Audio('assets/sound/dialog_text.wav');
+        this.audio.loop = true;
+        this.audio.volume = 0.75;
+
         this.onFinish = () => {};
     }
 
@@ -23,7 +24,7 @@ class DialogueBox {
 
     startDialogue(dialogue) {
 
-        // cant start a dialogue if another one is already active
+        // Can't start a dialogue if another one is already active
         if(this.dialogue) {
             return;
         }
@@ -38,21 +39,29 @@ class DialogueBox {
 
     // Go to next text in dialogue
     nextDialogue() {
-        this.current += 1;
-        if(this.current >= this.dialogue.length) {
-            this.onFinish();
-            this.dialogue = null;
+        // Can't go to the next dialogue if the dialogue is not done get
+        if(this.doneTalking) {
+            this.current += 1;
+            if(this.current >= this.dialogue.length) {
+                this.onFinish();
+                this.dialogue = null;
+            }
+            this.displayLength = 0;
+            this.doneTalking = false;
         }
-        this.displayLength = 0;
-        this.doneTalking = false;
     }
 
     drawBox() {
         // Increase the amount of characters displayed by 1 every time the box is drawn
         if(this.displayLength < this.dialogue[this.current].length) {
-            this.displayLength += 1;
-        } else {
+            this.displayLength += 0.37; // Displaying one more letter every 2,7 frame (1/0.37)
+            if(this.displayLength == 0.37) { // Start playing "writing" audio
+                this.audio.play();
+            }
+        } else { // Stops playing "writing" sound and resets the time of the audio
             this.doneTalking = true;
+            this.audio.currentTime = 0;
+            this.audio.pause();
         }
 
         this.img.src = "./assets/img/dialougebox.png";

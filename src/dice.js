@@ -28,8 +28,6 @@ class DiceRoll {
         this.finalResult = this.result += this.modifier;
 
         this.displayingNumber = null;
-
-        console.log(this.finalResult);
     }
 
     // create an array of numbers for the dice animation. The

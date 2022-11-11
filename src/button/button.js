@@ -6,10 +6,7 @@ class Button {
         this.w = w;
         this.h = h;
         this.onClick = () => {};
-
         this.type = type;
-        this.img1 = new Image();
-        this.img2 = new Image();
 
         switch(this.type) {
             case "door":
@@ -29,6 +26,7 @@ class Button {
                 this.img2.src = "assets/img/buttondown.png";
                 break;
         }
+
     }
 
     setOption(option) {
@@ -38,30 +36,51 @@ class Button {
     }
 
     update() {
-        // Click effect
-        if(mouseOn(this) && mouse.click) {
-            this.onClick();
-            mouse.click = false;
+        //==================================================
+        // Looks if the mouse is on it and you have clicked on it
+        //==================================================
+        if(mouseOn(this)){
+            document.body.style.cursor = "pointer";
+            if(mouse.click) {
+                this.onClick();
+            }
+        } else {
+            document.body.style.cursor = "default";
         }
     }
 
     draw() {
-        // Placeholder visuals for button
+        //==================================================
+        // Door and box
+        //==================================================
         if(this.type == 'door') {
-            if(this.open){
-                ctx.drawImage(this.img2,this.x,this.y,this.w,this.h);
+            if(prisonCell.Door) {
+                this.img.src = "assets/img/dooropen.png";
             } else {
-                ctx.drawImage(this.img1,this.x,this.y,this.w,this.h);
+                this.img.src = "assets/img/doorclosed.png";
             }
+            ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
         }
+        
+        
+        
+        //==================================================
+        // Box
+        //==================================================
         if(this.type == 'box') {
-            // Show crate opened if
-            if(heldItem == "Crowbar") {
-                ctx.drawImage(this.img2,this.x,this.y,this.w,this.h);
+            if(prisonCell.Box) {
+                this.img.src = "assets/img/boxopen.png";
             } else {
-                ctx.drawImage(this.img1,this.x,this.y,this.w,this.h);
+                this.img.src = "assets/img/boxclosed.png";
             }
+            ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
         }
+
+
+
+        //==================================================
+        // Dialogue
+        //==================================================
         if(this.type == 'dialogue') {
             ctxSettings({strokeStyle:"white",fillStyle:"white",font:"24px Sketchy",textAlign:"center"});
             if(mouseOn(this) && !diceRoll){
@@ -70,21 +89,25 @@ class Button {
                 ctx.lineWidth = 2;
             }
 
-            ctx.beginPath();
-            ctx.rect(this.x,this.y,this.w,this.h);
-            ctx.stroke();
-            ctx.closePath();
+            this.img.src = "./assets/img/dialougebox.png";
+            ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
             ctx.fillText(this.dialogue,this.x + this.w/2, this.y + 40);
             ctx.fillText(this.positive,this.x + this.w/2, this.y + this.h - 80);
             ctx.fillText(this.negative,this.x + this.w/2, this.y + this.h - 40);
         }
-        if(this.img == 'button') {
-            if(mouseOn(this) && !diceRoll){
-                this.door.src = "assets/img/button.png";
+        
+            
+        
+        //==================================================
+        // Button
+        //==================================================
+        if(this.type == 'button') {
+            if(mouseOn(this)){
+                this.img.src = "assets/img/button.png";
             } else {
-                this.door.src = "assets/img/buttondown.png";
+                this.img.src = "assets/img/buttondown.png";
             }
-            ctx.drawImage(this.door,this.x,this.y,this.w,this.h);
+            ctx.drawImage(this.img,this.x,this.y,this.w,this.h);
         }
     }
 }
