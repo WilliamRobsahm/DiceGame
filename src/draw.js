@@ -13,19 +13,20 @@ const image = (src) => {
 
 function preloadImages() {
     images = {
+        bg:image('assets/img/room.png'),
+        emptyBg:image('assets/img/empty room.png'),
         door:image('assets/img/doorclosed.png'),
         openDoor:image('assets/img/dooropen.png'),
-        crate:image('assets/img/boxclosed.png'),
-        openCrate:image('assets/img/boxopen.png'),
+        doorHighLight:image('assets/img/doorclosedhighlight.png'),
+        openDoorHighLight:image('assets/img/dooropenhighlight.png'),
+        box:image('assets/img/boxclosed.png'),
+        openBox:image('assets/img/boxopen.png'),
+        boxHighLight:image('assets/img/boxclosedhighlight.png'),
+        openBoxHighLight:image('assets/img/boxopenhighlight.png'),
         button:image('assets/img/button.png'),
         buttonDown:image('assets/img/buttondown.png'),
         dialogueBox:image("assets/img/dialougebox.png"),
-    }
-}
-
-function preloadSounds() {
-    sounds = {
-
+        guard:image("assets/img/guard.png"),
     }
 }
 
@@ -33,7 +34,7 @@ function preloadSounds() {
  * Draw everything on the canvas
  */ 
 function draw() {
-    
+
     // Draw dialogue box (if it has text)
     if(dialogueBox.dialogue) {
         dialogueBox.drawBox();

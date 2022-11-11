@@ -6,10 +6,18 @@ class BoxButton extends Button {
     }
 
     draw() {
-        if(prisonCell.Box) {
-            ctx.drawImage(images.openCrate,this.x,this.y,this.w,this.h);
+        if(mouseOn(this)) {
+            if(prisonCell.Box) {
+                ctx.drawImage(images.openBoxHighLight,this.x,this.y,this.w,this.h);
+            } else {
+                ctx.drawImage(images.boxHighLight,this.x,this.y,this.w,this.h);
+            }
         } else {
-            ctx.drawImage(images.crate,this.x,this.y,this.w,this.h);
+            if(prisonCell.Box) {
+                ctx.drawImage(images.openBox,this.x,this.y,this.w,this.h);
+            } else {
+                ctx.drawImage(images.box,this.x,this.y,this.w,this.h);
+            }
         }
     }
 }

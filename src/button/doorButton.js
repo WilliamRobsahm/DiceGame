@@ -7,10 +7,18 @@ class DoorButton extends Button {
     }
 
     draw() {
-        if(prisonCell.Door) {
-            ctx.drawImage(images.openDoor,this.x,this.y,this.w,this.h);
+        if(mouseOn(this)) {
+            if(prisonCell.Door) {
+                ctx.drawImage(images.openDoorHighLight,this.x,this.y,this.w,this.h);
+            } else {
+                ctx.drawImage(images.doorHighLight,this.x,this.y,this.w,this.h);
+            }
         } else {
-            ctx.drawImage(images.door,this.x,this.y,this.w,this.h);
+            if(prisonCell.Door) {
+                ctx.drawImage(images.openDoor,this.x,this.y,this.w,this.h);
+            } else {
+                ctx.drawImage(images.door,this.x,this.y,this.w,this.h);
+            }
         }
     }
 }
