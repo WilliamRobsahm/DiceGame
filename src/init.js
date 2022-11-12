@@ -262,7 +262,7 @@ function gameLoop() {
                     window.location.reload();
                 }
             }
-            if(enemy.alive == false){
+            else if(enemy.alive == false){
                 dialogueBox.startDialogue([
                     {character:"",text:"(They died)"},
                 ]);
