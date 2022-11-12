@@ -197,9 +197,9 @@ function gameLoop() {
                 }
             };
 
-            testButton.onClick = () => {
-                gameScene = "testEnemy";
-            }
+            testButton.onClick = () => { //!!!!!!!!!!!! test button should not be here in final version
+                gameScene = "testEnemy"; //!!!!!!!!!!!! test button should not be here in final version
+            }                            //!!!!!!!!!!!! test button should not be here in final version
 
 
             break;
@@ -255,23 +255,20 @@ function gameLoop() {
             
 
             if(player.alive == false){
-                dialogueBox.onFinish = () => {
-                    gameScene = "Intro";
-                    player.hp = player.maxHp;
-                    player.alive = true;
-                    requestAnimationFrame(introLoop);
-                }
                 dialogueBox.startDialogue([
                     {character:"",text:"(You died)"},
                 ]);
+                dialogueBox.onFinish = () => {
+                    window.location.reload();
+                }
             }
             if(enemy.alive == false){
-                dialogueBox.onFinish = () => {
-                    gameScene = "next";
-                }
                 dialogueBox.startDialogue([
                     {character:"",text:"(They died)"},
                 ]);
+                dialogueBox.onFinish = () => {
+                    gameScene = "next";
+                }
             }
             for(let i = 0;i<diceButtons.length;i++){
                 diceButtons[i].onClick = () => {
@@ -382,10 +379,27 @@ function gameLoop() {
         case "encounter":
             if(!currentSituation) {
                 currentSituation = enemy.dialogueOptions.randomSituation();
-                enemy.dialogueCount += 1;
+                enemy.dialogueCount++;
 
-                // If charm still hasn't maxed out before the 5th question ends, go to battle.
-                if(enemy.dialogueCount > 5) {
+                //==================================================
+                // If charm is maxed, go to next stage.
+                //==================================================
+                if(enemy.charmPoints >= enemy.requiredPoints) {
+                    dialogueBox.startDialogue([
+                        {character:"Guard",text:"'You know what, fine. I like your style.'"},
+                        {character:"Guard",text:"'You may go ahead, I wont stop you.'"},
+                        {character:"Guard",text:"'Here I got these prison guard pants you could have. Maybe it will be useful to you.'"},
+                        {character:"Guard",text:"'I also heard that the guard standing at the entrance is scheduled to take a lunch break soon.'"},
+                        {character:"You",text:"'Okay, I will keep that in mind. Thank you!'"},
+                    ]);
+                    dialogueBox.onFinish = () => {
+                        gameScene = "next";
+                    }
+                }
+                //==================================================
+                // If charm is not maxed out before the 5th question, go to battle.
+                //==================================================
+                else if(enemy.dialogueCount > 5) {
                     dialogueBox.startDialogue([
                         {character:"Guard",text:"'Alright, buddy'"},
                         {character:"Guard",text:"'I've had enough of your babbling.'"},
@@ -394,9 +408,10 @@ function gameLoop() {
                     dialogueBox.onFinish = () => {
                         gameScene = "testEnemy";
                     }
-                } 
-                
-                // Enemy asks their question
+                }
+                //==================================================
+                // Goes to next question
+                //==================================================
                 else {
                     dialogueBox.startDialogue(currentSituation.dialogue);
                     dialogueBox.onFinish = () => {
@@ -465,15 +480,6 @@ function gameLoop() {
                 }
             }
 
-            if(enemy.charmPoints >= enemy.requiredPoints) {
-                dialogueBox.startDialogue([
-                    {character:"Guard",text:"'You know what, fine. I like your style.'"},
-                    {character:"Guard",text:"'You may go ahead, I wont stop you.'"},
-                    {character:"Guard",text:"'Here I got these prison guard pants you could have. Maybe it will be useful to you.'"},
-                    {character:"Guard",text:"'I also heard that the guard standing at the entrance is scheduled to take a lunch break soon.'"},
-                    {character:"You",text:"'Okay, I will keep that in mind. Thank you!'"},
-                ])
-            }
             break;
             case "next":
                 alert("To be countinued???");
