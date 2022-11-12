@@ -226,30 +226,52 @@ function gameLoop() {
             turn = 1;
             reRolls = 3;
             reRoll(diceBag);
+
+            reRolling = true;
+            animationLength = 16;
+            framesPerNumber = 10;
+            frameCounter = 0;
+            frame = 0;
+
             enemyDmg = Math.floor(Math.random() * 6);
             enemyBlock = 6-enemyDmg;
             console.log(enemyDmg);
             console.log(enemyBlock);
-            break;
 
-        case "combatEncounter":
-            let done = new CombatButton(canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3,"Engage");
-            let roll = new CombatButton(canvas.width*0.5,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3,"Reroll");
+            done = new CombatButton(canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3,"Engage");
+            roll = new CombatButton(canvas.width*0.5,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3,"Reroll");
 
-            let one = new DiceButton(canvas.width*0.2,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,0);
-            let two = new DiceButton(canvas.width*0.3,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,1);
-            let three = new DiceButton(canvas.width*0.4,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,2);
-            let four = new DiceButton(canvas.width*0.5,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,3);
-            let five = new DiceButton(canvas.width*0.6,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,4);
-            let six = new DiceButton(canvas.width*0.7,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,5);
-            let cButtons = [];
-            let diceButtons = [];
+            one = new DiceButton(canvas.width*0.2,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,0);
+            two = new DiceButton(canvas.width*0.3,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,1);
+            three = new DiceButton(canvas.width*0.4,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,2);
+            four = new DiceButton(canvas.width*0.5,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,3);
+            five = new DiceButton(canvas.width*0.6,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,4);
+            six = new DiceButton(canvas.width*0.7,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,5);
+            cButtons = [];
+            diceButtons = [];
             
             cButtons.push(one,two,three,four,five,six,done,roll);
             diceButtons.push(one,two,three,four,five,six);
+            break;
+
+        case "combatEncounter":
+            
             
             dialogueBox.onFinish = () => {
                 gameScene = "combatEncounter";
+            }
+
+            if(reRolling){
+                frameCounter++;
+                if(frameCounter>=framesPerNumber){
+                    frame++
+                    reRoll(diceBag);
+                    if(frame>=animationLength){
+                        frame = 0;
+                        frameCounter = 0;
+                        reRolling = false;
+                    }
+                }
             }
 
             
@@ -275,9 +297,9 @@ function gameLoop() {
             }
             for(let i = 0;i<diceButtons.length;i++){
                 diceButtons[i].onClick = () => {
-                    console.log(i+" "+diceButtons);
-                    if(diceBag[diceButtons[i].diceBagSpot].clicked){
-                        diceBag[diceButtons[i].diceBagSpot].clicked = false;
+                    console.log(diceButtons);
+                    if(diceButtons[i].clicked){
+                        diceButtons[i].clicked = false;
                         for(x = reRollDice.length;x>=0;--x){
                             if(reRollDice[x] == diceBag[diceButtons[i].diceBagSpot]){
                                 reRollDice.splice(x,1);
@@ -285,9 +307,8 @@ function gameLoop() {
                         }
                     }
                     else{
-                        diceBag[diceButtons[i].diceBagSpot].clicked = true;
+                        diceButtons[i].clicked = true;
                         reRollDice.push(diceBag[diceButtons[i].diceBagSpot]);
-                        console.log(reRollDice);
                     }
                     mouse.click = false;
                 }
@@ -296,20 +317,18 @@ function gameLoop() {
             roll.onClick = () => {
                 if(reRolls > 0){
                     let temp = [];
-                    console.log(reRollDice);
                     for(let i=reRollDice.length-1;i>=0;i--){
-                        
                         temp.push(reRollDice[i]);
-                        reRollDice[i].clicked = false;
+                        reRollDice[i].drawReroll(canvas.width*0.2,canvas.height*0.5);
+                        for(let i=diceButtons.length-1;i>=0;--i){
+                            diceButtons[i].clicked = false;
+                        }
                     }
-                    
                     reRoll(temp);
                     reRolls--;
                     reRollDice = [];
                 }
-                
                 mouse.click = false;
-                
             }
 
             done.onClick = () => {
@@ -352,8 +371,10 @@ function gameLoop() {
                     dmgDone = player.takeDmg(neg);
                     anwser.push({character:"",text:"(You take "+dmgDone+" from recoil)"});
                 }
+                for(let i=diceButtons.length-1;i>=0;--i){
+                    diceButtons[i].clicked = false;
+                }
                 dialogueBox.startDialogue(anwser);
-                console.log(player.alive);
                 turn = 0;
                 mouse.click = false;
             };
