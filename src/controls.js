@@ -22,9 +22,6 @@ document.addEventListener('mousedown', function(event) {
                 } else {
                     dialogueBox.displayLength = dialogueBox.dialogue[dialogueBox.current].length;
                 }
-            } 
-            else if(diceRoll && !diceRoll.doneRolling) {
-                return;
             }
             else {
                 mouse.click = true;
