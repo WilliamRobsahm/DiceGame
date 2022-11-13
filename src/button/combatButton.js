@@ -12,6 +12,8 @@ class CombatButton extends Button {
         } else {
             ctx.drawImage(images.buttonDown,this.x,this.y,this.w,this.h);
         }
-        ctx.fillText(this.text,this.x + this.w/2, this.y+this.h/2);
+        ctx.fillText(this.text,this.x + this.w/2-20, this.y+this.h/2);
     }
+
+    
 }
