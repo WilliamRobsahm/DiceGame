@@ -405,13 +405,15 @@ function gameLoop() {
             // Conversation before battle
             //==================================================
             if(count.enemy == 1) {
-                enemyImg = images.guard
+                enemyImg = images.guard;
+                enemy = new Enemy(10,images.guard,(canvas.width-canvas.height/3*2)/2,0,canvas.height/3*2,canvas.height/3*2);
                 dialogueBox.startDialogue([
                     { character: "Guard", text: "'Hey you, stop right there!'" },
                 ]);
             }
             else if(count.enemy == 2) {
-                enemyImg = images.encounter1
+                enemyImg = images.encounter1;
+                enemy = new Enemy(10,enemyImg,(canvas.width-canvas.height/3*2)/2,0,canvas.height/3*2,canvas.height/3*2);
                 dialogueBox.startDialogue([
                     { character: "Encounter1", text: "'I'll be honest, I do not like you.'" },
                     { character: "Encounter1", text: "'Not one bit.'" },
@@ -421,7 +423,8 @@ function gameLoop() {
                 ]);
             }
             else if(count.enemy == 3) {
-                enemyImg = images.encounter2
+                enemyImg = images.encounter2;
+                enemy = new Enemy(10,enemyImg,(canvas.width-canvas.height/3*2)/2,0,canvas.height/3*2,canvas.height/3*2);
                 dialogueBox.startDialogue([
                     { character: "Encounter2", text: "'You do not seem like someone I'd trust.'" },
                     { character: "Encounter2", text: "'I have to send you back.'" },
@@ -430,7 +433,8 @@ function gameLoop() {
                 ]);
             }
             else if(count.enemy == 4) {
-                enemyImg = images.encounter3
+                enemyImg = images.encounter3;
+                enemy = new Enemy(10,enemyImg,(canvas.width-canvas.height/3*2)/2,0,canvas.height/3*2,canvas.height/3*2);
                 dialogueBox.startDialogue([
                     { character: "Encounter3", text: "'I've had enough.'" },
                     { character: "Encounter3", text: "'This is a waste of my time.'" },
@@ -440,7 +444,8 @@ function gameLoop() {
                 ]);
             }
             else if(count.enemy == 5 && count.charisma == 3) {
-                enemyImg = images.boss
+                enemyImg = images.boss;
+                enemy = new Enemy(10, images.boss, (canvas.width - canvas.height / 3 * 2) / 2, 0, canvas.height / 3 * 2, canvas.height / 3 * 2);
                 dialogueBox.startDialogue([
                     { character: "You", text: "'I wonder if I can talk my way through this one. He seems tough.'" },
                     { character: "", text: "'You walk up to the guard standing at the door'" },
@@ -452,12 +457,10 @@ function gameLoop() {
                     { character: "Boss", text: "'You are not getting out of here alive!'" },
                     { character: "You", text: "'Uh oh.'" },
                 ]);
-                dialogueBox.onFinish = () => {
-                    enemy = new Enemy(10, images.boss, (canvas.width - canvas.height / 3 * 2) / 2, 0, canvas.height / 3 * 2, canvas.height / 3 * 2);
-                }
             }
             else if(count.enemy == 5) {
                 enemyImg = images.boss
+                enemy = new Enemy(10, images.boss, (canvas.width - canvas.height / 3 * 2) / 2, 0, canvas.height / 3 * 2, canvas.height / 3 * 2);
                 dialogueBox.startDialogue([
                     { character: "Boss", text: "'That's not the right password...'" },
                     { character: "Boss", text: "'You're an escapee, aren't you?! Get over here and taste my wrath!'" },
@@ -468,7 +471,7 @@ function gameLoop() {
             //==================================================
             dialogueBox.onFinish = () => {
                 document.body.style.cursor = "default";
-                enemy = new Enemy(10,images.guard,(canvas.width-canvas.height/3*2)/2,0,canvas.height/3*2,canvas.height/3*2);
+                
                 gameScene = "combatEncounter";
                 reRollDice = [];
                 turn = 1;
@@ -500,24 +503,11 @@ function gameLoop() {
 
                 cButtons.push(one,two,three,four,five,six,done,roll);
                 diceButtons.push(one,two,three,four,five,six);
-                break;
+                
             }
             break;
                 
         case "combatEncounter":
-            let done = new CombatButton(canvas.width * 0, canvas.height * 0.7, canvas.width * 0.5, (canvas.width * 0.4) / 3, "Engage");
-            let roll = new CombatButton(canvas.width * 0.5, canvas.height * 0.7, canvas.width * 0.5, (canvas.width * 0.4) / 3, "Reroll");
-
-            let one = new DiceButton(canvas.width * 0.2, canvas.height * 0.5, canvas.width * 0.1, canvas.width * 0.1, 0);
-            let two = new DiceButton(canvas.width * 0.3, canvas.height * 0.5, canvas.width * 0.1, canvas.width * 0.1, 1);
-            let three = new DiceButton(canvas.width * 0.4, canvas.height * 0.5, canvas.width * 0.1, canvas.width * 0.1, 2);
-            let four = new DiceButton(canvas.width * 0.5, canvas.height * 0.5, canvas.width * 0.1, canvas.width * 0.1, 3);
-            let five = new DiceButton(canvas.width * 0.6, canvas.height * 0.5, canvas.width * 0.1, canvas.width * 0.1, 4);
-            let six = new DiceButton(canvas.width * 0.7, canvas.height * 0.5, canvas.width * 0.1, canvas.width * 0.1, 5);
-            let diceButtons = [];
-            diceButtons = [one, two, three, four, five, six];
-            buttons = [one, two, three, four, five, six, done, roll];
-
             dialogueBox.onFinish = () => {
                 gameScene = "combatEncounter";
             }
