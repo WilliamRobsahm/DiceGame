@@ -231,6 +231,9 @@ function gameLoop() {
                     { character: "Boss", text: "'Oh, who are you?'" },
                 ]);
             }
+            //==================================================
+            // Creates the enemy
+            //==================================================
             dialogueBox.onFinish = () => {
                 if(count.enemy == 2) {
                     enemy = new Enemy(10, images.encounter1, (canvas.width - canvas.height / 3 * 2) / 2, 0, canvas.height / 3 * 2, canvas.height / 3 * 2);
@@ -252,23 +255,58 @@ function gameLoop() {
             }
             break;
             
-        case "encounter":
+        case "encounter":            
             if (!currentSituation) {
+                if(count.enemy < 5) {
+                    currentSituation = enemy.dialogueOptions.randomSituation();
+                } else {
+                    currentSituation = enemy.dialogueOptions.situations[bossBattle]
+                }
                 enemy.dialogueCount++;
-                currentSituation = enemy.dialogueOptions.randomSituation();
-                console.log('hello'+currentSituation)
     
                 //==================================================
                 // If charm is maxed, go to next stage.
                 //==================================================
                 if (enemy.charmPoints >= enemy.requiredPoints) {
-                    dialogueBox.startDialogue([
-                        { character: "Guard", text: "'You know what, fine. I like your style.'" },
-                        { character: "Guard", text: "'You may go ahead, I wont stop you.'" },
-                        { character: "Guard", text: "'Here I got these prison guard pants you could have. Maybe it will be useful to you.'" },
-                        { character: "Guard", text: "'I also heard that the guard standing at the entrance is scheduled to take a lunch break soon.'" },
-                        { character: "You", text: "'Okay, I will keep that in mind. Thank you!'" },
-                    ]);
+                    if(count.enemy == 1) {
+                        gameScene = "next";
+                    }
+                    if(count.enemy == 2) {
+                        dialogueBox.startDialogue([
+                            { character: "Encounter1", text: "'You know what, fine. I like your style.'" },
+                            { character: "Encounter1", text: "'You may go ahead, I wont stop you.'" },
+                            { character: "Encounter1", text: "'Here I got these prison guard pants you could have. Maybe it will be useful to you.'" },
+                            { character: "Encounter1", text: "'I also heard that the guard standing at the entrance is scheduled to take a lunch break soon.'" },
+                            { character: "You", text: "'Okay, I will keep that in mind. Thank you!'" },
+                        ]);
+                    }
+                    if(count.enemy == 3) {
+                        dialogueBox.startDialogue([
+                            { character: "Encounter2", text: "'You seem like a decent human. I like you.'" },
+                            { character: "Encounter2", text: "'If you go forward from here, you will be on your way to freedom.'" },
+                            { character: "Encounter2", text: "'I got these prison guard boots. I don't have any use for them. So you can have them.'" },
+                            { character: "Encounter2", text: "'My friend who is a human was not here today... I wonder what happened to them. Their name is 'Kit'.'" },
+                            { character: "You", text: "'That may be useful information. I will keep that in mind. Thanks!'" },
+                        ]);
+                    }
+                    if(count.enemy == 4) {
+                        dialogueBox.startDialogue([
+                            { character: "Encounter3", text: "'Yeah you couldn't possibly belong here!'" },
+                            { character: "Encounter3", text: "'The prison entrance is really close. I wish you good luck.'" },
+                            { character: "Encounter3", text: "'But it's not going to be as easy as just walking out. There is a guard standing there.'" },
+                            { character: "Encounter3", text: "'Here, I got this new prison tunic you could have. Maybe you could fool them. Who knows.'" },
+                            { character: "Encounter3", text: "'Oh and if they ask you what the password is, it is 'Golden garden'.'" },
+                            { character: "You", text: "'Thank you! This will definitely come in handy.'" },
+                        ]);
+                    }
+                    if(count.enemy == 5) {
+                        dialogueBox.startDialogue([
+                            { character: "Boss", text: "'Alright, I got it. I'll be on my way then. Good luck.'" },
+                            { character: "", text: "'The prison guard leaves the entrance'" },
+                            { character: "You", text: "'I did it! I am free!'" },
+                            { character: "", text: "'As soon as you make sure no one is watching. You open the door and leave.'" },
+                        ]);
+                    }
                     dialogueBox.onFinish = () => {
                         count.charisma++;
                         gameScene = "next";
@@ -278,19 +316,13 @@ function gameLoop() {
                 // If charm is not maxed out before the 5th question, go to battle.
                 //==================================================
                 else if (enemy.dialogueCount > 5) {
-                    dialogueBox.startDialogue([
-                        { character: "Guard", text: "'Alright, buddy'" },
-                        { character: "Guard", text: "'I've had enough of your babbling.'" },
-                        { character: "Guard", text: "'Go back to your cell immediately, or else!'" },
-                    ]);
-                    dialogueBox.onFinish = () => {
-                        gameScene = "testEnemy";
-                    }
+                    gameScene = "testEnemy";
                 }
                 //==================================================
                 // Goes to next question
                 //==================================================
                 else {
+                    enemy.dialogueOptions.bossBattle++
                     dialogueBox.startDialogue(currentSituation.dialogue);
                     dialogueBox.onFinish = () => {
                         showDialogueOptions = true;
@@ -322,24 +354,28 @@ function gameLoop() {
                 buttons = [option1, option2, option3];
 
                 // Open dice window
-                option1.onClick = () => {
-                    diceRoll = new DiceRoll(6, 0, 4);
-                    option = currentSituation.options[0];
-                }
+                if(!diceRoll) {
+                    option1.onClick = () => {
+                        diceRoll = new DiceRoll(6, 0, 4);
+                        option = currentSituation.options[0];
+                    }
 
-                option2.onClick = () => {
-                    diceRoll = new DiceRoll(6, 0, 4);
-                    option = currentSituation.options[1];
-                }
+                    option2.onClick = () => {
+                        diceRoll = new DiceRoll(6, 0, 4);
+                        option = currentSituation.options[1];
+                    }
 
-                option3.onClick = () => {
-                    diceRoll = new DiceRoll(6, 0, 4);
-                    option = currentSituation.options[2];
+                    option3.onClick = () => {
+                        diceRoll = new DiceRoll(6, 0, 4);
+                        option = currentSituation.options[2];
+                    }
                 }
+                
 
                 for (let i = 0; i < buttons.length; i++) {
                     buttons[i].setOption(currentSituation.options[i]);
                 }
+
 
                 // Close dice window
                 if (diceRoll && diceRoll.doneRolling && mouse.click) {
@@ -349,11 +385,12 @@ function gameLoop() {
                     } else {
                         dialogueBox.startDialogue(option.negativeResponse);
                     }
+                    //==================================================
+                    // Removes the last question so the new question can pop up
+                    //==================================================
+                    resetCharisma();
                     dialogueBox.onFinish = () => {
                         currentSituation = null;
-                        option = null;
-                        diceRoll = null;
-                        showDialogueOptions = false;
                     }
                     mouse.click = false;
                 }
@@ -369,11 +406,13 @@ function gameLoop() {
             // Conversation before battle
             //==================================================
             if(count.enemy == 1) {
+                enemyImg = images.guard
                 dialogueBox.startDialogue([
                     { character: "Guard", text: "'Hey you, stop right there!'" },
                 ]);
             }
             else if(count.enemy == 2) {
+                enemyImg = images.encounter1
                 dialogueBox.startDialogue([
                     { character: "Encounter1", text: "'I'll be honest, I do not like you.'" },
                     { character: "Encounter1", text: "'Not one bit.'" },
@@ -383,6 +422,7 @@ function gameLoop() {
                 ]);
             }
             else if(count.enemy == 3) {
+                enemyImg = images.encounter2
                 dialogueBox.startDialogue([
                     { character: "Encounter2", text: "'You do not seem like someone I'd trust.'" },
                     { character: "Encounter2", text: "'I have to send you back.'" },
@@ -391,15 +431,17 @@ function gameLoop() {
                 ]);
             }
             else if(count.enemy == 4) {
+                enemyImg = images.encounter3
                 dialogueBox.startDialogue([
-                    { character: "Encounter4", text: "'I've had enough.'" },
-                    { character: "Encounter4", text: "'This is a waste of my time.'" },
-                    { character: "Encounter4", text: "'I am perfectly capable of ending you right here, right now.'" },
+                    { character: "Encounter3", text: "'I've had enough.'" },
+                    { character: "Encounter3", text: "'This is a waste of my time.'" },
+                    { character: "Encounter3", text: "'I am perfectly capable of ending you right here, right now.'" },
                     { character: "You", text: "'Crap... I am so close!'" },
                     { character: "You", text: "'I just need to take care of this guard.'" },
                 ]);
             }
             else if(count.enemy == 5 && count.charisma == 3) {
+                enemyImg = images.boss
                 dialogueBox.startDialogue([
                     { character: "You", text: "'I wonder if I can talk my way through this one. He seems tough.'" },
                     { character: "", text: "'You walk up to the guard standing at the door'" },
@@ -411,8 +453,12 @@ function gameLoop() {
                     { character: "Boss", text: "'You are not getting out of here alive!'" },
                     { character: "You", text: "'Uh oh.'" },
                 ]);
+                dialogueBox.onFinish = () => {
+                    enemy = new Enemy(10, images.boss, (canvas.width - canvas.height / 3 * 2) / 2, 0, canvas.height / 3 * 2, canvas.height / 3 * 2);
+                }
             }
             else if(count.enemy == 5) {
+                enemyImg = images.boss
                 dialogueBox.startDialogue([
                     { character: "Boss", text: "'That's not the right password...'" },
                     { character: "Boss", text: "'You're an escapee, aren't you?! Get over here and taste my wrath!'" },
@@ -422,7 +468,7 @@ function gameLoop() {
             // Prep battle
             //==================================================
             dialogueBox.onFinish = () => {
-                enemy = new Enemy(10, images.guard, (canvas.width - canvas.height / 3 * 2) / 2, 0, canvas.height / 3 * 2, canvas.height / 3 * 2);
+                enemy = new Enemy(10, enemyImg, (canvas.width - canvas.height / 3 * 2) / 2, 0, canvas.height / 3 * 2, canvas.height / 3 * 2);
                 gameScene = "combatEncounter";
                 reRollDice = [];
                 turn = 1;
@@ -430,8 +476,8 @@ function gameLoop() {
                 reRoll(diceBag);
                 enemyDmg = Math.floor(Math.random() * 6);
                 enemyBlock = 6 - enemyDmg;
-                console.log(enemyDmg);
-                console.log(enemyBlock);
+                console.log('Enemy dmg: '+enemyDmg);
+                console.log('Enemy block: '+enemyBlock);
             }
             break;
                 
@@ -473,7 +519,6 @@ function gameLoop() {
             }
             for (let i = 0; i < diceButtons.length; i++) {
                 diceButtons[i].onClick = () => {
-                    console.log(i + " " + diceButtons);
                     if (diceButtons[i].clicked) {
                         diceButtons[i].clicked = false;
                         for (x = reRollDice.length; x >= 0; --x) {
@@ -485,7 +530,6 @@ function gameLoop() {
                     else {
                         diceButtons[i].clicked = true;
                         reRollDice.push(diceBag[diceButtons[i].diceBagSpot]);
-                        console.log(reRollDice);
                     }
                     mouse.click = false;
                 }
@@ -494,7 +538,6 @@ function gameLoop() {
             roll.onClick = () => {
                 if (reRolls > 0) {
                     let temp = [];
-                    console.log(reRollDice);
                     for (let i = reRollDice.length - 1; i >= 0; i--) {
 
                         temp.push(reRollDice[i]);
@@ -577,26 +620,20 @@ function gameLoop() {
         // Next enemy
         //==================================================
         case "next":
+            resetCharisma();
+            currentSituation = null;
+
             count.enemy++;
-            if(count.enemy == 5 && count.charisma == 3) {
-                gameScene = "Test Encounter";
-            } 
-            else if(count.enemy == 5) {
+            if(count.enemy == 5 && count.charisma != 3) {
                 gameScene = "testEnemy";
             }
-            else if(count.enemy == 4) {
-                gameScene = "Test Encounter";
-            }
-            else if(count.enemy == 3) {
-                gameScene = "Test Encounter";
-            }
-            else if(count.enemy == 2) {
+            else if(count.enemy <= 5) {
                 gameScene = "Test Encounter";
             }
             else {
-                gameScene = "next";
+                alert("You won!!!");
             }
-            console.log(count.enemy)
+            console.log('next character is '+count.enemy)
             break;
     }
 
@@ -610,6 +647,17 @@ function gameLoop() {
 
     window.requestAnimationFrame(gameLoop);
 }
+
+
+
+//==================================================
+// Reset charisma
+//==================================================
+function resetCharisma() {
+    diceRoll = null;
+    option = null;
+    showDialogueOptions = false;
+};
 
 
 

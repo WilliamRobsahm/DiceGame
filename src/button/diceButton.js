@@ -21,7 +21,6 @@ class DiceButton extends Button {
             ctx.drawImage(images.diceNeg,this.x,this.y,this.w,this.h);
         }
         if(this.clicked){
-            console.log("booba");
             ctx.fillStyle = "rgba(255,255,255,0.5)";
             ctx.fillRect(this.x,this.y,this.w,this.h);
         }

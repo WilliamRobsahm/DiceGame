@@ -2,9 +2,10 @@ class encounter1 extends dialogueChoice {
     constructor(character) {
         super();
         this.character = character;
+        this.bossBattle = 0;
         this.pos = {character:"",text:"(The "+this.character+" liked that)"};
         this.neg = {character:"",text:"(The "+this.character+" disliked that)"};
-        if(count.enemy > 5) {
+        if(count.enemy < 5) {
             this.situations = [
                 {
                     dialogue:[{character:this.character,text:"Do you live a boring life?'"}],
@@ -209,18 +210,56 @@ class encounter1 extends dialogueChoice {
         } else {
             this.situations = [
                 {
-                    dialogue:[{character:this.character,text:"'Only bad people get put in prison. Don't you understand the severity of your action?'"},],
+                    dialogue:[{character:this.character,text:"'Oh, who are you?'"},],
                     options:[
                         {
-                            text:"Sin...?",minimumSum:11,successPoints:1,
+                            text:"My name is Salem.",minimumSum:11,successPoints:1,
                             positiveResponse:[this.pos,{character:this.character,text:"'...'"}],
                             negativeResponse:[this.neg,{character:this.character,text:"'...'"}]
                         },{
-                            text:"Cut to the chase.",minimumSum:14,successPoints:3,
+                            text:"My name is Kit.",minimumSum:14,successPoints:3,
                             positiveResponse:[this.pos,{character:this.character,text:"'...'"}],
                             negativeResponse:[this.neg,{character:this.character,text:"'...'"}]
                         },{
-                            text:"I've done nothing wrong.",minimumSum:16,successPoints:4,
+                            text:"My name is Kingsley.",minimumSum:16,successPoints:4,
+                            positiveResponse:[this.pos,{character:this.character,text:"'...'"}],
+                            negativeResponse:[this.neg,{character:this.character,text:"'...'"}]
+                        },
+                    ],
+                    occured:false,
+                },
+                {
+                    dialogue:[{character:this.character,text:"'What is your current assignment?'"},],
+                    options:[
+                        {
+                            text:"I am here to take your place for the time being. It's lunch break.",minimumSum:11,successPoints:1,
+                            positiveResponse:[this.pos,{character:this.character,text:"'...'"}],
+                            negativeResponse:[this.neg,{character:this.character,text:"'...'"}]
+                        },{
+                            text:"There is a delivery coming very soon that I am tasked to gather.",minimumSum:14,successPoints:3,
+                            positiveResponse:[this.pos,{character:this.character,text:"'...'"}],
+                            negativeResponse:[this.neg,{character:this.character,text:"'...'"}]
+                        },{
+                            text:"I've finished my shift today and I'm on my way home.",minimumSum:16,successPoints:4,
+                            positiveResponse:[this.pos,{character:this.character,text:"'...'"}],
+                            negativeResponse:[this.neg,{character:this.character,text:"'...'"}]
+                        },
+                    ],
+                    occured:false,
+                },
+                {
+                    dialogue:[{character:this.character,text:"'Oh one more thing before I go, what's the password?'"},],
+                    options:[
+                        {
+                            text:"It is 'Valiant kingdom'",minimumSum:11,successPoints:1,
+                            positiveResponse:[this.pos,{character:this.character,text:"'...'"}],
+                            negativeResponse:[this.neg,{character:this.character,text:"'...'"}]
+                        },{
+                            text:"It is 'Blissful night'",minimumSum:14,successPoints:3,
+                            positiveResponse:[this.pos,{character:this.character,text:"'...'"}],
+                            negativeResponse:[this.neg,{character:this.character,text:"'...'"}]
+                        },{
+                            text:"It is 'Golden garden",minimumSum:16,successPoints:4,
                             positiveResponse:[this.pos,{character:this.character,text:"'...'"}],
                             negativeResponse:[this.neg,{character:this.character,text:"'...'"}]
                         },
