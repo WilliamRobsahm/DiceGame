@@ -319,7 +319,6 @@ function gameLoop() {
                     let temp = [];
                     for(let i=reRollDice.length-1;i>=0;i--){
                         temp.push(reRollDice[i]);
-                        reRollDice[i].drawReroll(canvas.width*0.2,canvas.height*0.5);
                         for(let i=diceButtons.length-1;i>=0;--i){
                             diceButtons[i].clicked = false;
                         }
