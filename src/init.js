@@ -395,7 +395,6 @@ function gameLoop() {
                     mouse.click = false;
                 }
             }
-
             break;
 
         //==================================================
@@ -468,16 +467,40 @@ function gameLoop() {
             // Prep battle
             //==================================================
             dialogueBox.onFinish = () => {
-                enemy = new Enemy(10, enemyImg, (canvas.width - canvas.height / 3 * 2) / 2, 0, canvas.height / 3 * 2, canvas.height / 3 * 2);
+                document.body.style.cursor = "default";
+                enemy = new Enemy(10,images.guard,(canvas.width-canvas.height/3*2)/2,0,canvas.height/3*2,canvas.height/3*2);
                 gameScene = "combatEncounter";
                 reRollDice = [];
                 turn = 1;
                 reRolls = 3;
                 reRoll(diceBag);
+
+                reRolling = true;
+                animationLength = 16;
+                framesPerNumber = 10;
+                frameCounter = 0;
+                frame = 0;
+
                 enemyDmg = Math.floor(Math.random() * 6);
-                enemyBlock = 6 - enemyDmg;
-                console.log('Enemy dmg: '+enemyDmg);
-                console.log('Enemy block: '+enemyBlock);
+                enemyBlock = 6-enemyDmg;
+                console.log(enemyDmg);
+                console.log(enemyBlock);
+
+                done = new CombatButton(canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3,"Engage");
+                roll = new CombatButton(canvas.width*0.5,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3,"Reroll");
+
+                one = new DiceButton(canvas.width*0.2,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,0);
+                two = new DiceButton(canvas.width*0.3,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,1);
+                three = new DiceButton(canvas.width*0.4,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,2);
+                four = new DiceButton(canvas.width*0.5,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,3);
+                five = new DiceButton(canvas.width*0.6,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,4);
+                six = new DiceButton(canvas.width*0.7,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,5);
+                cButtons = [];
+                diceButtons = [];
+
+                cButtons.push(one,two,three,four,five,six,done,roll);
+                diceButtons.push(one,two,three,four,five,six);
+                break;
             }
             break;
                 
@@ -500,6 +523,20 @@ function gameLoop() {
             }
 
 
+            if(reRolling){
+                frameCounter++;
+                if(frameCounter>=framesPerNumber){
+                    frame++
+                    reRoll(diceBag);
+                    if(frame>=animationLength){
+                        frame = 0;
+                        frameCounter = 0;
+                        reRolling = false;
+                    }
+                }
+            }
+
+
 
             if (player.alive == false) {
                 dialogueBox.startDialogue([
@@ -519,11 +556,12 @@ function gameLoop() {
             }
             for (let i = 0; i < diceButtons.length; i++) {
                 diceButtons[i].onClick = () => {
-                    if (diceButtons[i].clicked) {
+                    console.log(diceButtons);
+                    if(diceButtons[i].clicked){
                         diceButtons[i].clicked = false;
-                        for (x = reRollDice.length; x >= 0; --x) {
-                            if (reRollDice[x] == diceButtons[i]) {
-                                reRollDice[i].splice(i, 1);
+                        for(x = reRollDice.length;x>=0;--x){
+                            if(reRollDice[x] == diceBag[diceButtons[i].diceBagSpot]){
+                                reRollDice.splice(x,1);
                             }
                         }
                     }
@@ -538,19 +576,17 @@ function gameLoop() {
             roll.onClick = () => {
                 if (reRolls > 0) {
                     let temp = [];
-                    for (let i = reRollDice.length - 1; i >= 0; i--) {
-
+                    for(let i=reRollDice.length-1;i>=0;i--){
                         temp.push(reRollDice[i]);
-                        reRollDice[i].clicked = false;
+                        for(let i=diceButtons.length-1;i>=0;--i){
+                            diceButtons[i].clicked = false;
+                        }
                     }
-
                     reRoll(temp);
                     reRolls--;
                     reRollDice = [];
                 }
-
                 mouse.click = false;
-
             }
 
             done.onClick = () => {
@@ -593,8 +629,10 @@ function gameLoop() {
                     dmgDone = player.takeDmg(neg);
                     anwser.push({ character: "", text: "(You take " + dmgDone + " from recoil)" });
                 }
+                for(let i=diceButtons.length-1;i>=0;--i){
+                    diceButtons[i].clicked = false;
+                }
                 dialogueBox.startDialogue(anwser);
-                console.log(player.alive);
                 turn = 0;
                 mouse.click = false;
             };
@@ -604,16 +642,19 @@ function gameLoop() {
                 reRolls = 3;
                 reRoll(diceBag);
                 enemyDmg = Math.floor(Math.random() * 6);
-                enemyBlock = 6 - enemyDmg - Math.floor(Math.random() * 3);
+                enemyBlock = 6-enemyDmg-Math.floor(Math.random() * 3);
             }
-
+            ctx.drawImage(images.emptyBg,(((canvas.height/0.5625)-canvas.width)/2)*-1,0,canvas.height/0.5625,canvas.height);
             enemy.draw();
 
-            ctx.fillText(enemy.hp + "/" + enemy.maxHp, canvas.width * 0.05, canvas.height * 0.05);
-            ctx.fillText("Enemy Attack: " + enemyDmg + " Enemy Block: " + enemyBlock, canvas.width * 0.1, canvas.height * 0.05);
-            ctx.fillText(player.hp + "/" + player.maxHp, canvas.width * 0.92, canvas.height * 0.64);
-            ctx.fillText("Rerolls Left: " + reRolls, canvas.width * 0.8, canvas.height * 0.64);
-
+            ctx.fillText(enemy.hp+"/"+enemy.maxHp, canvas.width*0.05, canvas.height*0.05); 
+            ctx.fillText("Enemy Attack: "+enemyDmg+" Enemy Block: "+enemyBlock, canvas.width*0.1, canvas.height*0.05);  
+            ctx.fillText(player.hp+"/"+player.maxHp, canvas.width*0.92, canvas.height*0.64);
+            ctx.fillText("Rerolls Left: "+reRolls, canvas.width*0.8, canvas.height*0.64);
+            for(let i=cButtons.length-1;i>=0;--i){
+                cButtons[i].draw();
+                cButtons[i].update();
+            }
             break;
 
         //==================================================
