@@ -565,16 +565,21 @@ function gameLoop() {
 
             roll.onClick = () => {
                 if (reRolls > 0) {
-                    let temp = [];
-                    for(let i=reRollDice.length-1;i>=0;i--){
-                        temp.push(reRollDice[i]);
-                        for(let i=diceButtons.length-1;i>=0;--i){
-                            diceButtons[i].clicked = false;
+                    if(reRollDice.length == 0){
+                        reRoll(diceBag);
+                        reRolling = true;
+                    } else{
+                        let temp = [];
+                        for(let i=reRollDice.length-1;i>=0;i--){
+                            temp.push(reRollDice[i]);
+                            for(let i=diceButtons.length-1;i>=0;--i){
+                                diceButtons[i].clicked = false;
+                            }
                         }
+                        reRoll(temp);
+                        reRollDice = [];
                     }
-                    reRoll(temp);
                     reRolls--;
-                    reRollDice = [];
                 }
                 mouse.click = false;
             }
