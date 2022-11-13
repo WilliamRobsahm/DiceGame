@@ -17,6 +17,7 @@
 
 body {
     filter: invert(0);
+    background-color:black;
 }
 
 canvas {

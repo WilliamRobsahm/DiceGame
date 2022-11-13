@@ -460,7 +460,7 @@ function gameLoop() {
             }
             else if(count.enemy == 5) {
                 enemyImg = images.boss
-                enemy = new Enemy(10, images.boss, (canvas.width - canvas.height / 3 * 2) / 2, 0, canvas.height / 3 * 2, canvas.height / 3 * 2);
+                enemy = new Enemy(20, images.boss, (canvas.width - canvas.height / 3 * 2) / 2, 0, canvas.height / 3 * 2, canvas.height / 3 * 2);
                 dialogueBox.startDialogue([
                     { character: "Boss", text: "'That's not the right password...'" },
                     { character: "Boss", text: "'You're an escapee, aren't you?! Get over here and taste my wrath!'" },
@@ -486,20 +486,19 @@ function gameLoop() {
 
                 enemyDmg = Math.floor(Math.random() * 6);
                 enemyBlock = 6-enemyDmg;
-                console.log(enemyDmg);
-                console.log(enemyBlock);
 
-                done = new CombatButton(canvas.width*0,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3,"Engage");
-                roll = new CombatButton(canvas.width*0.5,canvas.height*0.7,canvas.width*0.5,(canvas.width*0.4)/3,"Reroll");
+                done = new CombatButton(canvas.width*0.165,canvas.height*0.76,canvas.width*0.35,canvas.width*0.1,"Engage");
+                roll = new CombatButton(canvas.width*0.48,canvas.height*0.76,canvas.width*0.35,canvas.width*0.1,"Reroll ("+reRolls+"x)");
 
-                one = new DiceButton(canvas.width*0.2,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,0);
-                two = new DiceButton(canvas.width*0.3,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,1);
-                three = new DiceButton(canvas.width*0.4,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,2);
-                four = new DiceButton(canvas.width*0.5,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,3);
-                five = new DiceButton(canvas.width*0.6,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,4);
-                six = new DiceButton(canvas.width*0.7,canvas.height*0.5,canvas.width*0.1,canvas.width*0.1,5);
+                one = new DiceButton(canvas.width*0.2,canvas.height*0.6,canvas.width*0.1,canvas.width*0.1,0);
+                two = new DiceButton(canvas.width*0.3,canvas.height*0.6,canvas.width*0.1,canvas.width*0.1,1);
+                three = new DiceButton(canvas.width*0.4,canvas.height*0.6,canvas.width*0.1,canvas.width*0.1,2);
+                four = new DiceButton(canvas.width*0.5,canvas.height*0.6,canvas.width*0.1,canvas.width*0.1,3);
+                five = new DiceButton(canvas.width*0.6,canvas.height*0.6,canvas.width*0.1,canvas.width*0.1,4);
+                six = new DiceButton(canvas.width*0.7,canvas.height*0.6,canvas.width*0.1,canvas.width*0.1,5);
                 cButtons = [];
                 diceButtons = [];
+                reRollingList = diceBag;
 
                 cButtons.push(one,two,three,four,five,six,done,roll);
                 diceButtons.push(one,two,three,four,five,six);
@@ -517,13 +516,15 @@ function gameLoop() {
                 frameCounter++;
                 if(frameCounter>=framesPerNumber){
                     frame++
-                    reRoll(diceBag);
+                    reRoll(reRollingList);
                     if(frame>=animationLength){
                         frame = 0;
                         frameCounter = 0;
                         reRolling = false;
                     }
                 }
+            } else{
+                reRollingList = [];
             }
 
 
@@ -546,7 +547,6 @@ function gameLoop() {
             }
             for (let i = 0; i < diceButtons.length; i++) {
                 diceButtons[i].onClick = () => {
-                    console.log(diceButtons);
                     if(diceButtons[i].clicked){
                         diceButtons[i].clicked = false;
                         for(x = reRollDice.length;x>=0;--x){
@@ -576,10 +576,13 @@ function gameLoop() {
                                 diceButtons[i].clicked = false;
                             }
                         }
+                        reRollingList = temp;
+                        reRolling = true;
                         reRoll(temp);
                         reRollDice = [];
                     }
                     reRolls--;
+                    roll.text = "Reroll ("+reRolls+"x)";
                 }
                 mouse.click = false;
             }
@@ -635,6 +638,7 @@ function gameLoop() {
             if (turn == 0) {
                 turn = 1;
                 reRolls = 3;
+                roll.text = "Reroll ("+reRolls+"x)";
                 reRoll(diceBag);
                 enemyDmg = Math.floor(Math.random() * 6);
                 enemyBlock = 6-enemyDmg-Math.floor(Math.random() * 3);
@@ -642,10 +646,14 @@ function gameLoop() {
             ctx.drawImage(images.emptyBg,(((canvas.height/0.5625)-canvas.width)/2)*-1,0,canvas.height/0.5625,canvas.height);
             enemy.draw();
 
-            ctx.fillText(enemy.hp+"/"+enemy.maxHp, canvas.width*0.05, canvas.height*0.05); 
-            ctx.fillText("Enemy Attack: "+enemyDmg+" Enemy Block: "+enemyBlock, canvas.width*0.1, canvas.height*0.05);  
-            ctx.fillText(player.hp+"/"+player.maxHp, canvas.width*0.92, canvas.height*0.64);
-            ctx.fillText("Rerolls Left: "+reRolls, canvas.width*0.8, canvas.height*0.64);
+            ctx.fillText("HP: "+enemy.hp+"/"+enemy.maxHp, canvas.width*0.47, canvas.height*0.05); 
+            ctx.fillText("Enemy Attack: "+enemyDmg+" Enemy Block: "+enemyBlock, canvas.width*0.42, canvas.height*0.08);  
+            if(diceButtons[5].clicked){
+                ctx.fillText("Your HP: "+player.hp+"/"+player.maxHp, canvas.width*0.72, canvas.height*0.53);
+            }else{
+                ctx.fillText("Your HP: "+player.hp+"/"+player.maxHp, canvas.width*0.72, canvas.height*0.58);
+            }
+            
             for(let i=cButtons.length-1;i>=0;--i){
                 cButtons[i].draw();
                 cButtons[i].update();
@@ -669,7 +677,6 @@ function gameLoop() {
             else {
                 alert("You won!!!");
             }
-            console.log('next character is '+count.enemy)
             break;
     }
 
