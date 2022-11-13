@@ -19,8 +19,6 @@ class dialogueChoice {
         }
 
         while(true) {
-            console.log(this.count);
-            console.log(this.situationCount);
             let s = this.situations[rng(0,this.situationCount-1)];
             if(!s.occured) {
                 s.occured = true;

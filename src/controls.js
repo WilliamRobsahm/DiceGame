@@ -13,19 +13,28 @@ document.addEventListener('mousemove',function(event) {
 })
 
 // Register player clicks
-document.addEventListener('mousedown', function() {
-    if(dialogueBox.dialogue) {
-        if(dialogueBox.doneTalking) {
-            dialogueBox.nextDialogue();
-        } else {
-            dialogueBox.displayLength = dialogueBox.dialogue[dialogueBox.current].length;
-        }
-    } 
-    else if(diceRoll && !diceRoll.doneRolling) {
-        return;
-    }
-    else {
-        mouse.click = true;
+document.addEventListener('mousedown', function(event) {
+    switch (event.which) {
+        case 1:
+            if(dialogueBox.dialogue) {
+                if(dialogueBox.doneTalking) {
+                    dialogueBox.nextDialogue();
+                } else {
+                    dialogueBox.displayLength = dialogueBox.dialogue[dialogueBox.current].length;
+                }
+            }
+            else {
+                mouse.click = true;
+            }
+            break;
+        case 2:
+            // Middle click
+            break;
+        case 3:
+            // Right click
+            break;
+        default:
+            // Not Left, Middle or Right click
     }
 });
 

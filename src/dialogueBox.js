@@ -66,7 +66,6 @@ class DialogueBox {
             if(this.dialogue[this.current].character == 'You') {
                 this.audioYou.play();
             } if(this.dialogue[this.current].character == 'Guard') {
-                console.log(this.audioGuard.currentTime)
                 if(this.audioGuard.currentTime >= (0.12052083333333333 / Math.floor(Math.random() * (6 - 4)))) {
                     this.audioGuard.currentTime = 0;
                 }
