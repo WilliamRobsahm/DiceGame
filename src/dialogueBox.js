@@ -9,11 +9,11 @@ class DialogueBox {
 
         this.audioDefault = new Audio('assets/sound/dialog_text.wav');
         this.audioYou = new Audio('assets/sound/dialogue_2.wav');
-        this.audioGuard = new Audio('assets/sound/dialogue_8.wav');
-        this.audioArtheur = new Audio('assets/sound/dialogue_15.wav');
+        this.audioGuard = new Audio('assets/sound/dialogue_10.wav');
+        this.audioArtheur = new Audio('assets/sound/dialogue_23.wav');
         this.audioReynold = new Audio('assets/sound/dialogue_20.wav');
         this.audioWalter = new Audio('assets/sound/dialogue_12.wav');
-        this.audioBoss = new Audio('assets/sound/dialogue_10.wav');
+        this.audioBoss = new Audio('assets/sound/dialogue_8.wav');
 
 
 
@@ -69,33 +69,44 @@ class DialogueBox {
     drawBox() {
         // Increase the amount of characters displayed by 1 every time the box is drawn
         if(this.displayLength < this.dialogue[this.current].text.length) {
-            this.displayLength += 0.37; // Displaying one more letter every 2,7 frame (1/0.37)
-            switch(this.dialogue[this.current].character) {
-                case 'You':
-                    this.audioYou.play();
-                    break;
-                case 'Guard':
-                    if(this.audioGuard.currentTime >= (0.12052083333333333 / Math.floor(Math.random() * (6 - 4)))) {
+            if(this.displayLength % 2 == 0) {
+                switch(this.dialogue[this.current].character) {
+                    case 'You':
+                        this.audioYou.currentTime = 0;
+                        this.audioYou.play();
+                        break;
+                    case 'Guard':
                         this.audioGuard.currentTime = 0;
-                    }
-                    this.audioGuard.play();
-                    break;
-                case 'Artheur':
-                    this.audioArtheur.play();
-                    break;
-                case 'Reynold':
-                    this.audioReynold.play();
-                    break;
-                case 'Walter':
-                    this.audioWalter.play();
-                    break;
-                case 'Boss':
-                    this.audioBoss.play();
-                    break;
-                case '':
-                    this.audioDefault.play();
-                    break;
+                        /*
+                        if(this.audioGuard.currentTime >= (0.12052083333333333 / Math.floor(Math.random() * (6 - 4)))) {
+                            this.audioGuard.currentTime = 0;
+                        }
+                        */
+                        this.audioGuard.play();
+                        break;
+                    case 'Artheur':
+                        this.audioArtheur.currentTime = 0;
+                        this.audioArtheur.play();
+                        break;
+                    case 'Reynold':
+                        this.audioReynold.currentTime = 0;
+                        this.audioReynold.play();
+                        break;
+                    case 'Walter':
+                        this.audioWalter.currentTime = 0;
+                        this.audioWalter.play();
+                        break;
+                    case 'Boss':
+                        this.audioBoss.currentTime = 0;
+                        this.audioBoss.play();
+                        break;
+                    case 'Tutorial':
+                    case '':
+                        this.audioDefault.play();
+                        break;
                 }
+            }
+            this.displayLength += 0.5; // Displaying one more letter every 2,7 frame (1/0.37)
         } 
         
         else { // Stops playing "writing" sound and resets the time of the audio
@@ -103,6 +114,10 @@ class DialogueBox {
             this.audioDefault.pause();
             this.audioYou.pause();
             this.audioGuard.pause();
+            this.audioArtheur.pause();
+            this.audioReynold.pause();
+            this.audioWalter.pause();
+            this.audioBoss.pause();
         }
 
         this.img.src = "./assets/img/dialougebox.png";
