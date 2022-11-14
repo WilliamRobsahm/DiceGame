@@ -611,7 +611,7 @@ function gameLoop() {
                     healDone = player.heal(heal);
                     anwser.push({ character: "", text: "(You heal for " + healDone + ")" });
                 }
-                if (def > 0) {
+                if (enemyDmg > 0) {
                     dmgDone = player.takeDmg(enemyDmg - def);
                     anwser.push({ character: "", text: "(You take " + dmgDone + ")" });
                 }
