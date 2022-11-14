@@ -204,23 +204,23 @@ function gameLoop() {
             if(count.enemy == 2) {
                 dialogueBox.startDialogue([
                     { character: "You", text: "'Hey, you! I need your help to get out!'" },
-                    { character: "Encounter1", text: "'How did you escape your cell? Oh whatever. Look, let me think...'" },
-                    { character: "Encounter1", text: "'You know what?'" },
-                    { character: "Encounter1", text: "'Let me see if I like your style, and maybe I'll let you through.'" },
+                    { character: "Artheur", text: "'How did you escape your cell? Oh whatever. Look, let me think...'" },
+                    { character: "Artheur", text: "'You know what?'" },
+                    { character: "Artheur", text: "'Let me see if I like your style, and maybe I'll let you through.'" },
                 ]);
             }
             if(count.enemy == 3) {
                 dialogueBox.startDialogue([
                     { character: "You", text: "'Hey I'm innocent! You must help me to escape!'" },
-                    { character: "Encounter2", text: "'Who are you? Let me think...'" },
-                    { character: "Encounter2", text: "'Okay, but I'm going to ask you some questions first.'" },
+                    { character: "Reynold", text: "'Who are you? Let me think...'" },
+                    { character: "Reynold", text: "'Okay, but I'm going to ask you some questions first.'" },
                 ]);
             }
             if(count.enemy == 4) {
                 dialogueBox.startDialogue([
                     { character: "You", text: "'Hey, could you help me escape? I swear I'm not supposed to be here!'" },
-                    { character: "Encounter3", text: "'I'm not supposed to do this.. But I'm feeling generous today.'" },
-                    { character: "Encounter3", text: "'Let me ask you some questions first though.'" },
+                    { character: "Walter", text: "'I'm not supposed to do this.. But I'm feeling generous today.'" },
+                    { character: "Walter", text: "'Let me ask you some questions first though.'" },
                 ]);
             }
             if(count.enemy == 5) {
@@ -239,15 +239,15 @@ function gameLoop() {
             dialogueBox.onFinish = () => {
                 if(count.enemy == 2) {
                     enemy = new Enemy(10, images.encounter1, (canvas.width - canvas.height / 3 * 2) / 2, 0, canvas.height / 3 * 2, canvas.height / 3 * 2);
-                    enemy.dialogueOptions = new encounter1('Encounter1');
+                    enemy.dialogueOptions = new encounter1('Artheur');
                 }
                 if(count.enemy == 3) {
                     enemy = new Enemy(10, images.encounter2, (canvas.width - canvas.height / 3 * 2) / 2, 0, canvas.height / 3 * 2, canvas.height / 3 * 2);
-                    enemy.dialogueOptions = new encounter1('Encounter2');
+                    enemy.dialogueOptions = new encounter1('Reynold');
                 }
                 if(count.enemy == 4) {
                     enemy = new Enemy(10, images.encounter3, (canvas.width - canvas.height / 3 * 2) / 2, 0, canvas.height / 3 * 2, canvas.height / 3 * 2);
-                    enemy.dialogueOptions = new encounter1('Encounter3');
+                    enemy.dialogueOptions = new encounter1('Walter');
                 }
                 if(count.enemy == 5) {
                     enemy = new Enemy(10, images.boss, (canvas.width - canvas.height / 3 * 2) / 2, 0, canvas.height / 3 * 2, canvas.height / 3 * 2);
@@ -271,29 +271,29 @@ function gameLoop() {
                     }
                     if(count.enemy == 2) {
                         dialogueBox.startDialogue([
-                            { character: "Encounter1", text: "'You know what, fine. I like your style.'" },
-                            { character: "Encounter1", text: "'You may go ahead, I wont stop you.'" },
-                            { character: "Encounter1", text: "'Here I got these prison guard pants you could have. Maybe it will be useful to you.'" },
-                            { character: "Encounter1", text: "'I also heard that the guard standing at the entrance is scheduled to take a lunch break soon.'" },
+                            { character: "Artheur", text: "'You know what, fine. I like your style.'" },
+                            { character: "Artheur", text: "'You may go ahead, I wont stop you.'" },
+                            { character: "Artheur", text: "'Here I got these prison guard pants you could have. Maybe it will be useful to you.'" },
+                            { character: "Artheur", text: "'I also heard that the guard standing at the entrance is scheduled to take a lunch break soon.'" },
                             { character: "You", text: "'Okay, I will keep that in mind. Thank you!'" },
                         ]);
                     }
                     if(count.enemy == 3) {
                         dialogueBox.startDialogue([
-                            { character: "Encounter2", text: "'You seem like a decent human. I like you.'" },
-                            { character: "Encounter2", text: "'If you go forward from here, you will be on your way to freedom.'" },
-                            { character: "Encounter2", text: "'I got these prison guard boots. I don't have any use for them. So you can have them.'" },
-                            { character: "Encounter2", text: "'My friend who is a human was not here today... I wonder what happened to them. Their name is 'Kit'.'" },
+                            { character: "Reynold", text: "'You seem like a decent human. I like you.'" },
+                            { character: "Reynold", text: "'If you go forward from here, you will be on your way to freedom.'" },
+                            { character: "Reynold", text: "'I got these prison guard boots. I don't have any use for them. So you can have them.'" },
+                            { character: "Reynold", text: "'My friend who is a human was not here today... I wonder what happened to them. Their name is 'Kit'.'" },
                             { character: "You", text: "'That may be useful information. I will keep that in mind. Thanks!'" },
                         ]);
                     }
                     if(count.enemy == 4) {
                         dialogueBox.startDialogue([
-                            { character: "Encounter3", text: "'Yeah you couldn't possibly belong here!'" },
-                            { character: "Encounter3", text: "'The prison entrance is really close. I wish you good luck.'" },
-                            { character: "Encounter3", text: "'But it's not going to be as easy as just walking out. There is a guard standing there.'" },
-                            { character: "Encounter3", text: "'Here, I got this new prison tunic you could have. Maybe you could fool them. Who knows.'" },
-                            { character: "Encounter3", text: "'Oh and if they ask you what the password is, it is 'Golden garden'.'" },
+                            { character: "Walter", text: "'Yeah you couldn't possibly belong here!'" },
+                            { character: "Walter", text: "'The prison entrance is really close. I wish you good luck.'" },
+                            { character: "Walter", text: "'But it's not going to be as easy as just walking out. There is a guard standing there.'" },
+                            { character: "Walter", text: "'Here, I got this new prison tunic you could have. Maybe you could fool them. Who knows.'" },
+                            { character: "Walter", text: "'Oh and if they ask you what the password is, it is 'Golden garden'.'" },
                             { character: "You", text: "'Thank you! This will definitely come in handy.'" },
                         ]);
                     }
@@ -412,10 +412,10 @@ function gameLoop() {
                 enemyImg = images.encounter1;
                 enemy = new Enemy(10,enemyImg,(canvas.width-canvas.height/3*2)/2,0,canvas.height/3*2,canvas.height/3*2);
                 dialogueBox.startDialogue([
-                    { character: "Encounter1", text: "'I'll be honest, I do not like you.'" },
-                    { character: "Encounter1", text: "'Not one bit.'" },
-                    { character: "Encounter1", text: "'I should send you back to your cell.'" },
-                    { character: "Encounter1", text: "'Even if I have to use force, I will.'" },
+                    { character: "Artheur", text: "'I'll be honest, I do not like you.'" },
+                    { character: "Artheur", text: "'Not one bit.'" },
+                    { character: "Artheur", text: "'I should send you back to your cell.'" },
+                    { character: "Artheur", text: "'Even if I have to use force, I will.'" },
                     { character: "You", text: "'I can't let it end here!'" },
                 ]);
             }
@@ -423,9 +423,9 @@ function gameLoop() {
                 enemyImg = images.encounter2;
                 enemy = new Enemy(10,enemyImg,(canvas.width-canvas.height/3*2)/2,0,canvas.height/3*2,canvas.height/3*2);
                 dialogueBox.startDialogue([
-                    { character: "Encounter2", text: "'You do not seem like someone I'd trust.'" },
-                    { character: "Encounter2", text: "'I have to send you back.'" },
-                    { character: "Encounter2", text: "'Do not resist!'" },
+                    { character: "Reynold", text: "'You do not seem like someone I'd trust.'" },
+                    { character: "Reynold", text: "'I have to send you back.'" },
+                    { character: "Reynold", text: "'Do not resist!'" },
                     { character: "You", text: "'I'm sorry, but I have to get out of here, no matter what!'" },
                 ]);
             }
@@ -433,9 +433,9 @@ function gameLoop() {
                 enemyImg = images.encounter3;
                 enemy = new Enemy(10,enemyImg,(canvas.width-canvas.height/3*2)/2,0,canvas.height/3*2,canvas.height/3*2);
                 dialogueBox.startDialogue([
-                    { character: "Encounter3", text: "'I've had enough.'" },
-                    { character: "Encounter3", text: "'This is a waste of my time.'" },
-                    { character: "Encounter3", text: "'I am perfectly capable of ending you right here, right now.'" },
+                    { character: "Walter", text: "'I've had enough.'" },
+                    { character: "Walter", text: "'This is a waste of my time.'" },
+                    { character: "Walter", text: "'I am perfectly capable of ending you right here, right now.'" },
                     { character: "You", text: "'Crap... I am so close!'" },
                     { character: "You", text: "'I just need to take care of this guard.'" },
                 ]);
