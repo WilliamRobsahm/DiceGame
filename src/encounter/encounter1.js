@@ -406,7 +406,7 @@ class encounter1 extends dialogueChoice {
                         positiveResponse:[this.pos,{character:this.character,text:"'...'"}],
                         negativeResponse:[this.neg,{character:this.character,text:"'...'"}]
                     },{
-                        text:"It will be your last if you don't get out of the way.",minimumSum:17,successPoints:5,
+                        text:"GET OUT OF THE WAY!",minimumSum:17,successPoints:5,
                         positiveResponse:[this.pos,{character:this.character,text:"'...'"}],
                         negativeResponse:[this.neg,{character:this.character,text:"'...'"}]
                     },
