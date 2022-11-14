@@ -501,7 +501,7 @@ function gameLoop() {
             if(combatTutorial){
                 dialogueBox.startDialogue([
                     { character: "Tutorial", text: "(This is a combat encounter)" },
-                    { character: "Tutorial", text: "(You can se your health at the top of the last die)" },
+                    { character: "Tutorial", text: "(You can see your health at the top of the last die)" },
                     { character: "Tutorial", text: "(And the enemies health and intent on the top of the screen)" },
                     { character: "Tutorial", text: "(The dice infront of you represent your intent)" },
                     { character: "Tutorial", text: "(Sword = deal 1 damage, Shield = blocking 1 damage...)" },
