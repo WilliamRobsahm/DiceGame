@@ -64,7 +64,9 @@ let prisonCell = { Door: false, Box: false };
 let prisonCellDoor = '';
 let prisonCellBox = '';
 
-let anime = false;
+audio = new Audio('assets/sound/PrisonAmbienceLong.mp3');
+audio.loop = true;
+audio.volume = 0.15;
 
 
 
@@ -108,6 +110,7 @@ function introLoop() {
         ])
 
         dialogueBox.onFinish = () => {
+            audio.play();
             gameScene = "PrisonCell";
         }
 
