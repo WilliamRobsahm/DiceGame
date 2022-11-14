@@ -409,6 +409,18 @@ function gameLoop() {
                 enemy = new Enemy(10,images.guard,(canvas.width-canvas.height/3*2)/2,0,canvas.height/3*2,canvas.height/3*2);
                 dialogueBox.startDialogue([
                     { character: "Guard", text: "'Hey you, stop right there!'" },
+                    { character: "Tutorial", text: "(This is a combat encounter)" },
+                    { character: "Tutorial", text: "(You can se your health at the top of the last die)" },
+                    { character: "Tutorial", text: "(And the enemies health and intent on the top of the screen)" },
+                    { character: "Tutorial", text: "(The dice infront of you represent your intent)" },
+                    { character: "Tutorial", text: "(Sword = deal 1 damage, Shield = blocking 1 damage...)" },
+                    { character: "Tutorial", text: "(Cross = heal 1 damage, Swirl = take 1 recoil damage)" },
+                    { character: "Tutorial", text: "(You can reroll these dice if you press on the once you want to reroll...)" },
+                    { character: "Tutorial", text: "(And then press the reroll button or just press the reroll button and reroll all of them)" },
+                    { character: "Tutorial", text: "(When you are happy with your rolls or you are out of rerolls...)" },
+                    { character: "Tutorial", text: "(Press engage and initialize your intent.)" },
+                    { character: "Tutorial", text: "(If both of you survive you will start another turn of combat.)" },
+                    { character: "Tutorial", text: "(Good luck!)" },
                 ]);
             }
             else if(count.enemy == 2) {
