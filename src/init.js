@@ -137,16 +137,19 @@ function gameLoop() {
             break;
 
         case "PrisonCell":
+            ctx.drawImage(images.bg, (((canvas.height / 0.5625) - canvas.width) / 2) * -1, 0, canvas.height / 0.5625, canvas.height);
             //==================================================
             // Creates prisonCellDoor and prisonCellBox
             //==================================================
-            ctx.drawImage(images.bg, (((canvas.height / 0.5625) - canvas.width) / 2) * -1, 0, canvas.height / 0.5625, canvas.height);
             if (prisonCell.Door) {
-                prisonCellDoor = new DoorButton((canvas.width - (750 / 1.75)) * 0.43, (canvas.height - (716 / 1.75)) * 0.29, 750 / 1.75, 716 / 1.75);
+                // 750/716=1.0474860335195530726256983240223
+                prisonCellDoor = new DoorButton((canvas.width - ((canvas.height * 0.4) * 1.0474860335195530726256983240223)) * 0.43, (canvas.height - (canvas.height * 0.4)) * 0.29, (canvas.height * 0.4) * 1.0474860335195530726256983240223, canvas.height * 0.4);
             } else {
-                prisonCellDoor = new DoorButton((canvas.width - (750 / 1.75)) * 0.43, (canvas.height - (716 / 1.75)) * 0.29, 396 / 1.75, 716 / 1.75);
+                // 396/716=0.5530726256983240223463687150838
+                prisonCellDoor = new DoorButton((canvas.width - ((canvas.height * 0.4) * 1.0474860335195530726256983240223)) * 0.43, (canvas.height - (canvas.height * 0.4)) * 0.29, (canvas.height * 0.4) * 0.5530726256983240223463687150838, canvas.height * 0.4);
             }
-            prisonCellBox = new BoxButton(canvas.width * 0.55, canvas.height * 0.46, 750 / 2.5, 458 / 2.5);
+            // 750/458=1.6375545851528384279475982532751
+            prisonCellBox = new BoxButton((canvas.width - ((canvas.height * 0.2) * 1.6375545851528384279475982532751)) * 0.65, (canvas.height - (canvas.height * 0.2)) * 0.55, (canvas.height * 0.2) * 1.6375545851528384279475982532751, canvas.height * 0.2);
             buttons = [prisonCellDoor, prisonCellBox];
 
             //==================================================
@@ -457,47 +460,46 @@ function gameLoop() {
             // Prep battle
             //==================================================
             dialogueBox.onFinish = () => {
-                document.body.style.cursor = "default";
-                
                 gameScene = "combatEncounter";
                 reRollDice = [];
                 turn = 1;
                 reRolls = 3;
                 reRoll(diceBag);
-
+                
                 reRolling = true;
                 animationLength = 16;
                 framesPerNumber = 10;
                 frameCounter = 0;
                 frame = 0;
-
+                
                 enemyDmg = Math.floor(Math.random() * 6);
                 enemyBlock = 6-enemyDmg;
-
+                
+                //==================================================
+                // Buttons
+                //==================================================
                 done = new CombatButton(canvas.width*0.165,canvas.height*0.76,canvas.width*0.35,canvas.width*0.1,"Engage");
                 roll = new CombatButton(canvas.width*0.48,canvas.height*0.76,canvas.width*0.35,canvas.width*0.1,"Reroll ("+reRolls+"x)");
-
+                
+                //==================================================
+                // Dice
+                //==================================================
                 one = new DiceButton(canvas.width*0.2,canvas.height*0.6,canvas.width*0.1,canvas.width*0.1,0);
                 two = new DiceButton(canvas.width*0.3,canvas.height*0.6,canvas.width*0.1,canvas.width*0.1,1);
                 three = new DiceButton(canvas.width*0.4,canvas.height*0.6,canvas.width*0.1,canvas.width*0.1,2);
                 four = new DiceButton(canvas.width*0.5,canvas.height*0.6,canvas.width*0.1,canvas.width*0.1,3);
                 five = new DiceButton(canvas.width*0.6,canvas.height*0.6,canvas.width*0.1,canvas.width*0.1,4);
                 six = new DiceButton(canvas.width*0.7,canvas.height*0.6,canvas.width*0.1,canvas.width*0.1,5);
-                cButtons = [];
-                diceButtons = [];
-                reRollingList = diceBag;
-
-                cButtons.push(one,two,three,four,five,six,done,roll);
-                diceButtons.push(one,two,three,four,five,six);
                 
+                diceButtons = [one, two, three, four, five, six];
+                buttons = [one, two, three, four, five, six, done, roll];
+                reRollingList = diceBag;
             }
             break;
-                
+            
         case "combatEncounter":
-            dialogueBox.onFinish = () => {
-                gameScene = "combatEncounter";
-            }
-
+            buttons = [one, two, three, four, five, six, done, roll];
+            
             if(combatTutorial){
                 dialogueBox.startDialogue([
                     { character: "Tutorial", text: "(This is a combat encounter)" },
@@ -518,24 +520,6 @@ function gameLoop() {
                 }
             }
 
-
-            if(reRolling){
-                frameCounter++;
-                if(frameCounter>=framesPerNumber){
-                    frame++
-                    reRoll(reRollingList);
-                    if(frame>=animationLength){
-                        frame = 0;
-                        frameCounter = 0;
-                        reRolling = false;
-                    }
-                }
-            } else{
-                reRollingList = [];
-            }
-
-
-
             if (player.alive == false) {
                 dialogueBox.startDialogue([
                     { character: "", text: "(You died)" },
@@ -552,6 +536,23 @@ function gameLoop() {
                     gameScene = "next";
                 }
             }
+            
+            
+            if(reRolling){
+                frameCounter++;
+                if(frameCounter>=framesPerNumber){
+                    frame++
+                    reRoll(reRollingList);
+                    if(frame>=animationLength){
+                        frame = 0;
+                        frameCounter = 0;
+                        reRolling = false;
+                    }
+                }
+            } else{
+                reRollingList = [];
+            }
+
             for (let i = 0; i < diceButtons.length; i++) {
                 diceButtons[i].onClick = () => {
                     if(diceButtons[i].clicked){
@@ -647,23 +648,26 @@ function gameLoop() {
                 reRolls = 3;
                 roll.text = "Reroll ("+reRolls+"x)";
                 reRoll(diceBag);
-                enemyDmg = Math.floor(Math.random() * 6);
-                enemyBlock = 6-enemyDmg-Math.floor(Math.random() * 3);
+                enemyDmg = Math.floor(Math.random() * (6+1));
+                crit = Math.floor(Math.random() * (1+1))*-1;
+                if(crit == -1) {
+                    enemyBlock = crit;
+                } else {
+                    enemyBlock = Math.floor(Math.random() * (enemyDmg+1)); //number between 0 and 6-enemyDmg example 6-4=2 so number between 0 and 2
+                }
             }
             ctx.drawImage(images.emptyBg,(((canvas.height/0.5625)-canvas.width)/2)*-1,0,canvas.height/0.5625,canvas.height);
             enemy.draw();
-
-            ctx.fillText("HP: "+enemy.hp+"/"+enemy.maxHp, canvas.width*0.47, canvas.height*0.05); 
-            ctx.fillText("Enemy Attack: "+enemyDmg+" Enemy Block: "+enemyBlock, canvas.width*0.42, canvas.height*0.08);  
-            if(diceButtons[5].clicked){
-                ctx.fillText("Your HP: "+player.hp+"/"+player.maxHp, canvas.width*0.72, canvas.height*0.53);
-            }else{
-                ctx.fillText("Your HP: "+player.hp+"/"+player.maxHp, canvas.width*0.72, canvas.height*0.58);
-            }
             
-            for(let i=cButtons.length-1;i>=0;--i){
-                cButtons[i].draw();
-                cButtons[i].update();
+            ctxSettings({fillStyle:"#eee",font:"24px Sketchy",textAlign:"center"});
+            ctx.fillText("HP: "+enemy.hp+"/"+enemy.maxHp,canvas.width / 2, canvas.height*0.05); 
+            ctx.fillText("Enemy Attack: "+enemyDmg+" Enemy Block: "+enemyBlock, canvas.width / 2, canvas.height*0.08);
+            
+            ctxSettings({fillStyle:"#eee",font:"24px Sketchy",textAlign:"right"});
+            if(diceButtons[5].clicked){
+                ctx.fillText("Your HP: "+player.hp+"/"+player.maxHp, canvas.width*0.8, canvas.height*0.535);
+            }else{
+                ctx.fillText("Your HP: "+player.hp+"/"+player.maxHp, canvas.width*0.8, canvas.height*0.585);
             }
             break;
 

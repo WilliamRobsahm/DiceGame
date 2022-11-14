@@ -8,22 +8,34 @@ class DialogueBox {
 
 
         this.audioDefault = new Audio('assets/sound/dialog_text.wav');
-        this.audioYou = new Audio('assets/sound/dialogue_2.wav');
-        this.audioGuard = new Audio('assets/sound/dialogue_10.wav');
-        this.audioArtheur = new Audio('assets/sound/dialogue_23.wav');
-        this.audioReynold = new Audio('assets/sound/dialogue_20.wav');
-        this.audioWalter = new Audio('assets/sound/dialogue_12.wav');
-        this.audioBoss = new Audio('assets/sound/dialogue_8.wav');
-
-
-
         this.audioDefault.loop = true;
-        this.audioDefault.volume = 0.75;
+        this.audioDefault.volume = 0.62;
+        
+        this.audioYou = new Audio('assets/sound/dialogue_2.wav');
         this.audioYou.loop = true;
-        this.audioYou.volume = 0.75;
+        this.audioYou.volume = 0.62;
+        
+        this.audioGuard = new Audio('assets/sound/dialogue_10.wav');
         this.audioGuard.loop = true;
-        this.audioGuard.volume = 0.75;
+        this.audioGuard.volume = 0.62;
+        
+        this.audioArtheur = new Audio('assets/sound/dialogue_23.wav');
+        this.audioArtheur.loop = true;
+        this.audioArtheur.volume = 0.62;
 
+        this.audioReynold = new Audio('assets/sound/dialogue_20.wav');
+        this.audioReynold.loop = true;
+        this.audioReynold.volume = 0.62;
+
+        this.audioWalter = new Audio('assets/sound/dialogue_12.wav');
+        this.audioWalter.loop = true;
+        this.audioWalter.volume = 0.62;
+
+        this.audioBoss = new Audio('assets/sound/dialogue_8.wav');
+        this.audioBoss.loop = true;
+        this.audioBoss.volume = 0.62;
+        
+        
 
         // onFinish is the function that runs when the dialogue is over
         this.onFinish = () => {};
@@ -72,32 +84,21 @@ class DialogueBox {
             if(this.displayLength % 2 == 0) {
                 switch(this.dialogue[this.current].character) {
                     case 'You':
-                        this.audioYou.currentTime = 0;
                         this.audioYou.play();
                         break;
                     case 'Guard':
-                        this.audioGuard.currentTime = 0;
-                        /*
-                        if(this.audioGuard.currentTime >= (0.12052083333333333 / Math.floor(Math.random() * (6 - 4)))) {
-                            this.audioGuard.currentTime = 0;
-                        }
-                        */
                         this.audioGuard.play();
                         break;
                     case 'Artheur':
-                        this.audioArtheur.currentTime = 0;
                         this.audioArtheur.play();
                         break;
                     case 'Reynold':
-                        this.audioReynold.currentTime = 0;
                         this.audioReynold.play();
                         break;
                     case 'Walter':
-                        this.audioWalter.currentTime = 0;
                         this.audioWalter.play();
                         break;
                     case 'Boss':
-                        this.audioBoss.currentTime = 0;
                         this.audioBoss.play();
                         break;
                     case 'Tutorial':
