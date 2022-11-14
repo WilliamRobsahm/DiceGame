@@ -13,6 +13,7 @@ const image = (src) => {
 
 function preloadImages() {
     images = {
+        logo:image('assets/img/logo.png'),
         bg:image('assets/img/room.png'),
         emptyBg:image('assets/img/empty room.png'),
         diceAtk:image('assets/img/diceatk.png'),

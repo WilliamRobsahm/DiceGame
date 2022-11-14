@@ -84,8 +84,9 @@ function init() {
 
     dialogueBox.setSize();
 
+    
     ctxSettings({ fillStyle: "white", font: "40px Sketchy", textAlign: "center" });
-    ctx.fillText("Click to start", canvas.width / 2, canvas.height / 2);
+    ctx.fillText("Click to start", canvas.width / 2, (canvas.height / 3)*2);
     window.requestAnimationFrame(introLoop);
 }
 
@@ -95,6 +96,7 @@ function init() {
 // Start menu
 //==================================================
 function introLoop() {
+    ctx.drawImage(images.logo,(canvas.width - canvas.height / 3) / 2, (canvas.height - canvas.height / 3) * 0.2, canvas.height / 3, canvas.height / 3);
     if (mouse.click) {
         dialogueBox.startDialogue([
             { character: "", text: "(You wake up on a cold stone floor)" },
@@ -259,11 +261,7 @@ function gameLoop() {
             
         case "encounter":            
             if (!currentSituation) {
-                if(count.enemy < 5) {
-                    currentSituation = enemy.dialogueOptions.randomSituation();
-                } else {
-                    currentSituation = enemy.dialogueOptions.situations[bossBattle]
-                }
+                currentSituation = enemy.dialogueOptions.randomSituation();
                 enemy.dialogueCount++;
     
                 //==================================================
@@ -324,7 +322,6 @@ function gameLoop() {
                 // Goes to next question
                 //==================================================
                 else {
-                    enemy.dialogueOptions.bossBattle++
                     dialogueBox.startDialogue(currentSituation.dialogue);
                     dialogueBox.onFinish = () => {
                         showDialogueOptions = true;
@@ -443,21 +440,6 @@ function gameLoop() {
                     { character: "Encounter3", text: "'I am perfectly capable of ending you right here, right now.'" },
                     { character: "You", text: "'Crap... I am so close!'" },
                     { character: "You", text: "'I just need to take care of this guard.'" },
-                ]);
-            }
-            else if(count.enemy == 5 && count.charisma == 3) {
-                enemyImg = images.boss;
-                enemy = new Enemy(10, images.boss, (canvas.width - canvas.height / 3 * 2) / 2, 0, canvas.height / 3 * 2, canvas.height / 3 * 2);
-                dialogueBox.startDialogue([
-                    { character: "You", text: "'I wonder if I can talk my way through this one. He seems tough.'" },
-                    { character: "", text: "'You walk up to the guard standing at the door'" },
-                    { character: "You", text: "'Hey you! Please help me, I need to get out of here! I am innocent!'" },
-                    { character: "Boss", text: "'How did you get here, inmate!?'" },
-                    { character: "Boss", text: "'Get back to your cell now!'" },
-                    { character: "Boss", text: "'Actually, if you got this far, you have probably beaten up guards to get here.'" },
-                    { character: "Boss", text: "'Prepare yourself.'" },
-                    { character: "Boss", text: "'You are not getting out of here alive!'" },
-                    { character: "You", text: "'Uh oh.'" },
                 ]);
             }
             else if(count.enemy == 5) {
@@ -690,11 +672,11 @@ function gameLoop() {
             currentSituation = null;
 
             count.enemy++;
-            if(count.enemy == 5 && count.charisma != 3) {
-                gameScene = "testEnemy";
-            }
-            else if(count.enemy <= 5) {
+            if(count.enemy <= 5) {
                 gameScene = "Test Encounter";
+            }
+            else if(count.charisma == 4) {
+                alert("You won without fighting")
             }
             else {
                 alert("You won!!!");
