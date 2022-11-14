@@ -65,7 +65,7 @@ class DialogueBox {
             this.displayLength += 0.37; // Displaying one more letter every 2,7 frame (1/0.37)
             if(this.dialogue[this.current].character == 'You') {
                 this.audioYou.play();
-            } if(this.dialogue[this.current].character == 'Guard') {
+            } else if(this.dialogue[this.current].character != '' && this.dialogue[this.current].character != 'You') {
                 if(this.audioGuard.currentTime >= (0.12052083333333333 / Math.floor(Math.random() * (6 - 4)))) {
                     this.audioGuard.currentTime = 0;
                 }
